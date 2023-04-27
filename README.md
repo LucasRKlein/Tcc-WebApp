@@ -11,7 +11,7 @@
 
 ```
 # Site settings
-title: Vinícius de Andrade - Professor and Full-stack Developer
+title: Lucas Klein -- Full-stack Developer
 description: Projeto do Tcc Feito em .Net, Angular e MAUI
 
 # User settings
