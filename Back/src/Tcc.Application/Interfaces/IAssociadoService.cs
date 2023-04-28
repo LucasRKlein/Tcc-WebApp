@@ -7,12 +7,12 @@ namespace Tcc.Application.Interfaces
     public interface IAssociadoService
     {
         Task<AssociadoDto> AddAssociados(int userId, AssociadoDto model);
-        Task<AssociadoDto> UpdateAssociado(int userId, int eventoId, AssociadoDto model);
-        Task<bool> DeleteAssociado(int userId, int eventoId);
+        Task<AssociadoDto> UpdateAssociado(int userId, AssociadoDto model);
+        Task<bool> DeleteAssociado(int userId);
 
 
-        Task<PageList<AssociadoDto>> GetAllAssociadosAsync(int userId, PageParams pageParams);
-        Task<AssociadoDto> GetAssociadoByIdAsync(int userId, int eventoId);
+        Task<PageList<AssociadoDto>> GetAllAssociadosAsync(PageParams pageParams);
+        Task<AssociadoDto> GetAssociadoByIdAsync(int userId);
 
 
         //Trocar palestrantes por Vistorias ou Veiculos

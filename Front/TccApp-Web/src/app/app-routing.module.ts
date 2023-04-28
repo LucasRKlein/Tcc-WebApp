@@ -17,6 +17,8 @@ import { ContatosComponent } from './components/contatos/contatos.component';
 
 import { AuthGuard } from './guard/auth.guard';
 import { HomeComponent } from './components/home/home.component';
+import { AssociadoComponent } from './components/associado/associado.component';
+import { AssociadoDetalheComponent } from './components/associado/associado-detalhe/associado-detalhe.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -30,6 +32,13 @@ const routes: Routes = [
         path: 'user/perfil',
         component: PerfilComponent,
       },
+      {
+        path: 'associados', component: AssociadoComponent, children: [
+          { path: 'detalhe/:id', component: AssociadoDetalheComponent },
+          { path: 'detalhe', component: AssociadoDetalheComponent },
+        ]
+      },
+
       { path: 'eventos', redirectTo: 'eventos/lista' },
       {
         path: 'eventos',

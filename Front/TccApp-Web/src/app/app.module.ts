@@ -46,6 +46,9 @@ import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { HomeComponent } from './components/home/home.component';
 import { RedesSociaisComponent } from './components/redesSociais/redesSociais.component';
+import { AssociadoModule } from './components/associado/associado.module';
+import { AssociadoComponent } from './components/associado/associado.component';
+import { AssociadoDetalheComponent } from './components/associado/associado-detalhe/associado-detalhe.component';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -70,6 +73,8 @@ defineLocale('pt-br', ptBrLocale);
     UserComponent,
     LoginComponent,
     RegistrationComponent,
+    AssociadoComponent,
+    AssociadoDetalheComponent
   ],
   imports: [
     BrowserModule,
@@ -93,6 +98,8 @@ defineLocale('pt-br', ptBrLocale);
     }),
     NgxSpinnerModule,
     NgxCurrencyModule,
+
+    // AssociadoModule
   ],
   providers: [
     AccountService,

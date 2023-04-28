@@ -4,7 +4,7 @@ using Tcc.Persistence.Models;
 
 namespace Tcc.Persistence.Interface
 {
-    public interface IAssociadoPersist
+    public interface IAssociadoPersist : IGeralPersist
     {
         Task<PageList<Associado>> GetAllAssociadosAsync(PageParams pageParams);
         Task<Associado> GetAssociadoByUserIdAsync(int userId);

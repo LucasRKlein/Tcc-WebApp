@@ -76,21 +76,19 @@ export class EventoDetalheComponent implements OnInit {
 
       this.eventoService
         .getEventoById(this.eventoId)
-        .subscribe(
-          (evento: Evento) => {
-            this.evento = { ...evento };
-            this.form.patchValue(this.evento);
-            if (this.evento.imagemURL !== '') {
-              this.imagemURL = environment.apiURL + 'resources/images/' + this.evento.imagemURL;
-            }
-            this.carregarLotes();
-          },
+        .subscribe((evento: Evento) => {
+          this.evento = { ...evento };
+          this.form.patchValue(this.evento);
+          if (this.evento.imagemURL !== '') {
+            this.imagemURL = environment.apiURL + 'resources/images/' + this.evento.imagemURL;
+          }
+          this.carregarLotes();
+        },
           (error: any) => {
             this.toastr.error('Erro ao tentar carregar Evento.', 'Erro!');
             console.error(error);
           }
-        )
-        .add(() => this.spinner.hide());
+        ).add(() => this.spinner.hide());
     }
   }
 
@@ -107,8 +105,7 @@ export class EventoDetalheComponent implements OnInit {
           this.toastr.error('Erro ao tentar carregar lotes', 'Erro');
           console.error(error);
         }
-      )
-      .add(() => this.spinner.hide());
+      ).add(() => this.spinner.hide());
   }
 
   ngOnInit(): void {

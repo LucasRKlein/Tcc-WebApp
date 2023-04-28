@@ -9,7 +9,7 @@ using Tcc.Persistence.Contextos;
 namespace Tcc.Persistence.Migrations
 {
     [DbContext(typeof(TccContext))]
-    [Migration("20230428135316_V2")]
+    [Migration("20230428174746_V2")]
     partial class V2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

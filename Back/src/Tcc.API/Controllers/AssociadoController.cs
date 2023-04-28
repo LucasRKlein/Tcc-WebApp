@@ -10,6 +10,7 @@ using Tcc.Domain.Identity;
 using Tcc.Persistence.Models;
 using Tcc.Application.Interfaces;
 using Tcc.API.Extensions;
+using Tcc.Application.Services;
 
 namespace Tcc.API.Controllers
 {
@@ -33,22 +34,25 @@ namespace Tcc.API.Controllers
             _associadoService = associadoService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll([FromQuery] PageParams pageParams)
         {
             try
             {
                 var associados = await _associadoService.GetAllAssociadosAsync(User.GetUserId(), pageParams);
                 if (associados == null) return NoContent();
 
-                Response.AddPagination(associados.CurrentPage, associados.PageSize, associados.TotalCount, associados.TotalPages);
+                Response.AddPagination(associados.CurrentPage,
+                                       associados.PageSize,
+                                       associados.TotalCount,
+                                       associados.TotalPages);
 
                 return Ok(associados);
             }
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar associados. Erro: {ex.Message}");
+                    $"Erro ao tentar recuperar palestrantes. Erro: {ex.Message}");
             }
         }
 

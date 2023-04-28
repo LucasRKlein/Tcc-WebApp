@@ -21,8 +21,7 @@ namespace Tcc.Application.Dtos
         [Range(1, 120000, ErrorMessage = "{0} não pode ser menor que 1 e maior que 120.000")]
         public int QtdPessoas { get; set; }
 
-        [RegularExpression(@".*\.(gif|jpe?g|bmp|png)$",
-                           ErrorMessage = "Não é uma imagem válida. (gif, jpg, jpeg, bmp ou png)")]
+        [RegularExpression(@".*\.(gif|jpe?g|bmp|png)$", ErrorMessage = "Não é uma imagem válida. (gif, jpg, jpeg, bmp ou png)")]
         public string ImagemURL { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
