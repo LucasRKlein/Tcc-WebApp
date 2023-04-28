@@ -33,7 +33,7 @@ namespace Tcc.Persistence
                          .Where(p => (p.MiniCurriculo.ToLower().Contains(pageParams.Term.ToLower()) ||
                                       p.User.PrimeiroNome.ToLower().Contains(pageParams.Term.ToLower()) ||
                                       p.User.UltimoNome.ToLower().Contains(pageParams.Term.ToLower())) &&
-                                      p.User.Funcao == Domain.Enum.Funcao.Palestrante)
+                                      p.User.Funcao == Domain.Enum.FuncaoType.Palestrante)
                          .OrderBy(p => p.Id);
 
             return await PageList<Palestrante>.CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);

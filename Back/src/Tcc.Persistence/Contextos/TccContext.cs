@@ -17,6 +17,7 @@ namespace Tcc.Persistence.Contextos
         public DbSet<Palestrante> Palestrantes { get; set; }
         public DbSet<PalestranteEvento> PalestrantesEventos { get; set; }
         public DbSet<RedeSocial> RedesSociais { get; set; }
+        public DbSet<Associado> Associados { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,6 +51,9 @@ namespace Tcc.Persistence.Contextos
                 .HasMany(e => e.RedesSociais)
                 .WithOne(rs => rs.Palestrante)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.ApplyConfiguration(new AssociadoMap());
         }
     }
 }

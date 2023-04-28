@@ -7,9 +7,9 @@ using Tcc.Persistence.Models;
 
 namespace Tcc.API.Helpers
 {
-    public class ProEventosProfile : Profile
+    public class TccProfile : Profile
     {
-        public ProEventosProfile()
+        public TccProfile()
         {
             CreateMap<Evento, EventoDto>().ReverseMap();
             CreateMap<Lote, LoteDto>().ReverseMap();

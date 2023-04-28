@@ -1,6 +1,6 @@
 namespace Tcc.Domain.Enum
 {
-    public enum Titulo
+    public enum TituloType
     {
         NaoInformado,
         Tecnologo,
