@@ -15,15 +15,34 @@ import { debounceTime } from 'rxjs/operators';
   templateUrl: './associado.component.html'
 })
 export class AssociadoComponent implements OnInit {
-
   modalRef: BsModalRef;
+
   public associados: Associado[] = [];
   public associadoId = 0;
   public pagination = {} as Pagination;
+  public exibirImagem = true;
 
   public larguraImagem = 150;
   public margemImagem = 2;
-  public exibirImagem = true;
+
+
+  constructor(
+    private associadoService: AssociadoService,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
+    private router: Router
+  ) { }
+
+  public ngOnInit(): void {
+    this.pagination = {
+      currentPage: 1,
+      itemsPerPage: 3,
+      totalItems: 1,
+    } as Pagination;
+
+    this.carregarAssociados();
+  }
 
   termoBuscaChanged: Subject<string> = new Subject<string>();
 
@@ -55,32 +74,15 @@ export class AssociadoComponent implements OnInit {
     this.termoBuscaChanged.next(evt.value);
   }
 
-  constructor(
-    private associadoService: AssociadoService,
-    private modalService: BsModalService,
-    private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
-    private router: Router
-  ) {}
-
-  public ngOnInit(): void {
-    this.pagination = {
-      currentPage: 1,
-      itemsPerPage: 3,
-      totalItems: 1, 
-    } as Pagination;
-
-    this.carregarAssociados();
-  }
-
   public alterarImagem(): void {
     this.exibirImagem = !this.exibirImagem;
   }
 
-  public mostraImagem(imagemURL: string): string {
-    return imagemURL !== ''
-      ? `${environment.apiURL}resources/images/${imagemURL}`
-      : 'assets/img/semImagem.jpeg';
+  public getImagemURL(imagemName: string): string {
+    if (imagemName)
+      return environment.apiURL + `resources/perfil/${imagemName}`;
+    else
+      return './assets/img/perfil.png';
   }
 
   public carregarAssociados(): void {
@@ -95,7 +97,7 @@ export class AssociadoComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
-          this.toastr.error('Erro ao Carregar os Associados', 'Erro!');
+          this.toastr.error('Erro ao Carregar', 'Erro!');
         }
       )
       .add(() => this.spinner.hide());
@@ -105,11 +107,6 @@ export class AssociadoComponent implements OnInit {
     event.stopPropagation();
     this.associadoId = associadoId;
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
-  }
-
-  public pageChanged(event): void {
-    this.pagination.currentPage = event.page;
-    this.carregarAssociados();
   }
 
   confirm(): void {

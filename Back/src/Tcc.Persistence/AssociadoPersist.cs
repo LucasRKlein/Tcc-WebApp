@@ -22,24 +22,20 @@ namespace Tcc.Persistence
         public async Task<PageList<Associado>> GetAllAssociadosAsync(PageParams pageParams)
         {
             IQueryable<Associado> query = _context.Associados
-                .Include(p => p.User);            
+                .Include(x => x.Veiculos);
 
-            query = query.AsNoTracking()
-                         .Where(p => (p.User.PrimeiroNome.ToLower().Contains(pageParams.Term.ToLower()) ||
-                                      p.User.UltimoNome.ToLower().Contains(pageParams.Term.ToLower())) &&
-                                      p.User.Funcao == Domain.Enum.FuncaoType.Associado)
-                         .OrderBy(p => p.Id);
+            query = query.AsNoTracking().OrderBy(p => p.Nome);
 
             return await PageList<Associado>.CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
 
-        public async Task<Associado> GetAssociadoByUserIdAsync(int userId)
+        public async Task<Associado> GetAssociadoByIdAsync(int associadoId)
         {
             IQueryable<Associado> query = _context.Associados
-                .Include(p => p.User);
+                .Include(x => x.Veiculos);
 
-            query = query.AsNoTracking().OrderBy(p => p.Id)
-                         .Where(p => p.UserId == userId);
+            query = query.AsNoTracking().OrderBy(e => e.Id)
+                         .Where(e => e.Id == associadoId);
 
             return await query.FirstOrDefaultAsync();
         }

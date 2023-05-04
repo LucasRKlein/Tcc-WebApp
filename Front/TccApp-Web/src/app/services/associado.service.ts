@@ -10,12 +10,13 @@ import { Associado } from '@app/models/Associado';
   providedIn: 'root',
 })
 export class AssociadoService {
-  baseURL = environment.apiURL + 'api/associados';
+  baseURL = environment.apiURL + 'api/associado';
 
   constructor(private http: HttpClient) { }
 
   public getAssociados(page?: number, itemsPerPage?: number, term?: string): Observable<PaginatedResult<Associado[]>> {
     const paginatedResult: PaginatedResult<Associado[]> = new PaginatedResult<Associado[]>();
+
     let params = new HttpParams();
 
     if (page != null && itemsPerPage != null) {
@@ -25,44 +26,39 @@ export class AssociadoService {
 
     if (term != null && term != '') params = params.append('term', term);
 
-    return this.http
-      .get<Associado[]>(this.baseURL + '/all', { observe: 'response', params })
-      .pipe(take(1), map((response) => {
-        paginatedResult.result = response.body;
-        if (response.headers.has('Pagination')) {
-          paginatedResult.pagination = JSON.parse(
-            response.headers.get('Pagination')
-          );
-        }
-        return paginatedResult;
-      })
+    return this.http.get<Associado[]>(this.baseURL + '/all', { observe: 'response', params })
+      .pipe(
+        take(1),
+        map((response) => {
+          paginatedResult.result = response.body;
+          if (response.headers.has('Pagination')) {
+            paginatedResult.pagination = JSON.parse(
+              response.headers.get('Pagination')
+            );
+          }
+          return paginatedResult;
+        })
       );
   }
-
-  public getAssociado(): Observable<Associado> {
-    return this.http
-      .get<Associado>(`${this.baseURL}`)
-      .pipe(take(1));
-  }
-
+  
   public getAssociadoById(id: number): Observable<Associado> {
     return this.http
       .get<Associado>(`${this.baseURL}/${id}`)
       .pipe(take(1));
   }
 
-  public post(): Observable<Associado> {
+  public post(associado: Associado): Observable<Associado> {
     return this.http
-      .post<Associado>(this.baseURL, {} as Associado)
+      .post<Associado>(this.baseURL, associado)
       .pipe(take(1));
   }
 
   public put(associado: Associado): Observable<Associado> {
     return this.http
-      .put<Associado>(`${this.baseURL}`, associado)
+      .put<Associado>(`${this.baseURL}/${associado.id}`, associado)
       .pipe(take(1));
   }
-  
+
   public deleteAssociado(id: number): Observable<any> {
     return this.http
       .delete(`${this.baseURL}/${id}`)

@@ -13,11 +13,9 @@ namespace Tcc.Domain
     public class Associado
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
-        public string ImagemURL { get; set; }
 
         #region Dados de pessoa
+        public string ImagemURL { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }
         public SexoType Sexo { get; set; }
@@ -35,5 +33,7 @@ namespace Tcc.Domain
         public string EstadoNome { get; set; }
         public string CidadeNome { get; set; }
         #endregion
+
+        public IEnumerable<Veiculo> Veiculos { get; set; }
     }
 }

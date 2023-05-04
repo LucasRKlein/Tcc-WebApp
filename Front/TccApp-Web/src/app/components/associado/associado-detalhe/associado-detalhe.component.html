@@ -1,229 +1,234 @@
-<!-- <div class="row">
-  <div [ngClass]="{'col-md-8 pr-0': modoEditar, 'col-md-12': !modoEditar}">
-    <div class="card rounded shadow-sm">
-      <form [formGroup]="form">
-        <div class="p-3">
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label>Tema</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.tema)" formControlName="tema"
-                placeholder="Insira o Tema" [(ngModel)]="associado.tema">
-              <div *ngIf="f.tema.errors?.required" class="invalid-feedback">
-                Tema é obrigatório.
+<app-titulo [titulo]="'Detalhes Associado'" [iconClass]="'fa fa-address-card'"></app-titulo>
+
+<div [ngClass]="{'col-md-12 pr-0': modoEditar, 'col-md-12': !modoEditar}">
+  <div class="card rounded shadow-sm">
+    <tabset>
+      <tab class="border border-top-0 p-3">
+        <ng-template tabHeading>
+          <i class="fa fa-address-card mr-2"></i><span>Associado</span>
+        </ng-template>
+        <form [formGroup]="form">
+
+          <div class="p-3">
+            <div class="form-row">
+              <div class="form-group col-md-5">
+                <label>Nome</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.nome)" formControlName="nome"
+                  placeholder="nome" [(ngModel)]="associado.nome">
+                <div *ngIf="f.nome.errors?.required && f.nome.touched" class="invalid-feedback">
+                  Nome é obrigatório.
+                </div>
+                <div *ngIf="f.nome.errors?.nome && f.nome.touched" class="invalid-feedback">
+                  Deve ser um endereço de Nome válido
+                </div>
               </div>
-              <div *ngIf="f.tema.errors?.minlength" class="invalid-feedback">
-                Tema deve ter no mínimo 4 caracteres.
+              <div class="form-group col-md-2">
+                <label>Cpf</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.cpf)" formControlName="cpf"
+                  placeholder="cpf" [(ngModel)]="associado.cpf">
+                <div *ngIf="f.cpf.errors?.required && f.cpf.touched" class="invalid-feedback">
+                  Cpf é obrigatório.
+                </div>
+                <div *ngIf="f.cpf.errors?.cpf && f.cpf.touched" class="invalid-feedback">
+                  Deve ser um endereço de Cpf válido
+                </div>
               </div>
-              <div *ngIf="f.tema.errors?.maxlength" class="invalid-feedback">
-                Tema deve ter no máximo 50 caracteres.
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label>Local</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.local)" formControlName="local"
-                placeholder="" [(ngModel)]="associado.local">
-              <div *ngIf="f.local.errors?.required && f.local.touched" class="invalid-feedback">
-                Local é obrigatório.
-              </div>
-            </div>
-            <div class="form-group col-md-4">
-              <label>Data e Hora</label>
-              <input type="datetime" class="form-control" [ngClass]="cssValidator(f.dataAssociado)"
-                value="{{associado.dataAssociado | DateFormatPipe}}" bsDatepicker [bsConfig]="bsConfig"
-                formControlName="dataAssociado" placeholder="" [(ngModel)]="associado.dataAssociado">
-              <div *ngIf="f.dataAssociado.errors?.required && f.dataAssociado.touched" class="invalid-feedback">
-                Data e Hora é obrigatório.
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-2">
-              <label>Qtd Pessoas</label>
-              <input type="number" class="form-control" [ngClass]="cssValidator(f.qtdPessoas)"
-                formControlName="qtdPessoas" placeholder="" [(ngModel)]="associado.qtdPessoas">
-              <div *ngIf="f.qtdPessoas.errors?.required && f.qtdPessoas.touched" class="invalid-feedback">
-                Qtd Pessoas é obrigatório.
-              </div>
-              <div *ngIf="f.qtdPessoas.errors?.max && f.qtdPessoas.touched" class="invalid-feedback">
-                Qtd Pessoas deve ser menor que 120000.
+              <div class="form-group col-md-3">
+                <label>Sexo</label>
+                <select formControlName="sexo" class="form-control"
+                  [ngClass]="{ 'is-invalid': f.sexo.errors && f.sexo.touched }">
+                  <option value="NaoInformado">Não Informado</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                </select>
               </div>
             </div>
-            <div class="form-group col-md-4">
-              <label>Telefone</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.telefone)" formControlName="telefone"
-                placeholder="(000) 90000-0000" [(ngModel)]="associado.telefone">
-              <div *ngIf="f.telefone.errors?.required && f.telefone.touched" class="invalid-feedback">
-                Telefone é obrigatório.
+            <div class="form-row">
+              <div class="form-group col-md-2">
+                <label>Data Nascimento</label>
+                <input type="datetime" class="form-control" [ngClass]="cssValidator(f.dataNascimento)"
+                  value="{{associado.dataNascimento | DateFormatPipe}}" bsDatepicker [bsConfig]="bsConfig"
+                  formControlName="dataNascimento" placeholder="" [(ngModel)]="associado.dataNascimento">
+                <div *ngIf="f.dataNascimento.errors?.required && f.dataNascimento.touched" class="invalid-feedback">
+                  Data e Hora é obrigatório.
+                </div>
               </div>
-            </div>
-            <div class="form-group col-md-6">
-              <label>e-mail</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.email)" formControlName="email"
-                placeholder="e-mail" [(ngModel)]="associado.email">
-              <div *ngIf="f.email.errors?.required && f.email.touched" class="invalid-feedback">
-                e-mail é obrigatório.
+              <div class="form-group col-md-4">
+                <label>Celular</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.celular)" formControlName="celular"
+                  placeholder="(000) 90000-0000" [(ngModel)]="associado.celular">
+                <div *ngIf="f.celular.errors?.required && f.celular.touched" class="invalid-feedback">
+                  Celular é obrigatório.
+                </div>
               </div>
-              <div *ngIf="f.email.errors?.email && f.email.touched" class="invalid-feedback">
-                Deve ser um endereço de e-mail válido
+              <div class="form-group col-md-3">
+                <label>E-mail</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.email)" formControlName="email"
+                  placeholder="e-mail" [(ngModel)]="associado.email">
+                <div *ngIf="f.email.errors?.required && f.email.touched" class="invalid-feedback">
+                  e-mail é obrigatório.
+                </div>
+                <div *ngIf="f.email.errors?.email && f.email.touched" class="invalid-feedback">
+                  Deve ser um endereço de e-mail válido
+                </div>
               </div>
             </div>
 
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label>Rua Avenida</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.ruaAvenida)"
+                  formControlName="ruaAvenida" placeholder="ruaAvenida" [(ngModel)]="associado.ruaAvenida">
+                <div *ngIf="f.ruaAvenida.errors?.required && f.ruaAvenida.touched" class="invalid-feedback">
+                  ruaAvenida é obrigatório.
+                </div>
+                <div *ngIf="f.ruaAvenida.errors?.ruaAvenida && f.ruaAvenida.touched" class="invalid-feedback">
+                  Deve ser um endereço de ruaAvenida válido
+                </div>
+              </div>
+              <div class="form-group col-md-2">
+                <label>Número</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.numero)" formControlName="numero"
+                  placeholder="numero" [(ngModel)]="associado.numero">
+                <div *ngIf="f.numero.errors?.required && f.numero.touched" class="invalid-feedback">
+                  numero é obrigatório.
+                </div>
+                <div *ngIf="f.numero.errors?.numero && f.numero.touched" class="invalid-feedback">
+                  Deve ser um endereço de numero válido
+                </div>
+              </div>
+              <div class="form-group col-md-2">
+                <label>Complemento</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.complemento)"
+                  formControlName="complemento" placeholder="complemento" [(ngModel)]="associado.complemento">
+                <div *ngIf="f.complemento.errors?.required && f.complemento.touched" class="invalid-feedback">
+                  complemento é obrigatório.
+                </div>
+                <div *ngIf="f.complemento.errors?.complemento && f.complemento.touched" class="invalid-feedback">
+                  Deve ser um endereço de complemento válido
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-2">
+                <label>Bairro</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.bairro)" formControlName="bairro"
+                  placeholder="bairro" [(ngModel)]="associado.bairro">
+                <div *ngIf="f.bairro.errors?.required && f.bairro.touched" class="invalid-feedback">
+                  bairro é obrigatório.
+                </div>
+                <div *ngIf="f.bairro.errors?.bairro && f.bairro.touched" class="invalid-feedback">
+                  Deve ser um endereço de bairro válido
+                </div>
+              </div>
+              <div class="form-group col-md-2">
+                <label>Estado</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.cidadeNome)"
+                  formControlName="estadoNome" placeholder="estadoNome" [(ngModel)]="associado.estadoNome">
+                <div *ngIf="f.estadoNome.errors?.required && f.estadoNome.touched" class="invalid-feedback">
+                  estadoNome é obrigatório.
+                </div>
+                <div *ngIf="f.estadoNome.errors?.estadoNome && f.estadoNome.touched" class="invalid-feedback">
+                  Deve ser um endereço de estadoNome válido
+                </div>
+              </div>
+              <div class="form-group col-md-2">
+                <label>Cidade</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.cidadeNome)"
+                  formControlName="cidadeNome" placeholder="cidadeNome" [(ngModel)]="associado.cidadeNome">
+                <div *ngIf="f.cidadeNome.errors?.required && f.cidadeNome.touched" class="invalid-feedback">
+                  cidadeNome é obrigatório.
+                </div>
+                <div *ngIf="f.cidadeNome.errors?.cidadeNome && f.cidadeNome.touched" class="invalid-feedback">
+                  Deve ser um endereço de cidadeNome válido
+                </div>
+              </div>
+            </div>
           </div>
+          <div class="card-footer">
+            <div class="d-flex">
+              <button class="btn btn-outline-secondary mr-auto border" (click)="cancelarAlteracao()">
+                Cancelar Alteração
+              </button>
+              <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarAssociado()">
+                Salvar Associado
+              </button>
+            </div>
+          </div>
+        </form>
+      </tab>
+
+      <tab class="border border-top-0 p-3">
+        <ng-template tabHeading>
+          <i class="fa fa-address-card mr-2"></i><span>Veiculo</span>
+        </ng-template>
+        <div class="p-3">
+          <div class="d-flex border-bottom">
+            <h2 class="mr-auto">Veiculos do Associado</h2>
+            <h2><i class="fa-solid fa-car"></i></h2>
+          </div>
+          <div class="form-row p-1">
+            <div [formGroup]="form" class="col">
+              <div formArrayName="veiculos" *ngFor="let veiculo of veiculos.controls; let i=index">
+                <fieldset [formGroupName]="i" class="form-group">
+                  <legend class="d-flex justify-content-between capitalize">
+                    {{ (veiculos.get(i+'.marcaModelo').value) }}
+                    <button (click)="removerVeiculo(template, i)" class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
+                      tooltip="Excluir Veiculo" [adaptivePosition]="false" [delay]="500" placement="left">
+                      <i class="fa fa-window-close my-1"></i>
+                      <b class="ml-1 d-none d-sm-block">Excluir</b>
+                    </button>
+                  </legend>
+                  <div class="row">
+                    <div class="form-group col-md-4">
+                      <label>Placa</label>
+                      <input [ngClass]="cssValidator(veiculos.get(i+'.placa'))" type="text" class="form-control"
+                        formControlName="placa" placeholder="Placa">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label>Marca Modelo</label>
+                      <input [ngClass]="cssValidator(veiculos.get(i+'.marcaModelo'))" type="text" class="form-control"
+                        formControlName="marcaModelo" placeholder="Marca Modelo">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label>Ano Modelo</label>
+                      <input [ngClass]="cssValidator(veiculos.get(i+'.anoModelo'))" type="text" class="form-control"
+                        mask="9999" max="2024" formControlName="anoModelo" placeholder="Ano Modelo">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label>Valor da Fipe (R$)</label>
+                      <input [ngClass]="cssValidator(veiculos.get(i+'.valorFipe'))" type="text" class="form-control"
+                        formControlName="valorFipe" placeholder="Valor da Fipe (R$)">
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+          <button (click)="adicionarVeiculo()" class="d-flex btn btn-outline-primary">
+            <i class="fa fa-plus-circle my-1"></i>
+            <b class="ml-1">Veiculo</b>
+          </button>
         </div>
         <div class="card-footer">
           <div class="d-flex">
-            <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()">
+            <button class="btn btn-outline-secondary mr-auto border">
               Cancelar Alteração
             </button>
-            <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarAssociado()">
-              Salvar Associado
+            <button [disabled]="!form.controls.veiculos.valid" (click)="salvarVeiculos()" class="btn btn-success">
+              Salvar Veiculos
             </button>
           </div>
         </div>
-      </form>
-    </div>
-    <div class="card rounded shadow-sm mt-3" *ngIf="modoEditar">
-      <div class="p-3">
-        <div class="d-flex border-bottom">
-          <h2 class="mr-auto">
-            Lotes do Associado
-          </h2>
-          <h2>
-            <i class="fas fa-money-bill-wave"></i>
-          </h2>
-        </div>
-        <p>Clique em Lote para adicionar e preencher novos Lotes</p>
-        <div class="form-row p-1">
-          <div [formGroup]="form" class="col">
-            <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i=index">
-              <fieldset [formGroupName]="i" class="form-group">
-                <legend class="d-flex justify-content-between capitalize">
-                  {{ retornaTituloLote(lotes.get(i+'.nome').value) }}
-                  <button (click)="removerLote(template, i)" class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
-                    tooltip="Excluir Lote" [adaptivePosition]="false" [delay]="500" placement="left">
-                    <i class="fa fa-window-close my-1"></i>
-                    <b class="ml-1 d-none d-sm-block">Excluir</b>
-                  </button>
-                </legend>
-                <div class="row">
-                  <div class="form-group col-md-4">
-                    <label>Nome</label>
-                    <input [ngClass]="cssValidator(lotes.get(i+'.nome'))" type="text" class="form-control"
-                      formControlName="nome" placeholder="Lote">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label>Quantidade</label>
-                    <input type="text" class="form-control" [ngClass]="cssValidator(lotes.get(i+'.quantidade'))"
-                      formControlName="quantidade" placeholder="000">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label>Preço</label>
-                    <input type="text" currencyMask
-                      [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left' }" class="form-control"
-                      [ngClass]="cssValidator(lotes.get(i+'.preco'))" formControlName="preco" placeholder="R$ 0,00">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label>Data Início</label>
-                    <input type="datetime" class="form-control" bsDatepicker
-                      value="{{lotes.get(i+'.dataInicio').value | date:'dd/MM/yyyy'}}" placeholder="01/01/2019"
-                      (bsValueChange)="mudarValorData($event, i, 'dataInicio')">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label>Data Fim</label>
-                    <input type="datetime" class="form-control" bsDatepicker
-                      value="{{lotes.get(i+'.dataFim').value | date:'dd/MM/yyyy'}}" placeholder="01/01/2019"
-                      (bsValueChange)="mudarValorData($event, i, 'dataFim')">
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-        <button (click)="adicionarLote()" class="d-flex btn btn-outline-primary">
-          <i class="fa fa-plus-circle my-1"></i>
-          <b class="ml-1">Lote</b>
-        </button>
-      </div>
-      <div class="card-footer">
-        <div class="d-flex">
-          <button class="btn btn-outline-secondary mr-auto border">
-            Cancelar Alteração
-          </button>
-          <button [disabled]="!form.controls.lotes.valid" (click)="salvarLotes()" class="btn btn-success">
-            Salvar Lotes
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card rounded shadow-sm mt-3" *ngIf="modoEditar">
-      <div class="p-3">
-        <div class="d-flex border-bottom">
-          <h2 class="mr-auto">
-            Redes Sociais do Associado
-          </h2>
-          <h2>
-            <i class="fas fa-share-square"></i>
-          </h2>
-        </div>
-        <app-redesSociais [associadoId]="associadoId"></app-redesSociais>
-      </div>
-    </div>
-
-
-  </div>
-  <div class="col-md-4" *ngIf="modoEditar">
-    <div [formGroup]="form" class="card-associado-view shadow-sm">
-      <div class="form-row">
-        <div class="form-group m-0">
-          <input type="file" #file (change)="onFileChange($event)" class="form-control is-invalid" placeholder=""
-            style="display: none">
-        </div>
-      </div>
-      <div class="card profile-card-2">
-        <div class="card-img-block">
-          <img class="image" [src]="imagemURL" class="img-fluid" (click)="file.click()" alt="Card image cap"
-            tooltip="Uplaod de Nova Imagem" [adaptivePosition]="false" placement="bottom" />
-        </div>
-        <div class="card-body pt-3">
-          <h4>{{associado.tema}}</h4>
-          <p class="card-text">
-            <b>Local:</b> {{associado.local}}
-            <br>
-            <b>Data:</b> {{associado.dataAssociado | DateFormatPipe}}
-          </p>
-          <hr>
-          <p class="card-text">
-            <b>Contatos</b><br>
-            <small class="text-muted">Telefone: {{associado.telefone}}</small>
-            <br>
-            <small class="text-muted">e-mail: {{associado.email}}</small>
-          </p>
-          <p class="card-text">
-            Capacidade:
-            <small class="text-muted">{{associado.qtdPessoas}}</small>
-          </p>
-          <div class="row">
-            <div class="icon-block col-md-8 iconesSociais">
-              <a href="">
-                <i class=""></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      </tab>
+    </tabset>
   </div>
 </div>
 
-<br>
-
 <ng-template #template>
   <div class="modal-body text-center">
-    <p>Tem certeza que quer deletar o lote {{this.loteAtual.nome}}?</p>
-    <button type="button" class="btn btn-default" (click)="confirmDeleteLote()">Sim</button>
-    <button type="button" class="btn btn-primary" (click)="declineDeleteLote()">Não</button>
+    <p>Tem certeza que quer deletar o veiculo {{this.veiculoAtual.marcaModelo}}?</p>
+    <button type="button" class="btn btn-default" (click)="confirmDeleteVeiculo()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="declineDeleteVeiculo()">Não</button>
   </div>
-</ng-template> -->
+</ng-template>

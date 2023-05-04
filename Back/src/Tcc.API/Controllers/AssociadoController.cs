@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 using Tcc.Api.Helpers;
+using Tcc.API.Extensions;
 using Tcc.Application.Dtos;
 using Tcc.Application.Interface;
-using Tcc.Domain.Identity;
-using Tcc.Persistence.Models;
 using Tcc.Application.Interfaces;
-using Tcc.API.Extensions;
 using Tcc.Application.Services;
+using Tcc.Persistence.Models;
 
 namespace Tcc.API.Controllers
 {
@@ -25,13 +24,11 @@ namespace Tcc.API.Controllers
 
         private readonly string _destino = "Images";
 
-        public AssociadoController(IAssociadoService associadoService,
-                                 IUtil util,
-                                 IAccountService accountService)
+        public AssociadoController(IAssociadoService associadoService, IUtil util, IAccountService accountService)
         {
             _util = util;
-            _accountService = accountService;
             _associadoService = associadoService;
+            _accountService = accountService;
         }
 
         [HttpGet("all")]
@@ -39,7 +36,7 @@ namespace Tcc.API.Controllers
         {
             try
             {
-                var associados = await _associadoService.GetAllAssociadosAsync(User.GetUserId(), pageParams);
+                var associados = await _associadoService.GetAllAssociadosAsync(pageParams);
                 if (associados == null) return NoContent();
 
                 Response.AddPagination(associados.CurrentPage,
@@ -52,7 +49,7 @@ namespace Tcc.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar palestrantes. Erro: {ex.Message}");
+                    $"Erro ao tentar recuperar associados. Erro: {ex.Message}");
             }
         }
 
@@ -61,7 +58,7 @@ namespace Tcc.API.Controllers
         {
             try
             {
-                var associado = await _associadoService.GetAssociadoByIdAsync(User.GetUserId(), id);
+                var associado = await _associadoService.GetAssociadoByIdAsync(id);
                 if (associado == null) return NoContent();
 
                 return Ok(associado);
@@ -69,32 +66,7 @@ namespace Tcc.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar associados. Erro: {ex.Message}");
-            }
-        }
-
-        [HttpPost("upload-image/{associadoId}")]
-        public async Task<IActionResult> UploadImage(int associadoId)
-        {
-            try
-            {
-                var associado = await _associadoService.GetAssociadoByIdAsync(User.GetUserId(), associadoId);
-                if (associado == null) return NoContent();
-
-                var file = Request.Form.Files[0];
-                if (file.Length > 0)
-                {
-                    _util.DeleteImage(associado.ImagemURL, _destino);
-                    associado.ImagemURL = await _util.SaveImage(file, _destino);
-                }
-                var AssociadoRetorno = await _associadoService.UpdateAssociado(User.GetUserId(), associadoId, associado);
-
-                return Ok(AssociadoRetorno);
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar realizar upload de foto do associado. Erro: {ex.Message}");
+                    $"Erro ao tentar recuperar associado. Erro: {ex.Message}");
             }
         }
 
@@ -103,7 +75,7 @@ namespace Tcc.API.Controllers
         {
             try
             {
-                var associado = await _associadoService.AddAssociados(User.GetUserId(), model);
+                var associado = await _associadoService.CreateAssociado(model);
                 if (associado == null) return NoContent();
 
                 return Ok(associado);
@@ -120,7 +92,7 @@ namespace Tcc.API.Controllers
         {
             try
             {
-                var associado = await _associadoService.UpdateAssociado(User.GetUserId(), id, model);
+                var associado = await _associadoService.UpdateAssociado(id, model);
                 if (associado == null) return NoContent();
 
                 return Ok(associado);
@@ -137,10 +109,10 @@ namespace Tcc.API.Controllers
         {
             try
             {
-                var associado = await _associadoService.GetAssociadoByIdAsync(User.GetUserId(), id);
+                var associado = await _associadoService.GetAssociadoByIdAsync(id);
                 if (associado == null) return NoContent();
 
-                if (await _associadoService.DeleteAssociado(User.GetUserId(), id))
+                if (await _associadoService.DeleteAssociado(id))
                 {
                     _util.DeleteImage(associado.ImagemURL, _destino);
                     return Ok(new { message = "Deletado" });

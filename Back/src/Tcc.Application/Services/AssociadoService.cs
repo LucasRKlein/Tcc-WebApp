@@ -24,20 +24,20 @@ namespace Tcc.Application.Services
             _associadoPersist = associadoPersist;
             _mapper = mapper;
         }
-        public async Task<AssociadoDto> AddAssociados(int userId, AssociadoDto model)
+
+        public async Task<AssociadoDto> CreateAssociado(AssociadoDto model)
         {
             try
             {
-                var Associado = _mapper.Map<Associado>(model);
-                Associado.UserId = userId;
+                var associado = _mapper.Map<Associado>(model);
 
-                _associadoPersist.Add<Associado>(Associado);
+                _geralPersist.Add<Associado>(associado);
 
-                if (await _associadoPersist.SaveChangesAsync())
+                if (await _geralPersist.SaveChangesAsync())
                 {
-                    var AssociadoRetorno = await _associadoPersist.GetAssociadoByUserIdAsync(userId);
+                    var associadoRetorno = await _associadoPersist.GetAssociadoByIdAsync(associado.Id);
 
-                    return _mapper.Map<AssociadoDto>(AssociadoRetorno);
+                    return _mapper.Map<AssociadoDto>(associadoRetorno);
                 }
                 return null;
             }
@@ -47,25 +47,23 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<AssociadoDto> UpdateAssociado(int userId, AssociadoDto model)
+        public async Task<AssociadoDto> UpdateAssociado(int associadoId, AssociadoDto model)
         {
             try
             {
-                var Associado = await _associadoPersist.GetAssociadoByUserIdAsync(userId);
-                if (Associado == null) return null;
+                var associado = await _associadoPersist.GetAssociadoByIdAsync(associadoId);
+                if (associado == null) return null;
+                model.Id = associado.Id;
 
-                model.Id = Associado.Id;
-                model.UserId = userId;
+                _mapper.Map(model, associado);
 
-                _mapper.Map(model, Associado);
+                _geralPersist.Update<Associado>(associado);
 
-                _associadoPersist.Update<Associado>(Associado);
-
-                if (await _associadoPersist.SaveChangesAsync())
+                if (await _geralPersist.SaveChangesAsync())
                 {
-                    var AssociadoRetorno = await _associadoPersist.GetAssociadoByUserIdAsync(userId);
+                    var associadoRetorno = await _associadoPersist.GetAssociadoByIdAsync(associado.Id);
 
-                    return _mapper.Map<AssociadoDto>(AssociadoRetorno);
+                    return _mapper.Map<AssociadoDto>(associadoRetorno);
                 }
                 return null;
             }
@@ -75,12 +73,12 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<bool> DeleteAssociado(int userId)
+        public async Task<bool> DeleteAssociado(int associadoId)
         {
             try
             {
-                var associado = await _associadoPersist.GetAssociadoByUserIdAsync(userId);
-                if (associado == null) throw new Exception("Associado para delete n√£o encontrado.");
+                var associado = await _associadoPersist.GetAssociadoByIdAsync(associadoId);
+                if (associado == null) throw new Exception("Associado para delete n„o encontrado.");
 
                 _geralPersist.Delete<Associado>(associado);
                 return await _geralPersist.SaveChangesAsync();
@@ -113,14 +111,14 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<AssociadoDto> GetAssociadoByUserIdAsync(int userId)
+        public async Task<AssociadoDto> GetAssociadoByIdAsync(int associadoId)
         {
             try
             {
-                var Associado = await _associadoPersist.GetAssociadoByUserIdAsync(userId);
-                if (Associado == null) return null;
+                var associado = await _associadoPersist.GetAssociadoByIdAsync(associadoId);
+                if (associado == null) return null;
 
-                var resultado = _mapper.Map<AssociadoDto>(Associado);
+                var resultado = _mapper.Map<AssociadoDto>(associado);
 
                 return resultado;
             }
@@ -128,11 +126,6 @@ namespace Tcc.Application.Services
             {
                 throw new Exception(ex.Message);
             }
-        }
-
-        public Task<AssociadoDto> GetAssociadoByIdAsync(int userId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

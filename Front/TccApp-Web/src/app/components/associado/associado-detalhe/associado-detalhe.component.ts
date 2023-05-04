@@ -6,20 +6,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-
-import { LoteService } from './../../../services/lote.service';
-import { EventoService } from '@app/services/evento.service';
-import { Evento } from '@app/models/Evento';
-import { Lote } from '@app/models/Lote';
 import { DatePipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { Associado } from '@app/models/Associado';
 import { AssociadoService } from '@app/services/associado.service';
+import { Veiculo } from '@app/models/Veiculo';
+import { VeiculoService } from '@app/services/veiculo.service';
 
 @Component({
   selector: 'app-associado-detalhe',
   templateUrl: './associado-detalhe.component.html',
-  styleUrls: ['./associado-detalhe.component.css'],
+  styleUrls: ['./associado-detalhe.component.scss'],
   providers: [DatePipe],
 })
 export class AssociadoDetalheComponent implements OnInit {
@@ -27,12 +24,17 @@ export class AssociadoDetalheComponent implements OnInit {
   associadoId: number;
   associado = {} as Associado;
   form: FormGroup;
+  veiculoAtual = { id: 0, marcaModelo: '', indice: 0 };
   estadoSalvar = 'post';
   imagemURL = 'assets/img/upload.png';
   file: File;
 
   get modoEditar(): boolean {
     return this.estadoSalvar === 'put';
+  }
+
+  get veiculos(): FormArray {
+    return this.form.get('veiculos') as FormArray;
   }
 
   get f(): any {
@@ -53,6 +55,7 @@ export class AssociadoDetalheComponent implements OnInit {
     private localeService: BsLocaleService,
     private activatedRouter: ActivatedRoute,
     private associadoService: AssociadoService,
+    private veiculoService: VeiculoService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private modalService: BsModalService,
@@ -60,6 +63,11 @@ export class AssociadoDetalheComponent implements OnInit {
     private datePipe: DatePipe
   ) {
     this.localeService.use('pt-br');
+  }
+
+  ngOnInit(): void {
+    this.carregarAssociado();
+    this.validation();
   }
 
   public carregarAssociado(): void {
@@ -70,69 +78,48 @@ export class AssociadoDetalheComponent implements OnInit {
 
       this.estadoSalvar = 'put';
 
-      this.associadoService
-        .getAssociadoById(this.associadoId)
-        .subscribe((associado: Associado) => {
-          this.associado = { ...associado };
-          this.form.patchValue(this.associado);
-          if (this.associado.imagemUrl !== '') {
-            this.imagemURL = environment.apiURL + 'resources/images/' + this.associado.imagemUrl;
-          }
-        },
-          (error: any) => {
-            this.toastr.error('Erro ao tentar carregar Associado.', 'Erro!');
-            console.error(error);
-          }
-        ).add(() => this.spinner.hide());
+      this.associadoService.getAssociadoById(this.associadoId).subscribe((associado: Associado) => {
+        this.associado = { ...associado };
+        this.form.patchValue(this.associado);
+        if (this.associado.imagemUrl !== '') {
+          this.imagemURL = environment.apiURL + 'resources/images/' + this.associado.imagemUrl;
+        }
+        this.carregarVeiculos();
+      },
+        (error: any) => {
+          this.toastr.error('Erro ao tentar carregar Associado.', 'Erro!');
+          console.error(error);
+        }
+      ).add(() => this.spinner.hide());
     }
-  }
-
-  ngOnInit(): void {
-    this.carregarAssociado();
-    this.validation();
-  }
-
-  protected initializeForm(model: Associado) {
-    this.form = this.fb.group({
-      id: [model.id, Validators.required],
-      nome: [model.nome, Validators.maxLength(100)],
-      imagemUrl: [model.imagemUrl],
-      cpf: [model.cpf],
-      sexo: [model.sexo],
-      dataNascimento: [model.dataNascimento],
-      celular: [model.celular],
-      email: [model.email],
-      ruaAvenida: [model.ruaAvenida, Validators.required],      
-      numero: [model.numero, Validators.required],
-      complemento: [model.complemento, Validators.required],
-      bairro: [model.bairro, [Validators.required, Validators.email]],
-      estadoNome: [model.estadoNome, [Validators.required]],
-      cidadeNome: [model.cidadeNome, [Validators.required]],
-    });
   }
 
   public validation(): void {
     this.form = this.fb.group({
-      tema: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(50),
-        ],
-      ],
-      local: ['', Validators.required],
-      dataAssociado: ['', Validators.required],
-      qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
-      telefone: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      imagemURL: [''],
-      lotes: this.fb.array([]),
+      id: ['', Validators.required],
+      nome: ['', Validators.maxLength(100)],
+      imagemUrl: [''],
+      cpf: [''],
+      sexo: [''],
+      dataNascimento: [''],
+      celular: [''],
+      email: ['', Validators.email],
+      ruaAvenida: ['', Validators.required],
+      numero: ['', Validators.required],
+      complemento: ['', Validators.required],
+      bairro: ['', [Validators.required]],
+      estadoNome: ['', [Validators.required]],
+      cidadeNome: ['', [Validators.required]],
+      veiculos: this.fb.array([]),
     });
   }
 
   public resetForm(): void {
     this.form.reset();
+  }
+
+  cancelarAlteracao() {
+    this.router.navigate([`associados`]);
   }
 
   public cssValidator(campoForm: FormControl | AbstractControl): any {
@@ -142,16 +129,12 @@ export class AssociadoDetalheComponent implements OnInit {
   public salvarAssociado(): void {
     this.spinner.show();
     if (this.form.valid) {
-      this.associado =
-        this.estadoSalvar === 'post'
-          ? { ...this.form.value }
-          : { id: this.associado.id, ...this.form.value };
-
-      this.associadoService[this.estadoSalvar](this.associado).subscribe(
-        (associadoRetorno: Associado) => {
-          this.toastr.success('Associado salvo com Sucesso!', 'Sucesso');
-          this.router.navigate([`associados/detalhe/${associadoRetorno.id}`]);
-        },
+      this.associado = this.estadoSalvar === 'post' ? { ...this.form.value } : { id: this.associado.id, ...this.form.value };
+      this.associadoService[this.estadoSalvar](this.associado).subscribe((associadoRetorno: Associado) => {
+        this.toastr.success('Associado salvo com Sucesso!', 'Sucesso');
+        // this.router.navigate([`associados/detalhe/${associadoRetorno.id}`]);
+        this.router.navigate([`associados`]);
+      },
         (error: any) => {
           console.error(error);
           this.spinner.hide();
@@ -185,5 +168,78 @@ export class AssociadoDetalheComponent implements OnInit {
         console.log(error);
       }
     ).add(() => this.spinner.hide());
+  }
+
+  public carregarVeiculos(): void {
+    this.veiculoService.getVeiculosByAssociadoId(this.associadoId).subscribe((veiculosRetorno: Veiculo[]) => {
+      veiculosRetorno.forEach((veiculo) => {
+        this.veiculos.push(this.criarVeiculo(veiculo));
+      });
+    },
+      (error: any) => {
+        this.toastr.error('Erro ao tentar carregar veiculos', 'Erro');
+        console.error(error);
+      }
+    ).add(() => this.spinner.hide());
+  }
+
+  adicionarVeiculo(): void {
+    this.veiculos.push(this.criarVeiculo({ id: 0 } as Veiculo));
+  }
+
+  criarVeiculo(veiculo: Veiculo): FormGroup {
+    return this.fb.group({
+      id: [veiculo.id],
+      placa: [veiculo.placa, Validators.required],
+      marcaModelo: [veiculo.marcaModelo, Validators.required],
+      anoModelo: [veiculo.anoModelo, Validators.required],
+      valorFipe: [veiculo.valorFipe, Validators.required],
+    });
+  }
+
+  public salvarVeiculos(): void {
+    if (this.form.controls.veiculos.valid) {
+      this.spinner.show();
+      this.veiculoService.saveVeiculo(this.associadoId, this.form.value.veiculos).subscribe(() => {
+        this.toastr.success('Veiculos salvos com Sucesso!', 'Sucesso!');
+      },
+        (error: any) => {
+          this.toastr.error('Erro ao tentar salvar veiculos.', 'Erro');
+          console.error(error);
+        }
+      ).add(() => this.spinner.hide());
+    }
+  }
+
+  public removerVeiculo(template: TemplateRef<any>, indice: number): void {
+    this.veiculoAtual.id = this.veiculos.get(indice + '.id').value;
+    this.veiculoAtual.marcaModelo = this.veiculos.get(indice + '.marcaModelo').value;
+    this.veiculoAtual.indice = indice;
+
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+  }
+
+  confirmDeleteVeiculo(): void {
+    this.modalRef.hide();
+    this.spinner.show();
+
+    this.veiculoService
+      .deleteVeiculo(this.associadoId, this.veiculoAtual.id)
+      .subscribe(() => {
+        this.toastr.success('Veiculo deletado com sucesso', 'Sucesso');
+        this.veiculos.removeAt(this.veiculoAtual.indice);
+      },
+        (error: any) => {
+          this.toastr.error(
+            `Erro ao tentar deletar o Veiculo ${this.veiculoAtual.id}`,
+            'Erro'
+          );
+          console.error(error);
+        }
+      ).add(() => this.spinner.hide());
+  }
+
+  declineDeleteVeiculo(): void {
+    this.modalRef.hide();
   }
 }

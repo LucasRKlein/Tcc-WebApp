@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Tcc.Domain.Enum;
 
@@ -7,17 +8,16 @@ namespace Tcc.Application.Dtos
     public class AssociadoDto
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public UserUpdateDto User { get; set; }
 
-        [RegularExpression(@".*\.(gif|jpe?g|bmp|png)$",
-                           ErrorMessage = "Não é uma imagem válida. (gif, jpg, jpeg, bmp ou png)")]
-        public string ImagemURL { get; set; }
 
         #region Dados de pessoa
+
+        [RegularExpression(@".*\.(gif|jpe?g|bmp|png)$", ErrorMessage = "Não é uma imagem válida. (gif, jpg, jpeg, bmp ou png)")]
+        public string ImagemURL { get; set; }
+
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        [StringLength(60, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 5)]
         public string Nome { get; set; }
+
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [MaxLength(18, ErrorMessage = "O campo {0} precisa ter no máximo {1} caracteres")]
@@ -58,18 +58,8 @@ namespace Tcc.Application.Dtos
 
         [StringLength(50, ErrorMessage = "O campo {0} precisa ter no máximo {1} caracteres")]
         public string CidadeNome { get; set; }
-
-          //Pensar em implementar API IBGE
-
-        //public Guid? EstadoId { get; set; }
-        //[ReadOnly(true)]
-        //public string EstadoNome { get; set; }
-        //[ReadOnly(true)]
-        //public string EstadoUF { get; set; }
-        //public Guid? CidadeId { get; set; }
-        //[ReadOnly(true)]
-        //public string CidadeNome { get; set; }
-
         #endregion
+
+        public IEnumerable<VeiculoDto> Veiculos { get; set; }
     }
 }

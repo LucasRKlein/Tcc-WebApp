@@ -15,10 +15,6 @@ export class PerfilComponent implements OnInit {
   public file: File;
   public imagemURL = '';
 
-  public get ehPalestrante(): boolean {
-    return this.usuario.funcao === 'Palestrante';
-  }
-
   constructor(
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,

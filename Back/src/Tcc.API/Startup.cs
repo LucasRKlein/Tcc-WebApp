@@ -17,6 +17,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Tcc.Api.Helpers;
 using Tcc.Application.Interface;
+using Tcc.Application.Interfaces;
 using Tcc.Application.Services;
 using Tcc.Domain.Identity;
 using Tcc.Persistence;
@@ -78,20 +79,16 @@ namespace Tcc.API
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddScoped<IEventoService, EventoService>();
-            services.AddScoped<ILoteService, LoteService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IPalestranteService, PalestranteService>();
-            services.AddScoped<IRedeSocialService, RedeSocialService>();
             services.AddScoped<IUtil, Util>();
+            services.AddScoped<IAssociadoService, AssociadoService>();
+            services.AddScoped<IVeiculoService, VeiculoService>();
 
             services.AddScoped<IGeralPersist, GeralPersist>();
-            services.AddScoped<IEventoPersist, EventoPersist>();
-            services.AddScoped<ILotePersist, LotePersist>();
             services.AddScoped<IUserPersist, UserPersist>();
-            services.AddScoped<IPalestrantePersist, PalestrantePersist>();
-            services.AddScoped<IRedeSocialPersist, RedeSocialPersist>();
+            services.AddScoped<IAssociadoPersist, AssociadoPersist>();
+            services.AddScoped<IVeiculoPersist, VeiculoPersist>();
 
             services.AddCors();
             services.AddSwaggerGen(options =>

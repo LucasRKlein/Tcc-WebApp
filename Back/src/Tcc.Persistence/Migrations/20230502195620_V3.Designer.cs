@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tcc.Persistence.Contextos;
 
 namespace Tcc.Persistence.Migrations
 {
     [DbContext(typeof(TccContext))]
-    partial class TccContextModelSnapshot : ModelSnapshot
+    [Migration("20230502195620_V3")]
+    partial class V3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,6 +155,43 @@ namespace Tcc.Persistence.Migrations
                     b.ToTable("Associado");
                 });
 
+            modelBuilder.Entity("Tcc.Domain.Evento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DataEvento")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImagemURL")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Local")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("QtdPessoas")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Telefone")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tema")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Eventos");
+                });
+
             modelBuilder.Entity("Tcc.Domain.Identity.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -278,32 +317,96 @@ namespace Tcc.Persistence.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Tcc.Domain.Veiculo", b =>
+            modelBuilder.Entity("Tcc.Domain.Lote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AnoModelo")
+                    b.Property<DateTime?>("DataFim")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("AssociadoId")
+                    b.Property<DateTime?>("DataInicio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("EventoId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("MarcaModelo")
+                    b.Property<string>("Nome")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Placa")
+                    b.Property<decimal>("Preco")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ValorFipe")
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventoId");
+
+                    b.ToTable("Lotes");
+                });
+
+            modelBuilder.Entity("Tcc.Domain.Palestrante", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("MiniCurriculo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Palestrantes");
+                });
+
+            modelBuilder.Entity("Tcc.Domain.PalestranteEvento", b =>
+                {
+                    b.Property<int>("EventoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PalestranteId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EventoId", "PalestranteId");
+
+                    b.HasIndex("PalestranteId");
+
+                    b.ToTable("PalestrantesEventos");
+                });
+
+            modelBuilder.Entity("Tcc.Domain.RedeSocial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("EventoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PalestranteId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("URL")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssociadoId");
+                    b.HasIndex("EventoId");
 
-                    b.ToTable("Veiculos");
+                    b.HasIndex("PalestranteId");
+
+                    b.ToTable("RedesSociais");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -342,6 +445,17 @@ namespace Tcc.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tcc.Domain.Evento", b =>
+                {
+                    b.HasOne("Tcc.Domain.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Tcc.Domain.Identity.UserRole", b =>
                 {
                     b.HasOne("Tcc.Domain.Identity.Role", "Role")
@@ -361,20 +475,71 @@ namespace Tcc.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Tcc.Domain.Veiculo", b =>
+            modelBuilder.Entity("Tcc.Domain.Lote", b =>
                 {
-                    b.HasOne("Tcc.Domain.Associado", "Associado")
-                        .WithMany("Veiculos")
-                        .HasForeignKey("AssociadoId")
+                    b.HasOne("Tcc.Domain.Evento", "Evento")
+                        .WithMany("Lotes")
+                        .HasForeignKey("EventoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Associado");
+                    b.Navigation("Evento");
                 });
 
-            modelBuilder.Entity("Tcc.Domain.Associado", b =>
+            modelBuilder.Entity("Tcc.Domain.Palestrante", b =>
                 {
-                    b.Navigation("Veiculos");
+                    b.HasOne("Tcc.Domain.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tcc.Domain.PalestranteEvento", b =>
+                {
+                    b.HasOne("Tcc.Domain.Evento", "Evento")
+                        .WithMany("PalestrantesEventos")
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tcc.Domain.Palestrante", "Palestrante")
+                        .WithMany("PalestrantesEventos")
+                        .HasForeignKey("PalestranteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Evento");
+
+                    b.Navigation("Palestrante");
+                });
+
+            modelBuilder.Entity("Tcc.Domain.RedeSocial", b =>
+                {
+                    b.HasOne("Tcc.Domain.Evento", "Evento")
+                        .WithMany("RedesSociais")
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Tcc.Domain.Palestrante", "Palestrante")
+                        .WithMany("RedesSociais")
+                        .HasForeignKey("PalestranteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Evento");
+
+                    b.Navigation("Palestrante");
+                });
+
+            modelBuilder.Entity("Tcc.Domain.Evento", b =>
+                {
+                    b.Navigation("Lotes");
+
+                    b.Navigation("PalestrantesEventos");
+
+                    b.Navigation("RedesSociais");
                 });
 
             modelBuilder.Entity("Tcc.Domain.Identity.Role", b =>
@@ -385,6 +550,13 @@ namespace Tcc.Persistence.Migrations
             modelBuilder.Entity("Tcc.Domain.Identity.User", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Tcc.Domain.Palestrante", b =>
+                {
+                    b.Navigation("PalestrantesEventos");
+
+                    b.Navigation("RedesSociais");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,13 +1,12 @@
-import { UserUpdate } from '@app/models/identity/UserUpdate';
 import { SexoType } from '@app/util/enums';
+import { Veiculo } from './Veiculo';
 
 export interface Associado {
   id: number;
-  user: UserUpdate;
-  imagemUrl: string;
-
+  
   //#region Dados de pessoa
   nome: string;
+  imagemUrl: string;
   cpf: string;
   sexo: SexoType;
   dataNascimento: Date;
@@ -24,4 +23,6 @@ export interface Associado {
   estadoNome: string;
   cidadeNome: string;
   //#endregion
+
+  veiculos: Veiculo[];
 }

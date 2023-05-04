@@ -1,12 +1,11 @@
 <div class="card rounded shadow-sm p-3">
-
   <div class="d-flex">
-    <div class="flex-fill pr-3">
+    <div class="flex-fill">
       <div class="input-group mb-2">
         <div class="input-group-prepend">
           <div class="input-group-text">Filtro: </div>
         </div>
-        <input type="text" class="form-control" placeholder="Filtrar por Tema e Local"
+        <input type="text" class="form-control" placeholder="Filtrar por Nome"
           (input)="filtrarAssociados($event.target)">
       </div>
     </div>
@@ -17,7 +16,7 @@
       </a>
     </div>
   </div>
-  <!-- <h3>Filtro: {{filtroLista}}</h3> -->
+
   <table class="table table-striped table-hover">
     <thead class="thead-dark">
       <tr>
@@ -29,16 +28,23 @@
         </th>
         <th>#</th>
         <th>Nome</th>
+        <th>E-Mail</th>
+        <th>Estado</th>
+        <th>Cidade</th>
+        <th>Opções</th>
       </tr>
     </thead>
     <tbody *ngIf="associados && associados.length">
       <tr *ngFor="let associado of associados" (click)="detalheAssociado(associado.id)" style="cursor: pointer;">
         <td class="d-none d-md-table-cell">
-          <img [collapse]="!exibirImagem" [isAnimated]="true" [src]="mostraImagem(associado.imagemUrl)"
+          <img [collapse]="!exibirImagem" [isAnimated]="true" [src]="getImagemURL(associado.imagemUrl)"
             [style.width.px]="larguraImagem" [style.margin.px]="margemImagem">
         </td>
         <td>{{associado.id}}</td>
-        <td>{{associado.nome}}</td>        
+        <td>{{associado.nome}}</td>
+        <td>{{associado.email}}</td>        
+        <td>{{associado.cidadeNome}}</td>
+        <td>{{associado.estadoNome}}</td>
         <td>
           <button type="button" class="btn btn-danger btn-lg" tooltip="Excluir"
             (click)="openModal($event, template, associado.id)">
@@ -56,19 +62,23 @@
     </tfoot>
   </table>
 
-  <div class="d-flex justify-content-center">
 
-    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
-      [(ngModel)]="pagination.currentPage" (pageChanged)="pageChanged($event)" pageBtnClass="btn"
-      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
 
-    </pagination>
 
-  </div>
-
+  <!-- <div *ngIf="associados && associados.length" class="row mt-2">
+    <div class="col-md-4 mb-4 d-flex align-items-stretch" *ngFor="let associado of associados">
+      <div class="card">
+        <div class="d-flex align-self-center pt-3">
+          <img [src]="getImagemURL(associado.imagemUrl)" class="rounded-circle" width="120" height="120">
+        </div>
+        <div class="card-body">
+          <div class="h4 text-center mb-3">{{associado.nome}}</div>
+        </div>
+      </div>
+    </div>
+  </div> -->
 </div>
 
-<!-- {{associados | json}} -->
 
 <ng-template #template>
   <div class="modal-body text-center">
