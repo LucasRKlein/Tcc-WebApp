@@ -78,10 +78,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="05-MVVM\Views\Acessorio\AcessorioIndexPage.xaml.cs">
+	    <DependentUpon>AcessorioIndexPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="05-MVVM\Views\Acessorio\AcessorioPage.xaml.cs">
+	    <DependentUpon>AcessorioPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="04-Infraestructure\Controls\FlyoutFooter.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="04-Infraestructure\Controls\FlyoutHeader.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="05-MVVM\Views\Acessorio\AcessorioIndexPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="05-MVVM\Views\Acessorio\AcessorioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="05-MVVM\Views\Associado\AssociadoIndexPage.xaml">

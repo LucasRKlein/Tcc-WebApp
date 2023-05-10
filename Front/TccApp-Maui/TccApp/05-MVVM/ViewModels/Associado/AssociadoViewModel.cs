@@ -1,11 +1,14 @@
-﻿using TccApp.Data;
-using TccApp.Models;  
+﻿using System;
+using TccApp.Data;
+using TccApp.Enum;
+using TccApp.Models;
 
 namespace TccApp.ViewModels
 {
     [QueryProperty(nameof(ParamId), "id")]
     public partial class AssociadoViewModel : BaseItemViewModel<AssociadoModel>
     {
+        #region Propriedades do viewmodel
         [ObservableProperty]
         Guid id;
 
@@ -13,39 +16,152 @@ namespace TccApp.ViewModels
         DateTime dataInclusao;
 
         [ObservableProperty]
-        int codigo;
+        string nome;
 
         [ObservableProperty]
-        string nome;
+        string imagemURL;
+
+        [ObservableProperty]
+        string cpf;
+
+        [ObservableProperty]
+        SexoType sexo;
+        
+        [ObservableProperty]
+        DateTime? dataNascimento;
+        
+        [ObservableProperty]
+        string celular;
+        
+        [ObservableProperty]
+        string email;
+        
+        [ObservableProperty]
+        string ruaAvenida;
+        
+        [ObservableProperty]
+        string numero;
+        
+        [ObservableProperty]
+        string complemento;
+        
+        [ObservableProperty]
+        string bairro;
+        
+        [ObservableProperty]
+        string cep;
+        
+        [ObservableProperty]
+        string estadoNome;
+        
+        [ObservableProperty]
+        string cidadeNome;
+
+        // List<Veiculo> Veiculos;
+
+        StatusCadastroType StatusCadastro;
+        OrigemCadastroType OrigemCadastro;
+        #endregion
+
+        #region Utilizados em controles de tela
+        [ObservableProperty]
+        string sexoSelecionado;
+
+        public List<string> ListaSexo { get; set; }
+        #endregion
 
         public AssociadoViewModel(IRepository<AssociadoModel> repo) : base(repo)
         {
             Title = "Associado";
             //ActiveDelete = true;
+            
+            PrepareView();
         }
 
-        protected override void SetModelFromView()
+        private void PrepareView()
         {
-            Model.Id = Id;
-            Model.DataInclusao = dataInclusao;
+            ListaSexo = new List<string>();
+            PopulateListFromEnum<SexoType>(ListaSexo);
+        }
 
-            Model.Nome = nome;
-            Model.Codigo = codigo;
+        protected override void CreateNewModel()
+        {
+            base.CreateNewModel();
+            Model.StatusCadastro = StatusCadastroType.PreCadastro;
+            Model.OrigemCadastro = OrigemCadastroType.App;
+            Model.Sexo = SexoType.NaoDefinido;
         }
 
         protected override void SetViewFromModel()
         {
             Id = Model.Id;
             DataInclusao = Model.DataInclusao;
-            Codigo = Model.Codigo;
             Nome = Model.Nome;
+
+            ImagemURL = Model.ImagemURL;
+            Cpf = Model.Cpf;
+            Sexo = Model.Sexo;
+            DataNascimento = Model.DataNascimento;
+
+            Celular = Model.Celular;
+            Email = Model.Email;
+            RuaAvenida = Model.RuaAvenida;
+            Numero = Model.Numero;
+            Complemento = Model.Complemento;
+            Bairro = Model.Bairro;
+            Cep = Model.Cep;
+            EstadoNome = Model.EstadoNome;
+            CidadeNome = Model.CidadeNome;
+            
+            SetObjectsViewControls();
         }
 
-        protected override async Task<bool> ValidateModel()
+
+        /// <summary>
+        /// Setar objetos de controle de tela.
+        /// </summary>
+        private void SetObjectsViewControls()
         {
-            if (Model.Nome == string.Empty)
+            SexoSelecionado = Model.Sexo.ToString();
+        }
+
+        protected override void SetModelFromView()
+        {
+            Model.Id = Id;
+            Model.DataInclusao = DataInclusao;
+
+            Model.Nome = Nome;
+            Model.ImagemURL = ImagemURL;
+            Model.Cpf = Cpf;
+            Model.Sexo = (SexoType)System.Enum.Parse(typeof(SexoType), SexoSelecionado);
+
+            Model.DataNascimento = DataNascimento;
+
+            Model.Celular = Celular;
+            Model.Email = Email;
+            Model.RuaAvenida = RuaAvenida;
+            Model.Numero = Numero;
+            Model.Complemento = Complemento;
+            Model.Bairro = Bairro;
+            Model.Cep = Cep;
+            Model.EstadoNome = EstadoNome;
+            Model.CidadeNome = CidadeNome;
+        }        
+
+        protected override bool ValidateToSave()
+        {
+            if (string.IsNullOrEmpty(Model.Nome))
             {
-                await Shell.Current.DisplayAlert("Erro!", "Campo Nome não pode ser nulo.", "OK");
+                ValidateErrors.Add("Campo Nome não pode ser nulo.");
+            }
+
+            if (string.IsNullOrEmpty(Model.Celular))
+            {
+                ValidateErrors.Add("Informe os dados de contato do associado.");
+            }
+
+            if (ValidateErrors.Count > 0)
+            {
                 return false;
             }
 

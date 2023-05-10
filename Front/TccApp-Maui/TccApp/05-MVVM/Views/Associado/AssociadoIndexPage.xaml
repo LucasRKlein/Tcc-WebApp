@@ -7,10 +7,7 @@
              x:DataType="viewmodel:AssociadoIndexViewModel"
              Title="{Binding Title}">
 
-
-    <Grid RowDefinitions="*,Auto"
-          RowSpacing="0">
-
+    <Grid RowDefinitions="*,Auto" RowSpacing="0">
         <RefreshView
             Grid.ColumnSpan="2"
             Command="{Binding GetListaRefreshCommand}"
@@ -30,19 +27,42 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:AssociadoModel">
                             <Grid Padding="10">
-                                <Frame HeightRequest="80" Style="{StaticResource CardView}">
+                                <Frame HeightRequest="150" Style="{StaticResource CardView}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer 
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AssociadoIndexViewModel}}, Path=GoToItemCommand}"
                                             CommandParameter="{Binding .}"/>
                                     </Frame.GestureRecognizers>
-                                    <Grid Padding="0" ColumnDefinitions="10,*">
-                                        <VerticalStackLayout
-                                            Grid.Column="1"
-                                            VerticalOptions="Start"
-                                            Padding="10">
-                                            <Label Style="{StaticResource LargeLabel}" Text="{Binding Codigo}" />
+                                    <Grid Padding="5" ColumnDefinitions=".50*,*">
+                                        <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                            <Label Text="{Binding StatusCadastro}"
+                                                   Style="{StaticResource LargeLabel}"
+                                                   FontAttributes="Bold"
+                                                   IsVisible="{Binding Path=StatusCadastro, Converter={StaticResource enumBooleanConverter}, ConverterParameter=PreCadastro}"
+                                                   BackgroundColor="LightBlue"
+                                                   Padding="10,0,10,0"
+                                                   HorizontalOptions="Start"
+                                                   />
+                                            <Label Text="{Binding StatusCadastro}"
+                                                   Style="{StaticResource LargeLabel}"
+                                                   FontAttributes="Bold"
+                                                   IsVisible="{Binding Path=StatusCadastro, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Aprovado}"
+                                                   BackgroundColor="Lime"
+                                                   Padding="10,0,10,0"
+                                                   HorizontalOptions="Start"
+                                                   />
+                                            <Label Text="Data" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Text="{Binding DataInclusao, StringFormat='{0:dd/MM/yyyy}'}" 
+                                                   Style="{StaticResource LargeLabel}"/>
+                                            <Label Text="Hora" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Text="{Binding DataInclusao, StringFormat='{0:hh:mm}'}" 
+                                                   Style="{StaticResource LargeLabel}"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                            <Label Text="Nome" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
                                             <Label Style="{StaticResource MediumLabel}" Text="{Binding Nome}" />
+                                            <Label Text="Celular" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Style="{StaticResource MediumLabel}" Text="{Binding Celular}" />
                                         </VerticalStackLayout>
                                     </Grid>
                                 </Frame>

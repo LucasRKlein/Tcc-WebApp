@@ -44,7 +44,7 @@ namespace TccApp.Domain.Consts
                 //return Path.Combine(FileSystem.AppDataDirectory, DBFileName);
 
                 //Para teste windows (poder ter acesso ao DB por fora para validação)
-                return Path.Combine(@"C:\source\Estudos\TccApp", DBFileName);
+                return Path.Combine(@"C:\source\Estudos\TCC\Tcc-WebApp\Front\TccApp-Maui", DBFileName);
             }
         }
 

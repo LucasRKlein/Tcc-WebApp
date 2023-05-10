@@ -1,4 +1,5 @@
 ﻿using Tcc.Application.Dtos;
+using Tcc.Domain.Enum;
 
 namespace Tcc.Application
 {
@@ -12,5 +13,15 @@ namespace Tcc.Application
 
         public int AssociadoId { get; set; }
         public AssociadoDto AssociadoDto { get; set; }
+        
+        /// <summary>
+        /// pre cadastro, aprovado
+        /// </summary>
+        public StatusCadastroType StatusCadastro { get; set; }
+
+        /// <summary>
+        /// App, Sistema
+        /// </summary>
+        public OrigemCadastroType OrigemCadastro { get; set; }
     }
 }

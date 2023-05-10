@@ -110,6 +110,8 @@ export class AssociadoDetalheComponent implements OnInit {
       bairro: ['', [Validators.required]],
       estadoNome: ['', [Validators.required]],
       cidadeNome: ['', [Validators.required]],
+      statusCadastro: [''],
+      origemCadastro: [''],
       veiculos: this.fb.array([]),
     });
   }

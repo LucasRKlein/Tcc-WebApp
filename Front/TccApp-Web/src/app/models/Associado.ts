@@ -1,4 +1,4 @@
-import { SexoType } from '@app/util/enums';
+import { OrigemCadastroType, SexoType, StatusCadastroType } from '@app/util/enums';
 import { Veiculo } from './Veiculo';
 
 export interface Associado {
@@ -25,4 +25,7 @@ export interface Associado {
   //#endregion
 
   veiculos: Veiculo[];
+
+  statusCadastro: StatusCadastroType;
+  origemCadastro: OrigemCadastroType;
 }

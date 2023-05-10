@@ -61,5 +61,15 @@ namespace Tcc.Application.Dtos
         #endregion
 
         public IEnumerable<VeiculoDto> Veiculos { get; set; }
+
+        /// <summary>
+        /// pre cadastro, aprovado
+        /// </summary>
+        public StatusCadastroType StatusCadastro { get; set; }
+
+        /// <summary>
+        /// App, Sistema
+        /// </summary>
+        public OrigemCadastroType OrigemCadastro { get; set; }
     }
 }

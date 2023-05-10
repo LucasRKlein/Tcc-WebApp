@@ -74,30 +74,18 @@
         Route="vistorias" />-->
 
     <FlyoutItem Title="Tabelas" FlyoutIcon="tabelas.png">
-        <Tab Title="Associados" Icon="acessorios.png">
+        <Tab Title="Acessorios" Icon="acessorios.png">
+            <ShellContent
+                Title="Acessorios"
+                ContentTemplate="{DataTemplate views:AcessorioIndexPage}"
+                Route="associados" />
+        </Tab>
+        <Tab Title="Associados" Icon="categorias.png">
             <ShellContent
                 Title="Associados"
                 ContentTemplate="{DataTemplate views:AssociadoIndexPage}"
                 Route="associados" />
-        </Tab>
-        <!--<Tab Title="Cat.Vistoria" Icon="categorias.png">
-            <ShellContent
-                Title="Cat.Vistoria"
-                ContentTemplate="{DataTemplate views:CategoriaIndexPage}"
-                Route="categorias" />
-        </Tab>
-        <Tab Title="Pos.Avarias" Icon="avarias.png">
-            <ShellContent
-                Title="Pos.Avarias"
-                ContentTemplate="{DataTemplate views:PosicaoAvariaIndexPage}"
-                Route="avarias" />
-        </Tab>
-        <Tab Title="Itens Remoção" Icon="remocao.png">
-            <ShellContent
-                Title="Itens Remoção"
-                ContentTemplate="{DataTemplate views:RemocaoItemIndexPage}"
-                Route="remocao" />
-        </Tab>-->
+        </Tab>        
     </FlyoutItem>
 
     <!--<ShellContent x:Name="perfil"

@@ -36,6 +36,7 @@ public static class MauiProgram
         //builder.Services.AddTransient<IRepository<UsuarioAppModel>, Repository<UsuarioAppModel>>();
 
         //Tabelas
+        builder.Services.AddSingleton<IRepository<AcessorioModel>, Repository<AcessorioModel>>();
         builder.Services.AddSingleton<IRepository<AssociadoModel>, Repository<AssociadoModel>>();
 
         //Vistoria
@@ -62,6 +63,8 @@ public static class MauiProgram
     public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
     {
         //Tabelas
+        builder.Services.AddTransient<AcessorioIndexViewModel>();
+        builder.Services.AddTransient<AcessorioViewModel>();
         builder.Services.AddTransient<AssociadoIndexViewModel>();
         builder.Services.AddTransient<AssociadoViewModel>();
         
@@ -79,6 +82,8 @@ public static class MauiProgram
     public static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
     {
         //Tabelas
+        builder.Services.AddTransient<AcessorioIndexPage>();
+        builder.Services.AddTransient<AcessorioPage>();
         builder.Services.AddTransient<AssociadoIndexPage>();
         builder.Services.AddTransient<AssociadoPage>();
 

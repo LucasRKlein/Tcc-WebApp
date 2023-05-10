@@ -9,6 +9,19 @@
         [ObservableProperty]
         string title;
 
-        public bool IsNotBusy => !IsBusy;       
+        public bool IsNotBusy => !IsBusy;
+
+        protected void PopulateListFromEnum<TEnum>(List<string> lista)
+        {
+            lista.Clear();
+
+            foreach (var enumItem in typeof(TEnum).GetFields())
+            {
+                if (enumItem.IsLiteral)
+                {
+                    lista.Add(enumItem.Name);
+                }
+            }
+        }
     }
 }

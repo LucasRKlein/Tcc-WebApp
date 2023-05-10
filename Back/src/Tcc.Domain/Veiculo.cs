@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tcc.Domain.Enum;
 
 namespace Tcc.Domain
 {
@@ -16,5 +17,15 @@ namespace Tcc.Domain
 
         public int AssociadoId { get; set; }
         public Associado Associado { get; set; }
+
+        /// <summary>
+        /// pre cadastro, aprovado
+        /// </summary>
+        public StatusCadastroType StatusCadastro { get; set; }
+
+        /// <summary>
+        /// App, Sistema
+        /// </summary>
+        public OrigemCadastroType OrigemCadastro { get; set; }
     }
 }

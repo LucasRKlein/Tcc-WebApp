@@ -24,6 +24,8 @@ namespace TccApp.ViewModels
         //protected bool ActiveDelete;
 
         protected TModel Model { get; set; }
+        
+        protected List<string> ValidateErrors;
 
         [RelayCommand]
         public async Task Cancel()
@@ -51,9 +53,9 @@ namespace TccApp.ViewModels
             IsNewItem = false;
             EnabledDelete = false;
             //ActiveDelete = false;
+            ValidateErrors = new List<string>();
         }
-        
-        
+
         protected abstract void SetViewFromModel();
         protected abstract void SetModelFromView();
 
@@ -61,16 +63,26 @@ namespace TccApp.ViewModels
         {
             if (id == string.Empty)
             {
-                IsNewItem = true;
-                Model = new TModel();
+                CreateNewModel();
             }
             else
             {
-                EnabledDelete = true;
-
-                Model = Repo.Get(Guid.Parse(id));
+                EditModel(id);
             }
             SetViewFromModel();
+        }
+
+        protected virtual void CreateNewModel()
+        {
+            IsNewItem = true;
+            Model = new TModel();
+        }
+
+        protected virtual void EditModel(string id)
+        {
+            EnabledDelete = true;
+
+            Model = Repo.Get(Guid.Parse(id));
         }
 
         protected virtual async Task GoToBackAsync()
@@ -79,18 +91,14 @@ namespace TccApp.ViewModels
             //await Shell.Current.GoToAsync("..");
         }
 
-        protected virtual async Task<bool> ValidateModel()
+        protected virtual bool ValidateToSave()
         {
+            ValidateErrors.Clear();
             return true;
         }
 
-        protected virtual async Task SaveAsync()
+        protected virtual void SaveData()
         {
-            SetModelFromView();
-
-            if (!await ValidateModel())
-                return;
-
             if (isNewItem)
             {
                 Repo.Create(Model);
@@ -99,27 +107,56 @@ namespace TccApp.ViewModels
             {
                 Repo.Update(Model);
             }
+        }
 
+        protected virtual async Task SaveAsync()
+        {
+            SetModelFromView();
+
+            if (!ValidateToSave())
+            {
+                ShowMessageErrors();
+
+                return;
+            }
+
+            SaveData();
             await ShowMessage(Repo.Sucess, Repo.StatusMessage);
 
             await Shell.Current.GoToAsync($"..?salvo={Model.Id}");
         }
 
+        protected virtual async void ShowMessageErrors()
+        {
+            var str = "";
+            for (int i = 0; i < ValidateErrors.Count; i++)
+            {
+                str += (i == 0) ? ValidateErrors[i] : $"\\n{ValidateErrors[i]}";
+            }
+
+            await ShowMessage(false, str);
+        }
+
+        protected virtual void DeleteData()
+        {
+            Repo.Delete(Model);
+        }
+
         protected async Task DeleteAsync()
         {
-            bool result = await Shell.Current.DisplayAlert("Atenção", "Confirmar a exclusão do item?", "Yes", "No");
+            bool result = await Shell.Current.DisplayAlert("Atenção", "Confirmar a exclusão do item?", "Confirmar", "Cancelar");
 
-            if (!result) 
+            if (!result)
                 return;
 
-            Repo.Delete(Model);
+            DeleteData();
 
-            await ShowMessage(Repo.Sucess, Repo.StatusMessage);
+            //await ShowMessage(Repo.Sucess, "Registro excluído.");
 
             await Shell.Current.GoToAsync($"..?deletado={Model.Id}");
         }
 
-        protected virtual async Task ShowMessage(bool sucesso, string mensagem) 
+        protected virtual async Task ShowMessage(bool sucesso, string mensagem)
         {
             var titulo = sucesso ? "Info" : "Erro";
 

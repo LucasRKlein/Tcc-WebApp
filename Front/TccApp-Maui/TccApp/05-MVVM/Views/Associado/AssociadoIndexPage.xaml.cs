@@ -4,9 +4,9 @@ namespace TccApp.Views;
 
 public partial class AssociadoIndexPage : ContentPage
 {
-    public AssociadoIndexPage(AssociadoIndexViewModel viewmodel)
-    {
-        InitializeComponent();
+	public AssociadoIndexPage(AssociadoIndexViewModel viewmodel)
+	{
+		InitializeComponent();
 
         BindingContext = viewmodel;
     }

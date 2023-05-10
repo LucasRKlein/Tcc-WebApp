@@ -16,8 +16,8 @@ public partial class AppShell : Shell
 
     void RegisterRoutes()
     {
+        Routes.Add(nameof(AcessorioPage), typeof(AcessorioPage));
         Routes.Add(nameof(AssociadoPage), typeof(AssociadoPage));
-        //Routes.Add(nameof(CategoriaPage), typeof(CategoriaPage));
         //Routes.Add(nameof(LoginPage), typeof(LoginPage));
 
         foreach (var item in Routes)

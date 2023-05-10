@@ -35,5 +35,15 @@ namespace Tcc.Domain
         #endregion
 
         public IEnumerable<Veiculo> Veiculos { get; set; }
+
+        /// <summary>
+        /// pre cadastro, aprovado
+        /// </summary>
+        public StatusCadastroType StatusCadastro { get; set; }
+
+        /// <summary>
+        /// App, Sistema
+        /// </summary>
+        public OrigemCadastroType OrigemCadastro { get; set; }
     }
 }
