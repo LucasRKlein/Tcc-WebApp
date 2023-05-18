@@ -2,7 +2,7 @@ import { OrigemCadastroType, SexoType, StatusCadastroType } from '@app/util/enum
 import { Veiculo } from './Veiculo';
 
 export interface Associado {
-  id: number;
+  id: string;
   
   //#region Dados de pessoa
   nome: string;

@@ -11,17 +11,17 @@ export class VeiculoService {
 
   constructor(private http: HttpClient) {}
 
-  public getVeiculosByAssociadoId(associadoId: number): Observable<Veiculo[]> {
+  public getVeiculosByAssociadoId(associadoId: string): Observable<Veiculo[]> {
     return this.http.get<Veiculo[]>(`${this.baseURL}/${associadoId}`).pipe(take(1));
   }
 
-  public saveVeiculo(associadoId: number, veiculos: Veiculo[]): Observable<Veiculo[]> {
+  public saveVeiculo(associadoId: string, veiculos: Veiculo[]): Observable<Veiculo[]> {
     return this.http
       .put<Veiculo[]>(`${this.baseURL}/${associadoId}`, veiculos)
       .pipe(take(1));
   }
 
-  public deleteVeiculo(associadoId: number, veiculoId: number): Observable<any> {
+  public deleteVeiculo(associadoId: string, veiculoId: string): Observable<any> {
     return this.http
       .delete(`${this.baseURL}/${associadoId}/${veiculoId}`)
       .pipe(take(1));

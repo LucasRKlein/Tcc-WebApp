@@ -9,6 +9,11 @@ namespace Tcc.Persistence.Contextos.Mappings
         public virtual void Configure(EntityTypeBuilder<Veiculo> builder)
         {
             builder.ToTable("Veiculo");
+
+            builder.HasKey(x => x.Id);
+            builder.Property(f => f.DataInclusao).IsRequired();
+            builder.Property(f => f.DataAlteracao).IsRequired(false);
+            builder.Property(f => f.RegistroAtivo).IsRequired();
         }
     }
 }

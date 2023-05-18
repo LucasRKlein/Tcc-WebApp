@@ -7,7 +7,7 @@ using Tcc.Domain.Enum;
 
 namespace Tcc.Domain.Identity
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser<Guid>
     {
         public string PrimeiroNome { get; set; }
         public string UltimoNome { get; set; }

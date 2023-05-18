@@ -47,7 +47,7 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<AssociadoDto> UpdateAssociado(int associadoId, AssociadoDto model)
+        public async Task<AssociadoDto> UpdateAssociado(Guid associadoId, AssociadoDto model)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<bool> DeleteAssociado(int associadoId)
+        public async Task<bool> DeleteAssociado(Guid associadoId)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<AssociadoDto> GetAssociadoByIdAsync(int associadoId)
+        public async Task<AssociadoDto> GetAssociadoByIdAsync(Guid associadoId)
         {
             try
             {

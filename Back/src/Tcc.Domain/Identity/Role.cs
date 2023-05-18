@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Tcc.Domain.Identity
 {
-    public class Role : IdentityRole<int>
+    public class Role : IdentityRole<Guid>
     {
         public List<UserRole> UserRoles { get; set; }
     }

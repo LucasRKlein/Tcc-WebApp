@@ -2,7 +2,7 @@ import { OrigemCadastroType, StatusCadastroType } from "@app/util/enums";
 import { Associado } from "./Associado";
 
 export interface Veiculo {
-  id: number;
+  id: string;
   placa: string;
   marcaModelo: string;
   anoModelo: string;

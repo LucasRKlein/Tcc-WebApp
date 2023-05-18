@@ -41,7 +41,7 @@ export class AssociadoService {
       );
   }
   
-  public getAssociadoById(id: number): Observable<Associado> {
+  public getAssociadoById(id: string): Observable<Associado> {
     return this.http
       .get<Associado>(`${this.baseURL}/${id}`)
       .pipe(take(1));
@@ -59,13 +59,13 @@ export class AssociadoService {
       .pipe(take(1));
   }
 
-  public deleteAssociado(id: number): Observable<any> {
+  public deleteAssociado(id: string): Observable<any> {
     return this.http
       .delete(`${this.baseURL}/${id}`)
       .pipe(take(1));
   }
 
-  postUpload(associadoId: number, file: File): Observable<Associado> {
+  postUpload(associadoId: string, file: File): Observable<Associado> {
     const fileToUpload = file[0] as File;
     const formData = new FormData();
     formData.append('file', fileToUpload);

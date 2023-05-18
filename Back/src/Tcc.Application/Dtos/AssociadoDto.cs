@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Tcc.Application.Dtos.Base;
 using Tcc.Domain.Enum;
 
 namespace Tcc.Application.Dtos
 {
-    public class AssociadoDto
+    public class AssociadoDto : BaseDto
     {
-        public int Id { get; set; }
-
-
         #region Dados de pessoa
 
         [RegularExpression(@".*\.(gif|jpe?g|bmp|png)$", ErrorMessage = "Não é uma imagem válida. (gif, jpg, jpeg, bmp ou png)")]

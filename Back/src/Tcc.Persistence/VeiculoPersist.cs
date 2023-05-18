@@ -18,18 +18,17 @@ namespace Tcc.Persistence
             _context = context;
         }
 
-        public async Task<Veiculo> GetVeiculoByIdsAsync(int associadoId, int id)
+        public async Task<Veiculo> GetVeiculoByIdsAsync(Guid associadoId, Guid id)
         {
             IQueryable<Veiculo> query = _context.Veiculos;
 
             query = query.AsNoTracking()
-                         .Where(veiculo => veiculo.AssociadoId == associadoId
-                                     && veiculo.Id == id);
+                         .Where(veiculo => veiculo.AssociadoId == associadoId && veiculo.Id == id);
 
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Veiculo[]> GetVeiculosByAssociadoIdAsync(int associadoId)
+        public async Task<Veiculo[]> GetVeiculosByAssociadoIdAsync(Guid associadoId)
         {
             IQueryable<Veiculo> query = _context.Veiculos;
 

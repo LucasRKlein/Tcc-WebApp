@@ -21,10 +21,10 @@ import { VeiculoService } from '@app/services/veiculo.service';
 })
 export class AssociadoDetalheComponent implements OnInit {
   modalRef: BsModalRef;
-  associadoId: number;
+  associadoId: string = '';
   associado = {} as Associado;
   form: FormGroup;
-  veiculoAtual = { id: 0, marcaModelo: '', indice: 0 };
+  veiculoAtual = { id: '', marcaModelo: '', indice: 0 };
   estadoSalvar = 'post';
   imagemURL = 'assets/img/upload.png';
   file: File;
@@ -71,9 +71,10 @@ export class AssociadoDetalheComponent implements OnInit {
   }
 
   public carregarAssociado(): void {
-    this.associadoId = +this.activatedRouter.snapshot.paramMap.get('id');
+    // this.associadoId =+ this.activatedRouter.snapshot.paramMap.get('id');
+    this.associadoId = this.activatedRouter.snapshot.paramMap.get('id');
 
-    if (this.associadoId !== null && this.associadoId !== 0) {
+    if (this.associadoId !== null && this.associadoId !== '') {
       this.spinner.show();
 
       this.estadoSalvar = 'put';
@@ -186,7 +187,7 @@ export class AssociadoDetalheComponent implements OnInit {
   }
 
   adicionarVeiculo(): void {
-    this.veiculos.push(this.criarVeiculo({ id: 0 } as Veiculo));
+    this.veiculos.push(this.criarVeiculo({ id: "" } as Veiculo));
   }
 
   criarVeiculo(veiculo: Veiculo): FormGroup {

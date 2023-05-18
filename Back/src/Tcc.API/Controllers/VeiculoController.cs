@@ -19,7 +19,7 @@ namespace Tcc.API.Controllers
         }
 
         [HttpGet("{associadoId}")]
-        public async Task<IActionResult> Get(int associadoId)
+        public async Task<IActionResult> Get(Guid associadoId)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace Tcc.API.Controllers
         }
 
         [HttpPut("{associadoId}")]
-        public async Task<IActionResult> SaveVeiculos(int associadoId, VeiculoDto[] models)
+        public async Task<IActionResult> SaveVeiculos(Guid associadoId, VeiculoDto[] models)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Tcc.API.Controllers
         }
 
         [HttpDelete("{associadoId}/{veiculoId}")]
-        public async Task<IActionResult> Delete(int associadoId, int veiculoId)
+        public async Task<IActionResult> Delete(Guid associadoId, Guid veiculoId)
         {
             try
             {

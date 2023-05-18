@@ -54,7 +54,7 @@ namespace Tcc.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Tcc.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, AssociadoDto model)
+        public async Task<IActionResult> Put(Guid id, AssociadoDto model)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace Tcc.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {

@@ -5,15 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Tcc.Domain.Base;
 using Tcc.Domain.Enum;
 using Tcc.Domain.Identity;
 
 namespace Tcc.Domain
 {
-    public class Associado
+    public class Associado : BaseModel
     {
-        public int Id { get; set; }
-
         #region Dados de pessoa
         public string ImagemURL { get; set; }
         public string Nome { get; set; }

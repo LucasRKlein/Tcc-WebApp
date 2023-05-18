@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Tcc.Domain;
 using Tcc.Persistence.Models;
 
@@ -8,6 +9,6 @@ namespace Tcc.Persistence.Interface
     {
         Task<PageList<Associado>> GetAllAssociadosAsync(PageParams pageParams);
 
-        Task<Associado> GetAssociadoByIdAsync(int associadoId);
+        Task<Associado> GetAssociadoByIdAsync(Guid associadoId);
     }
 }

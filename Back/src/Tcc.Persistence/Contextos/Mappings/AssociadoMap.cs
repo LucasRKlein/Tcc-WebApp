@@ -14,6 +14,11 @@ namespace Tcc.Persistence.Contextos
         public virtual void Configure(EntityTypeBuilder<Associado> builder)
         {
             builder.ToTable("Associado");
+
+            builder.HasKey(x => x.Id);
+            builder.Property(f => f.DataInclusao).IsRequired();
+            builder.Property(f => f.DataAlteracao).IsRequired(false);
+            builder.Property(f => f.RegistroAtivo).IsRequired();
         }
     }
 }

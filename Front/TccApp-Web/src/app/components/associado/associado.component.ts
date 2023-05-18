@@ -18,7 +18,7 @@ export class AssociadoComponent implements OnInit {
   modalRef: BsModalRef;
 
   public associados: Associado[] = [];
-  public associadoId = 0;
+  public associadoId = '';
   public pagination = {} as Pagination;
   public exibirImagem = true;
 
@@ -103,7 +103,7 @@ export class AssociadoComponent implements OnInit {
       .add(() => this.spinner.hide());
   }
 
-  openModal(event: any, template: TemplateRef<any>, associadoId: number): void {
+  openModal(event: any, template: TemplateRef<any>, associadoId: string): void {
     event.stopPropagation();
     this.associadoId = associadoId;
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
@@ -113,8 +113,7 @@ export class AssociadoComponent implements OnInit {
     this.modalRef.hide();
     this.spinner.show();
 
-    this.associadoService
-      .deleteAssociado(this.associadoId)
+    this.associadoService.deleteAssociado(this.associadoId)
       .subscribe(
         (result: any) => {
           if (result.message === 'Deletado') {
@@ -140,7 +139,7 @@ export class AssociadoComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  detalheAssociado(id: number): void {
+  detalheAssociado(id: string): void {
     this.router.navigate([`associados/detalhe/${id}`]);
   }
 }

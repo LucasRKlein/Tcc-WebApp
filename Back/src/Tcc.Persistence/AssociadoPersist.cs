@@ -29,7 +29,7 @@ namespace Tcc.Persistence
             return await PageList<Associado>.CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
 
-        public async Task<Associado> GetAssociadoByIdAsync(int associadoId)
+        public async Task<Associado> GetAssociadoByIdAsync(Guid associadoId)
         {
             IQueryable<Associado> query = _context.Associados
                 .Include(x => x.Veiculos);

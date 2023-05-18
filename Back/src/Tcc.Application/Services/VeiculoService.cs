@@ -23,7 +23,7 @@ namespace Tcc.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddVeiculo(int associadoId, VeiculoDto model)
+        public async Task AddVeiculo(Guid associadoId, VeiculoDto model)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<VeiculoDto[]> SaveVeiculos(int associadoId, VeiculoDto[] models)
+        public async Task<VeiculoDto[]> SaveVeiculos(Guid associadoId, VeiculoDto[] models)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace Tcc.Application.Services
 
                 foreach (var model in models)
                 {
-                    if (model.Id == 0)
+                    if (model.Id.ToString() != "")
                     {
                         await AddVeiculo(associadoId, model);
                     }
@@ -76,7 +76,7 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<bool> DeleteVeiculo(int associadoId, int veiculoId)
+        public async Task<bool> DeleteVeiculo(Guid associadoId, Guid veiculoId)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<VeiculoDto[]> GetVeiculosByAssociadoIdAsync(int associadoId)
+        public async Task<VeiculoDto[]> GetVeiculosByAssociadoIdAsync(Guid associadoId)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<VeiculoDto> GetVeiculoByIdsAsync(int associadoId, int veiculoId)
+        public async Task<VeiculoDto> GetVeiculoByIdsAsync(Guid associadoId, Guid veiculoId)
         {
             try
             {

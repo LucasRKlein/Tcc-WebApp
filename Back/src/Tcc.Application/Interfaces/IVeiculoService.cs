@@ -8,10 +8,10 @@ namespace Tcc.Application.Interfaces
 {
     public interface IVeiculoService
     {
-        Task<VeiculoDto[]> SaveVeiculos(int associadoId, VeiculoDto[] models);
-        Task<bool> DeleteVeiculo(int associadoId, int loteId);
+        Task<VeiculoDto[]> SaveVeiculos(Guid associadoId, VeiculoDto[] models);
+        Task<bool> DeleteVeiculo(Guid associadoId, Guid veiculoId);
 
-        Task<VeiculoDto[]> GetVeiculosByAssociadoIdAsync(int associadoId);
-        Task<VeiculoDto> GetVeiculoByIdsAsync(int associadoId, int loteId);
+        Task<VeiculoDto[]> GetVeiculosByAssociadoIdAsync(Guid associadoId);
+        Task<VeiculoDto> GetVeiculoByIdsAsync(Guid associadoId, Guid veiculoId);
     }
 }

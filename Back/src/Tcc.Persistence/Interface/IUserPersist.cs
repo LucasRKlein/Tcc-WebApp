@@ -9,7 +9,7 @@ namespace Tcc.Persistence.Interface
     public interface IUserPersist : IGeralPersist
     {
         Task<IEnumerable<User>> GetUsersAsync();
-        Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByIdAsync(Guid id);
         Task<User> GetUserByUserNameAsync(string userName);
     }
 }

@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 using Tcc.Domain;
 using Tcc.Domain.Identity;
 
 namespace Tcc.Persistence.Contextos
 {
-    public class TccContext : IdentityDbContext<User, Role, int, 
-                                                       IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, 
-                                                       IdentityRoleClaim<int>, IdentityUserToken<int>>
+    public class TccContext : IdentityDbContext<User, Role, Guid,
+                                                       IdentityUserClaim<Guid>, UserRole, IdentityUserLogin<Guid>, 
+                                                       IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         public TccContext(DbContextOptions<TccContext> options) : base(options) { }
         public DbSet<Associado> Associados { get; set; }
