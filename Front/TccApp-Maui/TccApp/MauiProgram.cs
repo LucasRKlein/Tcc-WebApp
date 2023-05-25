@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using TccApp.Data;
+using TccApp.Domain.Interfaces;
 using TccApp.Models;
+using TccApp.Services;
 using TccApp.ViewModels;
 using TccApp.Views;
 
@@ -35,6 +36,8 @@ public static class MauiProgram
         //Usuário
         //builder.Services.AddTransient<IRepository<UsuarioAppModel>, Repository<UsuarioAppModel>>();
 
+        //Comunicação Api
+        
         //Tabelas
         builder.Services.AddSingleton<IRepository<AcessorioModel>, Repository<AcessorioModel>>();
         builder.Services.AddSingleton<IRepository<AssociadoModel>, Repository<AssociadoModel>>();
@@ -47,15 +50,24 @@ public static class MauiProgram
 
     public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
-        //Serviços do App
-        //builder.Services.AddSingleton<IHttpsClientHandlerService, HttpsClientHandlerService>();
-        //builder.Services.AddSingleton<IRestService, RestService>();
-        //builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
-
         //Serviços da biblioteca Maui
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
-        //builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);
-        //builder.Services.AddSingleton<IMap>(Map.Default);
+        builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);
+        builder.Services.AddSingleton<IMap>(Map.Default);
+
+        //Comunicação Api
+        builder.Services.AddSingleton<IHttpsClientHandlerService, HttpsClientHandlerService>();
+        builder.Services.AddSingleton<IRestService, RestService>();
+
+        //Conexão banco
+        builder.Services.AddSingleton<DatabaseConnection>();
+
+        //Configuração
+        builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
+
+        //Associado
+        builder.Services.AddTransient<IAssociadoService, AssociadoService>();
+        //builder.Services.AddTransient<IVistoriaImagemService, VistoriaImagemService>();
 
         return builder;
     }
@@ -65,16 +77,18 @@ public static class MauiProgram
         //Tabelas
         builder.Services.AddTransient<AcessorioIndexViewModel>();
         builder.Services.AddTransient<AcessorioViewModel>();
+
+        //Associado
         builder.Services.AddTransient<AssociadoIndexViewModel>();
         builder.Services.AddTransient<AssociadoViewModel>();
-        
+
         //Sincronizar
-        //builder.Services.AddSingleton<SincronizarViewModel>();
+        builder.Services.AddSingleton<SincronizarViewModel>();
 
         //Acesso
-        //builder.Services.AddTransient<LoginViewModel>();
-        //builder.Services.AddTransient<LogoutViewModel>();
-        //builder.Services.AddTransient<PerfilViewModel>();
+        builder.Services.AddTransient<LoginViewModel>();
+        builder.Services.AddTransient<LogoutViewModel>();
+        builder.Services.AddTransient<PerfilViewModel>();
 
         return builder;
     }
@@ -84,22 +98,21 @@ public static class MauiProgram
         //Tabelas
         builder.Services.AddTransient<AcessorioIndexPage>();
         builder.Services.AddTransient<AcessorioPage>();
+
+        //Associado
         builder.Services.AddTransient<AssociadoIndexPage>();
         builder.Services.AddTransient<AssociadoPage>();
 
-        //Vistoria
-        //builder.Services.AddTransient<VistoriaIndexPage>();
-
         //Sincronizar
-        //builder.Services.AddSingleton<SincronizarPage>();
+        builder.Services.AddSingleton<SincronizarPage>();
 
         //Acesso
-        //builder.Services.AddTransient<LoginPage>();
-        //builder.Services.AddTransient<LogoutPage>();
-        //builder.Services.AddTransient<PerfilPage>();
+        builder.Services.AddTransient<LoginPage>();
+        builder.Services.AddTransient<LogoutPage>();
+        builder.Services.AddTransient<PerfilPage>();
 
-        //
-        //builder.Services.AddTransient<SobrePage>();
+        //Sobre
+        builder.Services.AddTransient<SobrePage>();
 
         return builder;
     }

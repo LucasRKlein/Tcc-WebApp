@@ -1,9 +1,9 @@
 ﻿using TccApp.Domain.Models;
 using System.Linq.Expressions;
 
-namespace TccApp.Data
+namespace TccApp.Domain.Interfaces
 {
-    public interface IRepository<TModel> : IDisposable where TModel : BaseModel
+    public interface IRepository<TModel> where TModel : BaseModel
     {
         bool Sucess { get; set; }
         string StatusMessage { get; set; }
@@ -19,7 +19,7 @@ namespace TccApp.Data
         List<TModel> GetAll();
         List<TModel> GetAll(Expression<Func<TModel, bool>> predicate);
         List<TModel> GetAllWithChildren();
-        
+
         int Count();
         List<TModel> Sql(string sql);
     }

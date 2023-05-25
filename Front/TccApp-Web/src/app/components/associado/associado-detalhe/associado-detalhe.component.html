@@ -12,20 +12,18 @@
           <div class="p-3">
             <div class="form-row">
               <div class="form-group col-md-5">
-                <label>Nome</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.nome)" formControlName="nome"
-                  placeholder="nome" [(ngModel)]="associado.nome">
+                <label for="nome" class="form-label">Nome</label>
+                <input id="nome" formControlName="nome"  [ngClass]="cssValidator(f.nome)"type="text" class="form-control" #focus>
+                <div class="invalid-feedback">Informe um Nome válido.</div>
                 <div *ngIf="f.nome.errors?.required && f.nome.touched" class="invalid-feedback">
                   Nome é obrigatório.
                 </div>
-                <div *ngIf="f.nome.errors?.nome && f.nome.touched" class="invalid-feedback">
-                  Deve ser um endereço de Nome válido
-                </div>
               </div>
+
               <div class="form-group col-md-2">
-                <label>Cpf</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.cpf)" formControlName="cpf"
-                  placeholder="cpf" [(ngModel)]="associado.cpf">
+                <label for="cpf" class="form-label">CPF</label>
+                <input id="cpf" formControlName="cpf" [ngClass]="cssValidator(f.cpf)" type="text" class="form-control">
+                <div class="invalid-feedback">Informe um Documento Válido.</div>
                 <div *ngIf="f.cpf.errors?.required && f.cpf.touched" class="invalid-feedback">
                   Cpf é obrigatório.
                 </div>
@@ -34,33 +32,30 @@
                 </div>
               </div>
               <div class="form-group col-md-3">
-                <label>Sexo</label>
-                <select formControlName="sexo" class="form-control"
+                <label for="sexo" class="form-label">Sexo</label>
+                <select id="sexo" formControlName="sexo" [ngClass]="cssValidator(f.sexo)" class="form-control"
                   [ngClass]="{ 'is-invalid': f.sexo.errors && f.sexo.touched }">
-                  <option value="NaoInformado">Não Informado</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Feminino">Feminino</option>
+                  <option *ngFor="let item of sexoTypes" [value]="item.value">{{item.text}}</option>
                 </select>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col-md-2">
-                <label>Data Nascimento</label>
-                <input type="datetime" class="form-control" [ngClass]="cssValidator(f.dataNascimento)"
-                  value="{{associado.dataNascimento | DateFormatPipe}}" bsDatepicker [bsConfig]="bsConfig"
-                  formControlName="dataNascimento" placeholder="" [(ngModel)]="associado.dataNascimento">
+                <label for="dataNascimento" class="form-label">Data Nascimento</label>
+                <input id="dataNascimento" formControlName="dataNascimento" [ngClass]="cssValidator(f.dataNascimento)" type="datetime" bsDatepicker [bsConfig]="bsConfig" class="form-control">
                 <div *ngIf="f.dataNascimento.errors?.required && f.dataNascimento.touched" class="invalid-feedback">
                   Data e Hora é obrigatório.
                 </div>
               </div>
+
               <div class="form-group col-md-4">
-                <label>Celular</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.celular)" formControlName="celular"
-                  placeholder="(000) 90000-0000" [(ngModel)]="associado.celular">
+                <label for="celular" class="form-label">Celular</label>
+                <input id="celular" formControlName="celular" type="text" [ngClass]="cssValidator(f.celular)" class="form-control" placeholder="(000) 90000-0000">
                 <div *ngIf="f.celular.errors?.required && f.celular.touched" class="invalid-feedback">
                   Celular é obrigatório.
                 </div>
               </div>
+
               <div class="form-group col-md-3">
                 <label>E-mail</label>
                 <input type="text" class="form-control" [ngClass]="cssValidator(f.email)" formControlName="email"
@@ -72,24 +67,27 @@
                   Deve ser um endereço de e-mail válido
                 </div>
               </div>
+
+              <div class="form-group col-md-3">
+                <label for="celular" class="form-label">E-mail</label>
+                <input id="celular" formControlName="celular" type="text" [ngClass]="cssValidator(f.celular)" class="form-control" placeholder="exemplo@email.com">
+                <div *ngIf="f.celular.errors?.required && f.celular.touched" class="invalid-feedback">
+                  Celular é obrigatório.
+                </div>
+              </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-3">
-                <label>Rua Avenida</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.ruaAvenida)"
-                  formControlName="ruaAvenida" placeholder="ruaAvenida" [(ngModel)]="associado.ruaAvenida">
+                <label for="ruaAvenida" class="form-label">Rua Avenida</label>
+                <input id="ruaAvenida" formControlName="ruaAvenida" type="text" [ngClass]="cssValidator(f.ruaAvenida)" class="form-control" placeholder="Rua Avenida">
                 <div *ngIf="f.ruaAvenida.errors?.required && f.ruaAvenida.touched" class="invalid-feedback">
-                  ruaAvenida é obrigatório.
-                </div>
-                <div *ngIf="f.ruaAvenida.errors?.ruaAvenida && f.ruaAvenida.touched" class="invalid-feedback">
-                  Deve ser um endereço de ruaAvenida válido
+                  Preencha o campo.
                 </div>
               </div>
-              <div class="form-group col-md-2">
-                <label>Número</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.numero)" formControlName="numero"
-                  placeholder="numero" [(ngModel)]="associado.numero">
+              <div class="form-group col-md-3">
+                <label for="numero" class="form-label">Número</label>
+                <input id="numero" formControlName="numero" type="text" [ngClass]="cssValidator(f.numero)" class="form-control" placeholder="N° ">
                 <div *ngIf="f.numero.errors?.required && f.numero.touched" class="invalid-feedback">
                   numero é obrigatório.
                 </div>
@@ -97,10 +95,10 @@
                   Deve ser um endereço de numero válido
                 </div>
               </div>
+
               <div class="form-group col-md-2">
-                <label>Complemento</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.complemento)"
-                  formControlName="complemento" placeholder="complemento" [(ngModel)]="associado.complemento">
+                <label for="complemento" class="form-label">Complemento</label>
+                <input id="complemento" formControlName="complemento" type="text" [ngClass]="cssValidator(f.complemento)" class="form-control" placeholder="Ap 101">
                 <div *ngIf="f.complemento.errors?.required && f.complemento.touched" class="invalid-feedback">
                   complemento é obrigatório.
                 </div>
@@ -111,9 +109,8 @@
             </div>
             <div class="form-row">
               <div class="form-group col-md-2">
-                <label>Bairro</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.bairro)" formControlName="bairro"
-                  placeholder="bairro" [(ngModel)]="associado.bairro">
+                <label for="bairro" class="form-label">Bairro</label>
+                <input id="bairro" formControlName="bairro" type="text" [ngClass]="cssValidator(f.bairro)" class="form-control" placeholder="Ap 101">
                 <div *ngIf="f.bairro.errors?.required && f.bairro.touched" class="invalid-feedback">
                   bairro é obrigatório.
                 </div>
@@ -122,27 +119,27 @@
                 </div>
               </div>
               <div class="form-group col-md-2">
-                <label>Estado</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.cidadeNome)"
-                  formControlName="estadoNome" placeholder="estadoNome" [(ngModel)]="associado.estadoNome">
+                <label for="estadoNome" class="form-label">Estado</label>
+                <input id="estadoNome" formControlName="estadoNome" type="text" [ngClass]="cssValidator(f.estadoNome)" class="form-control" placeholder="Ap 101">
                 <div *ngIf="f.estadoNome.errors?.required && f.estadoNome.touched" class="invalid-feedback">
                   estadoNome é obrigatório.
                 </div>
                 <div *ngIf="f.estadoNome.errors?.estadoNome && f.estadoNome.touched" class="invalid-feedback">
-                  Deve ser um endereço de estadoNome válido
+                  Deve ser estado válido
                 </div>
               </div>
+
+
               <div class="form-group col-md-2">
-                <label>Cidade</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(f.cidadeNome)"
-                  formControlName="cidadeNome" placeholder="cidadeNome" [(ngModel)]="associado.cidadeNome">
+                <label for="cidadeNome" class="form-label">Cidade</label>
+                <input id="cidadeNome" formControlName="cidadeNome" type="text" [ngClass]="cssValidator(f.cidadeNome)" class="form-control" placeholder="Ap 101">
                 <div *ngIf="f.cidadeNome.errors?.required && f.cidadeNome.touched" class="invalid-feedback">
                   cidadeNome é obrigatório.
                 </div>
                 <div *ngIf="f.cidadeNome.errors?.cidadeNome && f.cidadeNome.touched" class="invalid-feedback">
-                  Deve ser um endereço de cidadeNome válido
+                  Deve ser uma cidade válida
                 </div>
-              </div>
+              </div>              
             </div>
           </div>
           <div class="card-footer">
@@ -150,7 +147,10 @@
               <button class="btn btn-outline-secondary mr-auto border" (click)="cancelarAlteracao()">
                 Cancelar Alteração
               </button>
-              <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarAssociado()">
+              <!-- <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarAssociado()">
+                Salvar Associado
+              </button> -->
+              <button class="btn btn-success" (click)="salvarAssociado()">
                 Salvar Associado
               </button>
             </div>

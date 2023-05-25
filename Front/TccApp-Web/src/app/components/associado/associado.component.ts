@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Associado } from '@app/models/Associado';
 import { Pagination, PaginatedResult } from '@app/models/Pagination';
 import { AssociadoService } from '@app/services/associado.service';
+import { OrigemCadastroType, StatusCadastroType } from '@app/util/enums';
 import { environment } from '@environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -26,6 +27,18 @@ export class AssociadoComponent implements OnInit {
   public margemImagem = 2;
 
 
+  statusCadastroTypes = [
+    { text: 'Aprovado', value: StatusCadastroType.Aprovado, color: 'bg-green', icon: 'pending' },
+    { text: 'Cancelado', value: StatusCadastroType.Cancelado, color: 'bg-red', icon: 'done' },
+    { text: 'Pré Cadastro', value: StatusCadastroType.PreCadastro, color: 'bg-orange', icon: 'close' }
+  ]
+  
+  origemCadastroTypes = [
+    { text: 'App', value: OrigemCadastroType.App, color: 'bg-green' },
+    { text: 'Sistema Web', value: OrigemCadastroType.SistemaWeb, color: 'bg-red' },
+  ]
+
+
   constructor(
     private associadoService: AssociadoService,
     private modalService: BsModalService,
@@ -37,7 +50,7 @@ export class AssociadoComponent implements OnInit {
   public ngOnInit(): void {
     this.pagination = {
       currentPage: 1,
-      itemsPerPage: 3,
+      itemsPerPage: 10,
       totalItems: 1,
     } as Pagination;
 
@@ -141,5 +154,18 @@ export class AssociadoComponent implements OnInit {
 
   detalheAssociado(id: string): void {
     this.router.navigate([`associados/detalhe/${id}`]);
+  }
+
+  getStatusCadastroTypeNome(tipo: StatusCadastroType): string {
+    return this.statusCadastroTypes.find(x => x.value === tipo)?.text;
+  }
+  getStatusCadastroTypeColor(tipo: StatusCadastroType): string {
+    return this.statusCadastroTypes.find(x => x.value === tipo)?.color;
+  }
+  getOrigemCadastroTypeNome(tipo: OrigemCadastroType): string {
+    return this.origemCadastroTypes.find(x => x.value === tipo)?.text;
+  }
+  getOrigemCadastroTypeColor(tipo: OrigemCadastroType): string {
+    return this.origemCadastroTypes.find(x => x.value === tipo)?.color;
   }
 }

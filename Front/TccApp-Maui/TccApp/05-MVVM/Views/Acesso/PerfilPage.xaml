@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TccApp.ViewModels"
+             x:Class="TccApp.Views.PerfilPage"
+             x:DataType="viewmodel:PerfilViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions=".80*,.20*"
+          RowSpacing="10">
+
+        <VerticalStackLayout Margin="10" Spacing="5">
+            <Frame HeightRequest="40" Style="{StaticResource CardTitle}"
+               Margin="0,20">
+                <Label Text="Dados do Usuário"
+               Style="{StaticResource LargeLabel}"
+               TextColor="White" 
+               FontAttributes="Bold"
+               HorizontalOptions="CenterAndExpand"/>
+            </Frame>
+            <Grid ColumnDefinitions=".50*,*">
+                <Label Text="Nome:"
+               Style="{StaticResource LargeLabel}" 
+               FontAttributes="Bold"/>
+                <Label Text="{Binding Nome}"
+               Padding="10,0,0,0"
+               Style="{StaticResource LargeLabel}" 
+               Grid.Column="1"/>
+            </Grid>
+            <Grid ColumnDefinitions=".50*,*">
+                <Label Text="Usuário:"
+               Style="{StaticResource LargeLabel}" 
+               FontAttributes="Bold"/>
+                <Label Text="{Binding UserName}"
+               Padding="10,0,0,0"
+               Style="{StaticResource LargeLabel}" 
+               Grid.Column="1"/>
+            </Grid>
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
+            <Button 
+            Margin="20"
+            Command="{Binding LoginCommand}"
+            IsVisible="{Binding EnabledLogin}"
+            Style="{StaticResource ButtonOutline}"
+            FontAttributes="Bold"
+            Text="Efetuar Login" />
+        </HorizontalStackLayout>        
+    </Grid>
+</ContentPage>

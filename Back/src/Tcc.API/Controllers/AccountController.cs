@@ -49,6 +49,34 @@ namespace Tcc.API.Controllers
             }
         }
 
+        [HttpGet("GetUserApp")]
+        public async Task<IActionResult> GetUserApp()
+        {
+            try
+            {
+                var userName = User.GetUserName();
+                var user = await _accountService.GetUserByUserNameAsync(userName);
+                
+                return Ok(new
+                {
+                    success = true,
+                    errors = "",
+                    data = new
+                    {
+                        user.Id,
+                        Nome = user.PrimeiroNome,
+                        user.Password,
+                        user.UserName,
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar Usuário. Erro: {ex.Message}");
+            }
+        }
+
         [HttpPost("Register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register(UserDto userDto)
@@ -92,8 +120,14 @@ namespace Tcc.API.Controllers
                 {
                     userName = user.UserName,
                     PrimeroNome = user.PrimeiroNome,
-                    token = _tokenService.CreateToken(user).Result
-                });
+                    token = _tokenService.CreateToken(user).Result,
+                    success = true,
+                    errors = "",
+                    data = new
+                    {
+                        token = _tokenService.CreateToken(user).Result
+                    }
+                }); 
             }
             catch (Exception ex)
             {

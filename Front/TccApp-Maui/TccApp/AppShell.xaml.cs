@@ -11,14 +11,14 @@ public partial class AppShell : Shell
         InitializeComponent();
         RegisterRoutes();
 
-        //CurrentItem = sincronizar;
+        CurrentItem = sincronizar;
     }
 
     void RegisterRoutes()
     {
         Routes.Add(nameof(AcessorioPage), typeof(AcessorioPage));
         Routes.Add(nameof(AssociadoPage), typeof(AssociadoPage));
-        //Routes.Add(nameof(LoginPage), typeof(LoginPage));
+        Routes.Add(nameof(LoginPage), typeof(LoginPage));
 
         foreach (var item in Routes)
         {

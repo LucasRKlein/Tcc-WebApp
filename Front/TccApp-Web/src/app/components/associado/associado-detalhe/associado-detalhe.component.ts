@@ -12,6 +12,8 @@ import { Associado } from '@app/models/Associado';
 import { AssociadoService } from '@app/services/associado.service';
 import { Veiculo } from '@app/models/Veiculo';
 import { VeiculoService } from '@app/services/veiculo.service';
+import { UtilService } from '@app/util/util.servise';
+import { OrigemCadastroType, SexoType, StatusCadastroType } from '@app/util/enums';
 
 @Component({
   selector: 'app-associado-detalhe',
@@ -50,6 +52,18 @@ export class AssociadoDetalheComponent implements OnInit {
     };
   }
 
+  sexoTypes = [
+    { text: 'Não Definido', value: SexoType.NaoDefinido},
+    { text: 'Masculino', value: SexoType.Masculino},
+    { text: 'Feminino', value: SexoType.Feminino}
+  ];
+
+  statusCadastroTypes = [
+    { text: 'Aprovado', value: StatusCadastroType.Aprovado, color: 'bg-green', icon: 'pending' },
+    { text: 'Cancelado', value: StatusCadastroType.Cancelado, color: 'bg-red', icon: 'done' },
+    { text: 'Pré Cadastro', value: StatusCadastroType.PreCadastro, color: 'bg-orange', icon: 'close' }
+  ]
+
   constructor(
     private fb: FormBuilder,
     private localeService: BsLocaleService,
@@ -60,7 +74,8 @@ export class AssociadoDetalheComponent implements OnInit {
     private toastr: ToastrService,
     private modalService: BsModalService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    readonly utilService: UtilService
   ) {
     this.localeService.use('pt-br');
   }
@@ -70,13 +85,13 @@ export class AssociadoDetalheComponent implements OnInit {
     this.validation();
   }
 
-  public carregarAssociado(): void {
+  public async carregarAssociado(): Promise<void> {
     // this.associadoId =+ this.activatedRouter.snapshot.paramMap.get('id');
     this.associadoId = this.activatedRouter.snapshot.paramMap.get('id');
-
+    console.log(this.form)
+    this.form = null
     if (this.associadoId !== null && this.associadoId !== '') {
       this.spinner.show();
-
       this.estadoSalvar = 'put';
 
       this.associadoService.getAssociadoById(this.associadoId).subscribe((associado: Associado) => {
@@ -92,7 +107,12 @@ export class AssociadoDetalheComponent implements OnInit {
           console.error(error);
         }
       ).add(() => this.spinner.hide());
+    } else {
+      console.log(this.form);
+      await this.newItemAsync();
     }
+
+    this.initializeForm(this.associado);
   }
 
   public validation(): void {
@@ -115,6 +135,40 @@ export class AssociadoDetalheComponent implements OnInit {
       origemCadastro: [''],
       veiculos: this.fb.array([]),
     });
+  }
+
+  protected initializeForm(model: Associado) {
+    this.form = this.fb.group({
+      id: model.id,
+      nome: [model.nome, [
+        Validators.required,
+        Validators.maxLength(100)]
+      ],
+      imagemUrl: [model.imagemUrl],
+      cpf: [model.cpf],
+      sexo: [model.sexo],
+      dataNascimento: [model.dataNascimento],
+      celular: [model.celular],
+      email: [model.email, Validators.email],
+      ruaAvenida: [model.ruaAvenida, Validators.required],
+      numero: [model.numero, Validators.required],
+      complemento: [model.complemento, Validators.required],
+      bairro: [model.bairro, [Validators.required]],
+      estadoNome: [model.estadoNome, [Validators.required]],
+      cidadeNome: [model.cidadeNome, [Validators.required]],
+      statusCadastro: [model.statusCadastro],
+      origemCadastro: [model.origemCadastro],
+      veiculos: this.fb.array([]),
+    });
+  }
+
+  async newItemAsync() {
+    this.associado.nome = 'Joãozinho da silva';
+    this.associado.dataNascimento = new Date();
+    this.associado.sexo = SexoType.NaoDefinido;
+    this.associado.id = this.utilService.newGuid();
+    this.associado.statusCadastro = StatusCadastroType.Aprovado;
+    this.associado.origemCadastro = OrigemCadastroType.SistemaWeb;
   }
 
   public resetForm(): void {
@@ -146,6 +200,7 @@ export class AssociadoDetalheComponent implements OnInit {
         () => this.spinner.hide()
       );
     }
+    this.spinner.hide();
   }
 
   onFileChange(ev: any): void {
@@ -187,7 +242,7 @@ export class AssociadoDetalheComponent implements OnInit {
   }
 
   adicionarVeiculo(): void {
-    this.veiculos.push(this.criarVeiculo({ id: "" } as Veiculo));
+    this.veiculos.push(this.criarVeiculo({ id: this.utilService.newGuid() } as Veiculo));
   }
 
   criarVeiculo(veiculo: Veiculo): FormGroup {

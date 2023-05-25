@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccApp.Views.SincronizarPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="*,Auto"
+          RowSpacing="0">
+        <Image
+            Source="logo.png"
+            SemanticProperties.Description="Logo do sistema"
+            HeightRequest="450"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+        <Button Grid.Row="1"
+            Margin="50"
+            Style="{StaticResource ButtonOutline}"
+            FontAttributes="Bold"
+            Text="Sincronizar Dados com a Base"
+            Command="{Binding SincronizarCommand}"
+            IsEnabled="{Binding IsNotBusy}"/>
+
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource PrimaryColor}"
+            VerticalOptions="Fill" />
+    </Grid>
+        
+        <!--<Button
+            Margin="25"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            BackgroundColor="{StaticResource PrimaryColor}"
+            Text="Login"
+            FontAttributes="Bold"
+            Clicked="Login_Clicked"
+            Command="{Binding LoginCommand}" />-->
+    
+</ContentPage>

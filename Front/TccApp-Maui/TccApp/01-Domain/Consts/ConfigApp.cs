@@ -15,10 +15,10 @@ namespace TccApp.Domain.Consts
         public static string Port = "5001";
         public static string RestUrl = $"{Scheme}://{LocalhostUrl}:{Port}";
 #else
-        public static string RestUrl = "https://admin.autopatio.com.br";
+        public static string RestUrl = "https://admin.tcc.com.br";
 #endif
 
-        public static string ApiUrl = $"{RestUrl}/api/v1";
+        public static string ApiUrl = $"{RestUrl}/api";
 
         public static string ApiUrlTabelas = $"{ApiUrl}/TabelasApp";
         public static string ApiUrlAccount = $"{ApiUrl}/AccountApp";

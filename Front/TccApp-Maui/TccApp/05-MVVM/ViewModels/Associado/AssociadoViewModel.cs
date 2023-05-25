@@ -1,5 +1,4 @@
-﻿using System;
-using TccApp.Data;
+﻿using TccApp.Domain.Interfaces;
 using TccApp.Enum;
 using TccApp.Models;
 

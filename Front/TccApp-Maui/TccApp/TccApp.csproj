@@ -74,10 +74,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="03-Services\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="05-MVVM\Views\Acessorio\AcessorioIndexPage.xaml.cs">
 	    <DependentUpon>AcessorioIndexPage.xaml</DependentUpon>
 	  </Compile>

@@ -1,38 +1,33 @@
-﻿using TccApp.Domain.Consts;
+﻿using TccApp.Domain.Interfaces;
 using TccApp.Domain.Models;
+using TccApp.Infraestructure.Helpers;
 using SQLite;
 using SQLiteNetExtensions.Extensions;
 using System.Linq.Expressions;
 
-namespace TccApp.Data
+namespace TccApp.Services
 {
     public class Repository<TModel> : IRepository<TModel> where TModel : BaseModel, new()
     {
-        private readonly SQLiteConnection database;
-        //private readonly SQLiteAsyncConnection database;
-
+        protected readonly SQLiteConnection Database;
+        
         public bool Sucess { get; set; }
         public string StatusMessage { get; set; }
 
         public Repository()
         {
-            database = new SQLiteConnection(ConfigApp.DatabasePath, ConfigApp.Flags);
-            //database = new SQLiteAsyncConnection(ConfigApp.DatabasePath, ConfigApp.Flags);
-
-            database.CreateTable<TModel>();
+            var dbConn = ServiceHelper.GetService<DatabaseConnection>();
+            Database = dbConn.Database;
+            
+            Database.CreateTable<TModel>();
         }
 
-        public void Dispose()
-        {
-            database.Close();
-        }
-        
         public void Create(TModel model)
         {
             try
             {
                 Sucess = true;
-                var result = database.Insert(model);
+                var result = Database.Insert(model);
                 StatusMessage = $"{result} registros(s) adicionado(s)";                
             }
             catch (Exception ex)
@@ -47,7 +42,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                database.InsertWithChildren(model, recursive);
+                Database.InsertWithChildren(model, recursive);
             }
             catch (Exception ex)
             {
@@ -61,7 +56,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                var result = database.Update(model);
+                var result = Database.Update(model);
                 StatusMessage = $"{result} registro(s) atualizado(s)";
             }
             catch (Exception ex)
@@ -75,7 +70,7 @@ namespace TccApp.Data
         {
             try
             {
-                database.UpdateWithChildren(model);
+                Database.UpdateWithChildren(model);
                 Sucess = true;
             }
             catch (Exception ex)
@@ -90,7 +85,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                database.Delete(model, true);
+                Database.Delete(model, true);
             }
             catch (Exception ex)
             {
@@ -104,7 +99,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                database.DeleteAll(database.Table<TModel>().Table);
+                Database.DeleteAll(Database.Table<TModel>().Table);
             }
             catch (Exception ex)
             {
@@ -118,7 +113,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                return database.Table<TModel>().FirstOrDefault(x => x.Id == id);
+                return Database.Table<TModel>().FirstOrDefault(x => x.Id == id);
             }
             catch (Exception ex)
             {
@@ -133,7 +128,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                return database.Table<TModel>().Where(predicate).FirstOrDefault();
+                return Database.Table<TModel>().Where(predicate).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -148,7 +143,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                return database.Table<TModel>().ToList();
+                return Database.Table<TModel>().ToList();
             }
             catch (Exception ex)
             {
@@ -163,7 +158,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                return database.Table<TModel>().Where(predicate).ToList();
+                return Database.Table<TModel>().Where(predicate).ToList();
             }
             catch (Exception ex)
             {
@@ -178,7 +173,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                return database.GetAllWithChildren<TModel>().ToList();
+                return Database.GetAllWithChildren<TModel>().ToList();
             }
             catch (Exception ex)
             {
@@ -193,7 +188,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                return database.Table<TModel>().Count();
+                return Database.Table<TModel>().Count();
             }
             catch (Exception ex)
             {
@@ -208,7 +203,7 @@ namespace TccApp.Data
             try
             {
                 Sucess = true;
-                return database.Query<TModel>(sql);
+                return Database.Query<TModel>(sql);
             }
             catch (Exception ex)
             {
@@ -216,6 +211,19 @@ namespace TccApp.Data
                 StatusMessage = $"Erro: {ex.Message}";
             }
             return null;
+
+
+            //using (var cmd = new SQLiteCommand(DbConnection()))
+            //{
+            //    if (cliente.Id != null)
+            //    {
+            //        cmd.CommandText = "UPDATE Clientes SET Nome=@Nome, Email=@Email WHERE Id=@Id";
+            //        cmd.Parameters.AddWithValue("@Id", cliente.Id);
+            //        cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
+            //        cmd.Parameters.AddWithValue("@Email", cliente.Email);
+            //        cmd.ExecuteNonQuery();
+            //    }
+            //};
         }       
     }
 }

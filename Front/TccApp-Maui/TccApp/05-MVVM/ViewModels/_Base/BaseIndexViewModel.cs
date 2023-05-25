@@ -1,4 +1,4 @@
-﻿using TccApp.Data;
+﻿using TccApp.Domain.Interfaces;
 using TccApp.Domain.Models;
 
 namespace TccApp.ViewModels

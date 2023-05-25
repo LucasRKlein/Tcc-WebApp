@@ -59,12 +59,12 @@
         <controls:FlyoutFooter />
     </Shell.FlyoutFooter>
 
-    <!--<ShellContent x:Name="sincronizar"
+    <ShellContent x:Name="sincronizar"
         Shell.NavBarIsVisible="true"
         Title="Sincronizar"
         Icon="sincronizar.png"
         ContentTemplate="{DataTemplate views:SincronizarPage}"
-        Route="sincronizar" />-->
+        Route="sincronizar" />
 
     <!--<ShellContent x:Name="vistorias"
         Shell.NavBarIsVisible="true"
@@ -88,12 +88,19 @@
         </Tab>        
     </FlyoutItem>
 
-    <!--<ShellContent x:Name="perfil"
+    <ShellContent x:Name="associado"
+        Shell.NavBarIsVisible="true"
+        Title="Associado"
+        Icon="info.png"
+        ContentTemplate="{DataTemplate views:AssociadoIndexPage}" 
+        Route="associado"/>
+
+    <ShellContent x:Name="perfil"
         Shell.NavBarIsVisible="true"
         Title="Perfil"
         Icon="perfil.png"
         ContentTemplate="{DataTemplate views:PerfilPage}"
-        Route="perfil" />-->
+        Route="perfil" />
 
     <ShellContent x:Name="sobre"
         Shell.NavBarIsVisible="true"
@@ -102,10 +109,10 @@
         ContentTemplate="{DataTemplate views:SobrePage}" 
         Route="sobre"/>
 
-    <!--<ShellContent x:Name="logout"
+    <ShellContent x:Name="logout"
         Shell.NavBarIsVisible="true"
         Title="Sair"
         Icon="saida.png"
         ContentTemplate="{DataTemplate views:LogoutPage}" 
-        Route="logout"/>-->
+        Route="logout"/>
 </Shell>
