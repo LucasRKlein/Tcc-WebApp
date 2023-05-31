@@ -1,6 +1,6 @@
 ﻿using TccApp.Domain.Interfaces;
 using TccApp.Domain.Models;
-using TccApp.Enum;
+using TccApp.Enums;
 using TccApp.Services;
 using TccApp.Views;
 
@@ -145,7 +145,7 @@ namespace TccApp.ViewModels
                 }
                 else
                 {
-                    associadoService.DeleteAssociado(item);
+                    //associadoService.DeleteAssociado(item);
                 }
             }
         }

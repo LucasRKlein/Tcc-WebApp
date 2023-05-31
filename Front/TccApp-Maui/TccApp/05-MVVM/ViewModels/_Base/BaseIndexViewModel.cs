@@ -29,11 +29,11 @@ namespace TccApp.ViewModels
             await GetListaAsync();
         }
 
-        protected IRepository<TModel> Repo;
+        private readonly IRepository<TModel> _service;
 
-        public BaseIndexViewModel(IRepository<TModel> repo)
+        public BaseIndexViewModel(IRepository<TModel> service)
         {
-            Repo = repo;
+            _service = service;
 
             GetListaAsync();
         }
@@ -84,7 +84,7 @@ namespace TccApp.ViewModels
 
             try
             {
-                var listaRepo = Repo.GetAll();
+                var listaRepo = _service.GetAll();
 
                 if (Lista == null)
                 {
@@ -142,7 +142,7 @@ namespace TccApp.ViewModels
                         Lista.Remove(model);
                     }
 
-                    model = Repo.Get(id);
+                    model = _service.Get(id);
                     Lista.Insert(0, model);
                 }
 

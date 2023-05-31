@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TccApp.Enums
+namespace TccApp.Domain.Dtos
 {
-    public enum SexoType
+    public class VeiculoDto
     {
-        NaoDefinido = 0,
-        Masculino = 1,
-        Feminino = 2
+        public Guid VeiculoId;
+
+        public Guid AssociadoId;
     }
 }

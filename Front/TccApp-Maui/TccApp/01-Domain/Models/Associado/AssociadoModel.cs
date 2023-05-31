@@ -1,6 +1,6 @@
 ﻿using SQLite;
 using TccApp.Domain.Models;
-using TccApp.Enum;
+using TccApp.Enums;
 
 namespace TccApp.Models
 {
@@ -40,5 +40,12 @@ namespace TccApp.Models
 
         public StatusCadastroType StatusCadastro { get; set; }
         public OrigemCadastroType OrigemCadastro { get; set; }
+
+
+        // para controle no APP
+        public StatusRegistroType StatusRegistro { get; set; }
+
+        [Ignore]
+        public List<VeiculoModel> Avarias { get; set; }
     }
 }

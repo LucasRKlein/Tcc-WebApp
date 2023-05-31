@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 using TccApp.Domain.Interfaces;
-using TccApp.Models;
 using TccApp.Services;
 using TccApp.ViewModels;
 using TccApp.Views;
@@ -14,12 +14,13 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            // Initialize the .NET MAUI Community Toolkit by adding the below line of code
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
-        .RegisterRepositories()
             .RegisterServices()
             .RegisterViewModels()
             .RegisterPages();
@@ -29,23 +30,6 @@ public static class MauiProgram
 #endif
 
         return builder.Build();
-    }
-
-    public static MauiAppBuilder RegisterRepositories(this MauiAppBuilder builder)
-    {
-        //Usuário
-        //builder.Services.AddTransient<IRepository<UsuarioAppModel>, Repository<UsuarioAppModel>>();
-
-        //Comunicação Api
-        
-        //Tabelas
-        builder.Services.AddSingleton<IRepository<AcessorioModel>, Repository<AcessorioModel>>();
-        builder.Services.AddSingleton<IRepository<AssociadoModel>, Repository<AssociadoModel>>();
-
-        //Vistoria
-        //builder.Services.AddTransient<IRepository<VistoriaModel>, Repository<VistoriaModel>>();
-
-        return builder;
     }
 
     public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
@@ -67,7 +51,8 @@ public static class MauiProgram
 
         //Associado
         builder.Services.AddTransient<IAssociadoService, AssociadoService>();
-        //builder.Services.AddTransient<IVistoriaImagemService, VistoriaImagemService>();
+        builder.Services.AddTransient<IVeiculoService, VeiculoService>();
+        builder.Services.AddTransient<IVistoriaImagemService, VistoriaImagemService>();
 
         return builder;
     }
@@ -81,6 +66,15 @@ public static class MauiProgram
         //Associado
         builder.Services.AddTransient<AssociadoIndexViewModel>();
         builder.Services.AddTransient<AssociadoViewModel>();
+
+
+        //Veiculo
+        builder.Services.AddTransient<VeiculoIndexViewModel>();
+        builder.Services.AddTransient<VeiculoViewModel>();
+
+        //Imagem
+        builder.Services.AddTransient<VistoriaImagemIndexViewModel>();
+        builder.Services.AddTransient<VistoriaImagemViewModel>();
 
         //Sincronizar
         builder.Services.AddSingleton<SincronizarViewModel>();
@@ -102,6 +96,14 @@ public static class MauiProgram
         //Associado
         builder.Services.AddTransient<AssociadoIndexPage>();
         builder.Services.AddTransient<AssociadoPage>();
+
+        //Veiculo
+        builder.Services.AddTransient<VeiculoIndexPage>();
+        builder.Services.AddTransient<VeiculoPage>();
+
+        //Imagem
+        builder.Services.AddTransient<VistoriaImagemIndexPage>();
+        builder.Services.AddTransient<VistoriaImagemPage>();
 
         //Sincronizar
         builder.Services.AddSingleton<SincronizarPage>();

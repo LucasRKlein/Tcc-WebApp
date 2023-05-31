@@ -3,9 +3,9 @@ using TccApp.Models;
 
 namespace TccApp.Services
 {
-    public class AssociadoService : Repository<AssociadoModel>, IAssociadoService
+    public class AcessorioService : Repository<AcessorioModel>, IAcessorioService
     {
-        public AssociadoService()
+        public AcessorioService()
         {
         }
 

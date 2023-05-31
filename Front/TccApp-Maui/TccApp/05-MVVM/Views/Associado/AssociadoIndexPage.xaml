@@ -5,8 +5,13 @@
              xmlns:viewmodel="clr-namespace:TccApp.ViewModels"
              xmlns:model="clr-namespace:TccApp.Models"
              x:DataType="viewmodel:AssociadoIndexViewModel"
+             xmlns:converter="clr-namespace:TccApp.Converters"
              Title="{Binding Title}">
 
+    <ContentPage.Resources>
+        <converter:EnumBooleanConverter x:Key="enumBooleanConverter" />
+    </ContentPage.Resources>
+    
     <Grid RowDefinitions="*,Auto" RowSpacing="0">
         <RefreshView
             Grid.ColumnSpan="2"
@@ -31,22 +36,23 @@
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer 
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AssociadoIndexViewModel}}, Path=GoToItemCommand}"
-                                            CommandParameter="{Binding .}"/>
+                                            CommandParameter="{Binding .}"/> 
                                     </Frame.GestureRecognizers>
                                     <Grid Padding="5" ColumnDefinitions=".50*,*">
                                         <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-                                            <Label Text="{Binding StatusCadastro}"
+                                            <Label Text="Status" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Text="{Binding StatusRegistro}"
                                                    Style="{StaticResource LargeLabel}"
                                                    FontAttributes="Bold"
-                                                   IsVisible="{Binding Path=StatusCadastro, Converter={StaticResource enumBooleanConverter}, ConverterParameter=PreCadastro}"
-                                                   BackgroundColor="LightBlue"
+                                                   IsVisible="{Binding Path=StatusRegistro, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Pendente}"
+                                                   BackgroundColor="Yellow"
                                                    Padding="10,0,10,0"
                                                    HorizontalOptions="Start"
                                                    />
-                                            <Label Text="{Binding StatusCadastro}"
+                                            <Label Text="{Binding StatusRegistro}"
                                                    Style="{StaticResource LargeLabel}"
                                                    FontAttributes="Bold"
-                                                   IsVisible="{Binding Path=StatusCadastro, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Aprovado}"
+                                                   IsVisible="{Binding Path=StatusRegistro, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Enviado}"
                                                    BackgroundColor="Lime"
                                                    Padding="10,0,10,0"
                                                    HorizontalOptions="Start"

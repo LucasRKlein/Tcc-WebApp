@@ -18,7 +18,7 @@ namespace TccApp.ViewModels
         [ObservableProperty]
         string nome;
 
-        public AcessorioViewModel(IRepository<AcessorioModel> repo) : base(repo)
+        public AcessorioViewModel(IAcessorioService service) : base(service)
         {
             Title = "Acessorio";
             //ActiveDelete = true;

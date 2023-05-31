@@ -6,32 +6,6 @@
        xmlns:views="clr-namespace:TccApp.Views"
        x:Class="TccApp.AppShell">
 
-    <!--FlyoutBackgroundImage="logo.png"
-       FlyoutBackgroundImageAspect="AspectFill"-->
-
-    <!--<Shell.Resources>
-        <Style x:Key="BaseStyle"
-               TargetType="Element">
-            <Setter Property="Shell.BackgroundColor"
-                    Value="{StaticResource MainColor}" />
-            <Setter Property="Shell.ForegroundColor"
-                    Value="White" />
-            <Setter Property="Shell.TitleColor"
-                    Value="White" />
-            <Setter Property="Shell.DisabledColor"
-                    Value="#B4FFFFFF" />
-            <Setter Property="Shell.UnselectedColor"
-                    Value="#95FFFFFF" />
-        </Style>
-        
-        <Style x:Key="ItemShell"
-               TargetType="Element"
-               
-               BasedOn="{StaticResource BaseStyle}">
-                <Setter Property="Shell.BackgroundColor"
-                    Value="{StaticResource MainColor}" />
-        </Style>
-    </Shell.Resources>-->
 
     <Shell.Resources>
         <ResourceDictionary>
@@ -66,13 +40,6 @@
         ContentTemplate="{DataTemplate views:SincronizarPage}"
         Route="sincronizar" />
 
-    <!--<ShellContent x:Name="vistorias"
-        Shell.NavBarIsVisible="true"
-        Title="Vistorias"
-        Icon="vistoria.png"
-        ContentTemplate="{DataTemplate views:VistoriaIndexPage}"
-        Route="vistorias" />-->
-
     <FlyoutItem Title="Tabelas" FlyoutIcon="tabelas.png">
         <Tab Title="Acessorios" Icon="acessorios.png">
             <ShellContent
@@ -85,7 +52,7 @@
                 Title="Associados"
                 ContentTemplate="{DataTemplate views:AssociadoIndexPage}"
                 Route="associados" />
-        </Tab>        
+        </Tab>
     </FlyoutItem>
 
     <ShellContent x:Name="associado"

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TccApp.Enum
+namespace TccApp.Enums
 {
     public enum OrigemCadastroType
     {

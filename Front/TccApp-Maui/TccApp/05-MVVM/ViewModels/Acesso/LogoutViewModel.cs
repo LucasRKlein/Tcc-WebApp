@@ -59,7 +59,7 @@ namespace TccApp.ViewModels
             var listaVistorias = associadoService.GetAll();
             foreach (var item in listaVistorias)
             {
-                associadoService.DeleteAssociado(item);
+                //associadoService.DeleteAssociado(item);
             }
         }
 

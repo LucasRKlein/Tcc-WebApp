@@ -45,11 +45,11 @@ namespace TccApp.ViewModels
             await DeleteAsync();
         }
 
-        protected IRepository<TModel> Repo;
+        private readonly IRepository<TModel> _service;
 
-        public BaseItemViewModel(IRepository<TModel> repo)
+        public BaseItemViewModel(IRepository<TModel> service)
         {
-            Repo = repo;
+            _service = service;
             IsNewItem = false;
             EnabledDelete = false;
             //ActiveDelete = false;
@@ -82,13 +82,12 @@ namespace TccApp.ViewModels
         {
             EnabledDelete = true;
 
-            Model = Repo.Get(Guid.Parse(id));
+            Model = _service.Get(Guid.Parse(id));
         }
 
         protected virtual async Task GoToBackAsync()
         {
             await Shell.Current.GoToAsync($"..?goback_detail={string.Empty}");
-            //await Shell.Current.GoToAsync("..");
         }
 
         protected virtual bool ValidateToSave()
@@ -101,11 +100,11 @@ namespace TccApp.ViewModels
         {
             if (isNewItem)
             {
-                Repo.Create(Model);
+                _service.Create(Model);
             }
             else
             {
-                Repo.Update(Model);
+                _service.Update(Model);
             }
         }
 
@@ -121,7 +120,7 @@ namespace TccApp.ViewModels
             }
 
             SaveData();
-            await ShowMessage(Repo.Sucess, Repo.StatusMessage);
+            await ShowMessage(_service.Sucess, _service.StatusMessage);
 
             await Shell.Current.GoToAsync($"..?salvo={Model.Id}");
         }
@@ -139,7 +138,7 @@ namespace TccApp.ViewModels
 
         protected virtual void DeleteData()
         {
-            Repo.Delete(Model);
+            _service.Delete(Model);
         }
 
         protected async Task DeleteAsync()
@@ -151,7 +150,7 @@ namespace TccApp.ViewModels
 
             DeleteData();
 
-            //await ShowMessage(Repo.Sucess, "Registro excluído.");
+            //await ShowMessage(_service.Sucess, "Registro excluído.");
 
             await Shell.Current.GoToAsync($"..?deletado={Model.Id}");
         }

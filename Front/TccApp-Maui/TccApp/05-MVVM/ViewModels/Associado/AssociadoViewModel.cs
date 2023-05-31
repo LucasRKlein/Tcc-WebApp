@@ -1,6 +1,7 @@
 ﻿using TccApp.Domain.Interfaces;
-using TccApp.Enum;
+using TccApp.Enums;
 using TccApp.Models;
+using TccApp.Views;
 
 namespace TccApp.ViewModels
 {
@@ -25,41 +26,45 @@ namespace TccApp.ViewModels
 
         [ObservableProperty]
         SexoType sexo;
-        
+
         [ObservableProperty]
         DateTime? dataNascimento;
-        
+
         [ObservableProperty]
         string celular;
-        
+
         [ObservableProperty]
         string email;
-        
+
         [ObservableProperty]
         string ruaAvenida;
-        
+
         [ObservableProperty]
         string numero;
-        
+
         [ObservableProperty]
         string complemento;
-        
+
         [ObservableProperty]
         string bairro;
-        
+
         [ObservableProperty]
         string cep;
-        
+
         [ObservableProperty]
         string estadoNome;
-        
+
         [ObservableProperty]
         string cidadeNome;
 
-        // List<Veiculo> Veiculos;
+        [ObservableProperty]
+        StatusCadastroType statusCadastro;
 
-        StatusCadastroType StatusCadastro;
-        OrigemCadastroType OrigemCadastro;
+        [ObservableProperty]
+        OrigemCadastroType origemCadastro;
+
+        [ObservableProperty]
+        OrigemCadastroType statusRegistro;
         #endregion
 
         #region Utilizados em controles de tela
@@ -67,13 +72,22 @@ namespace TccApp.ViewModels
         string sexoSelecionado;
 
         public List<string> ListaSexo { get; set; }
+
+        List<VeiculoModel> Veiculos;
+
         #endregion
 
-        public AssociadoViewModel(IRepository<AssociadoModel> repo) : base(repo)
+        [RelayCommand]
+        public async Task Veiculo()
+        {
+            await VeiculoAsync();
+        }
+
+        public AssociadoViewModel(IAssociadoService service) : base(service)
         {
             Title = "Associado";
             //ActiveDelete = true;
-            
+
             PrepareView();
         }
 
@@ -88,6 +102,7 @@ namespace TccApp.ViewModels
             base.CreateNewModel();
             Model.StatusCadastro = StatusCadastroType.PreCadastro;
             Model.OrigemCadastro = OrigemCadastroType.App;
+            Model.StatusRegistro = StatusRegistroType.Pendente;
             Model.Sexo = SexoType.NaoDefinido;
         }
 
@@ -111,7 +126,7 @@ namespace TccApp.ViewModels
             Cep = Model.Cep;
             EstadoNome = Model.EstadoNome;
             CidadeNome = Model.CidadeNome;
-            
+
             SetObjectsViewControls();
         }
 
@@ -145,7 +160,7 @@ namespace TccApp.ViewModels
             Model.Cep = Cep;
             Model.EstadoNome = EstadoNome;
             Model.CidadeNome = CidadeNome;
-        }        
+        }
 
         protected override bool ValidateToSave()
         {
@@ -165,6 +180,25 @@ namespace TccApp.ViewModels
             }
 
             return true;
+        }
+
+        private async Task VeiculoAsync()
+        {
+            SetModelFromView();
+            SaveData();
+
+            try
+            {
+                await Shell.Current.GoToAsync($"{nameof(VeiculoIndexPage)}?id={Model.Id}");
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        protected override async Task GoToBackAsync()
+        {
+            await Shell.Current.GoToAsync($"{nameof(AssociadoIndexPage)}?goback_detail={string.Empty}");
         }
     }
 }

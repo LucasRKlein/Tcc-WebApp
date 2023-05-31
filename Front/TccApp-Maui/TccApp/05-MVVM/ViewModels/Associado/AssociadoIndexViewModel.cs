@@ -6,8 +6,7 @@ namespace TccApp.ViewModels
 {
     public partial class AssociadoIndexViewModel : BaseIndexViewModel<AssociadoModel>
     {
-
-        public AssociadoIndexViewModel(IRepository<AssociadoModel> repo) : base(repo)
+        public AssociadoIndexViewModel(IAssociadoService service) : base(service)
         {
             Title = "Associados";
         }

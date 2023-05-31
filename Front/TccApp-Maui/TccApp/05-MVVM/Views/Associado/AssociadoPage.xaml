@@ -84,10 +84,16 @@
                 </VerticalStackLayout>
             </Grid>
 
+            <Grid ColumnDefinitions=".50*" ColumnSpacing="5">
+                <Button x:Name="BtnVeiculos" 
+                                Text="Veiculos"
+                                Style="{StaticResource ButtonAcao}"
+                                Command="{Binding VeiculoCommand}"/>
+            </Grid>
+
             <BoxView Color="Gray"
                          HeightRequest="1"
                          HorizontalOptions="Fill">
-
             </BoxView>
 
 

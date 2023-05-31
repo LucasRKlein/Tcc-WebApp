@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccApp.Views.VistoriaImagemIndexPage"
+             xmlns:viewmodel="clr-namespace:TccApp.ViewModels"
+             xmlns:model="clr-namespace:TccApp.Models"
+             x:DataType="viewmodel:VistoriaImagemIndexViewModel"
+             Title="Imagem Vistoria">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" />
+    </Shell.BackButtonBehavior>
+
+    <Grid RowDefinitions=".90*,.10*"
+          RowSpacing="5">
+
+        <RefreshView
+            Grid.RowSpan="2"
+            Command="{Binding GetListaRefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            <ContentView>
+                <CollectionView 
+                    EmptyView="Não há registros"
+                    ItemsSource="{Binding Lista}"
+                    SelectionMode="None"
+                    ItemsLayout="VerticalGrid, 2">
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Grid Grid.ColumnSpan="2">
+                                <Label StyleClass="NoDataText" Text="Não há registros click em Novo Registro para adicionar..." />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:VistoriaImagemModel">
+                            <Grid Padding="5">
+                                <Frame HeightRequest="150" Style="{StaticResource CardView}" Margin="5">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VistoriaImagemIndexViewModel}}, Path=DeleteItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Image Source="{Binding ImagemUrl}" 
+                                           HeightRequest="145" 
+                                           Aspect="AspectFit"/>
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ContentView>
+        </RefreshView>
+
+        <Grid ColumnDefinitions=".50*,.50*" Grid.Row="1">
+            <Button Grid.Column="0"
+                    Margin="20"
+                    Command="{Binding CreateNewItemCommand}"
+                    IsEnabled="{Binding IsNotBusy}"
+                    Style="{StaticResource ButtonOutline}"
+                    Text="Novo Item" />
+
+            <Button Margin="10" Grid.Column="1"
+                    Command="{Binding GoBackCommand}"
+                    IsEnabled="{Binding IsNotBusy}"
+                    Style="{StaticResource ButtonOutline}"
+                    Text="Voltar" />
+        </Grid>
+
+
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsRefreshing}"
+            IsVisible="{Binding IsRefreshing}"
+            Color="{StaticResource PrimaryColor}"
+            VerticalOptions="Center" />
+    </Grid>
+</ContentPage>
