@@ -45,8 +45,8 @@
         <td>{{getStatusCadastroTypeNome(associado.statusCadastro)}}</td>
         <td>{{associado.nome}}</td>
         <td>{{associado.email}}</td>
-        <td>{{associado.cidadeNome}}</td>
         <td>{{associado.estadoNome}}</td>
+        <td>{{associado.cidadeNome}}</td>
         <td>
           <button type="button" class="btn btn-danger btn-lg" tooltip="Excluir"
             (click)="openModal($event, template, associado.id)">

@@ -84,11 +84,13 @@ namespace Tcc.API
             services.AddScoped<IUtil, Util>();
             services.AddScoped<IAssociadoService, AssociadoService>();
             services.AddScoped<IVeiculoService, VeiculoService>();
+            services.AddScoped<IVistoriaImagemService, VistoriaImagemService>();
 
             services.AddScoped<IGeralPersist, GeralPersist>();
             services.AddScoped<IUserPersist, UserPersist>();
             services.AddScoped<IAssociadoPersist, AssociadoPersist>();
             services.AddScoped<IVeiculoPersist, VeiculoPersist>();
+            services.AddScoped<IVistoriaImagemPersist, VistoriaImagemPersist>();
 
             services.AddCors();
             services.AddSwaggerGen(options =>

@@ -15,15 +15,37 @@ export class VeiculoService {
     return this.http.get<Veiculo[]>(`${this.baseURL}/${associadoId}`).pipe(take(1));
   }
 
-  public saveVeiculo(associadoId: string, veiculos: Veiculo[]): Observable<Veiculo[]> {
+  public getById(id: string): Observable<Veiculo> {
+    return this.http.get<Veiculo>(`${this.baseURL}/GetVeiculoById/${id}`).pipe(take(1));
+  }
+
+  public post(veiculo: Veiculo): Observable<Veiculo> {
     return this.http
-      .put<Veiculo[]>(`${this.baseURL}/${associadoId}`, veiculos)
+      .post<Veiculo>(this.baseURL, veiculo)
       .pipe(take(1));
   }
 
-  public deleteVeiculo(associadoId: string, veiculoId: string): Observable<any> {
+  public put(veiculo: Veiculo): Observable<Veiculo> {
+    debugger
     return this.http
-      .delete(`${this.baseURL}/${associadoId}/${veiculoId}`)
+      .put<Veiculo>(`${this.baseURL}/${veiculo.id}`, veiculo)
+      .pipe(take(1));
+  }
+
+  public edit(veiculo: Veiculo): Observable<Veiculo> {
+    debugger
+    return this.http
+      .post<Veiculo>(`${this.baseURL}/edit/${veiculo.id}`, veiculo)
+      .pipe(take(1));
+  }
+
+  public deleteVeiculo(id: string): Observable<any> {
+    return this.http.delete(`${this.baseURL}/${id}`).pipe(take(1));
+  }
+
+  public saveVeiculo(veiculoId: string, veiculos: Veiculo[]): Observable<Veiculo[]> {
+    return this.http
+      .put<Veiculo[]>(`${this.baseURL}/${veiculoId}`, veiculos)
       .pipe(take(1));
   }
 }

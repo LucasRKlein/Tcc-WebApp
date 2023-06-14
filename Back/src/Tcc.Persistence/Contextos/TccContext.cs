@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Tcc.Domain;
 using Tcc.Domain.Identity;
+using Tcc.Persistence.Mappings;
 
 namespace Tcc.Persistence.Contextos
 {
@@ -14,7 +15,7 @@ namespace Tcc.Persistence.Contextos
         public TccContext(DbContextOptions<TccContext> options) : base(options) { }
         public DbSet<Associado> Associados { get; set; }
         public DbSet<Veiculo> Veiculos { get; set; }
-
+        public DbSet<VistoriaImagem> VistoriaImagem { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,23 +35,21 @@ namespace Tcc.Persistence.Contextos
                         .HasForeignKey(ur => ur.UserId)
                         .IsRequired();
                 }
-            );
-
-            //modelBuilder.Entity<PalestranteEvento>()
-            //    .HasKey(PE => new {PE.EventoId, PE.PalestranteId});
+            );            
 
             modelBuilder.Entity<Associado>()
                 .HasMany(e => e.Veiculos)
                 .WithOne(rs => rs.Associado)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //modelBuilder.Entity<Palestrante>()
-            //    .HasMany(e => e.RedesSociais)
-            //    .WithOne(rs => rs.Palestrante)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
+            modelBuilder.Entity<Veiculo>()
+                .HasMany(e => e.ListaImagens)
+                .WithOne(rs => rs.Veiculo)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.ApplyConfiguration(new AssociadoMap());
+            modelBuilder.ApplyConfiguration(new VeiculoMap());
+            modelBuilder.ApplyConfiguration(new VistoriaImagemMap());
         }
     }
 }

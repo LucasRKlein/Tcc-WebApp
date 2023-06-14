@@ -1,12 +1,13 @@
 ﻿using System;
 using Tcc.Application.Dtos;
+using Tcc.Application.Dtos.Base;
+using Tcc.Domain.Base;
 using Tcc.Domain.Enum;
 
 namespace Tcc.Application
 {
-    public class VeiculoDto
+    public class VeiculoDto : BaseDto
     {
-        public Guid Id { get; set; }
         public string Placa { get; set; }
         public string MarcaModelo { get; set; }
         public string AnoModelo { get; set; }

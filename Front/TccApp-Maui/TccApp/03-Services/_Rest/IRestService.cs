@@ -13,7 +13,14 @@ namespace TccApp.Services
         Task<List<AssociadoModel>> GetAssociadosAsync();
         //Task<List<CategoriaVistoriaModel>> GetCategoriasAsync();
 
-        Task<BackResponseDto<AssociadoModel>> PostAssociadoAsync(AssociadoModel model);
-        //Task<BackResponseDto<VistoriaAcessorioModel>> PostVistoriaAcessorioAsync(VistoriaAcessorioModel model);        
+        //Task<BackResponseDto<AssociadoModel>> PostAssociadoAsync(AssociadoModel model);
+        Task<AssociadoModel> PostAssociadoAsync(AssociadoModel model);
+        
+        //Task<BackResponseDto<VeiculoModel>> PostVeiculoAsync(VeiculoModel model);
+        Task<VeiculoModel> PostVeiculoAsync(VeiculoModel model);
+
+        //Task<BackResponseDto<VistoriaImagemModel>> PostVistoriaImagemAsync(VistoriaImagemModel model);
+        Task<VistoriaImagemModel> PostVistoriaImagemAsync(VistoriaImagemModel model);
+        Task<VistoriaImagemModel> UploadImagemByVistoriaImagemIdAsync(VistoriaImagemModel model);
     }
 }

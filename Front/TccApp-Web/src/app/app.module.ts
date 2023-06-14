@@ -39,6 +39,9 @@ import { HomeComponent } from './components/home/home.component';
 import { AssociadoComponent } from './components/associado/associado.component';
 import { AssociadoDetalheComponent } from './components/associado/associado-detalhe/associado-detalhe.component';
 import { VeiculoService } from './services/veiculo.service';
+import { VeiculoFormComponent } from './components/associado/associado-detalhe/veiculo-form/veiculo-form.component';
+import { VistoriaImagemComponent } from './components/associado/associado-detalhe/veiculo-form/vistoria-imagem/vistoria-imagem.component';
+import { VistoriaImagemService } from './services/vistoria-imagem.service';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -56,7 +59,9 @@ defineLocale('pt-br', ptBrLocale);
     LoginComponent,
     RegistrationComponent,
     AssociadoComponent,
-    AssociadoDetalheComponent
+    AssociadoDetalheComponent,
+    VeiculoFormComponent,
+    VistoriaImagemComponent
   ],
   imports: [
     BrowserModule,
@@ -84,6 +89,7 @@ defineLocale('pt-br', ptBrLocale);
   providers: [
     AccountService,
     VeiculoService,
+    VistoriaImagemService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

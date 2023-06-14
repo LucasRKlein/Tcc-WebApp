@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using TccApp.Domain.Consts;
 using TccApp.Domain.Dtos;
 using TccApp.Domain.Models;
@@ -139,7 +140,8 @@ namespace TccApp.Services
             return await GetTabelaModelAsync<AssociadoModel>("GetAssociados");
         }
 
-        public async Task<BackResponseDto<AssociadoModel>> PostAssociadoAsync(AssociadoModel model)
+        //public async Task<BackResponseDto<AssociadoModel>> PostAssociadoAsync(AssociadoModel model)
+        public async Task<AssociadoModel> PostAssociadoAsync(AssociadoModel model)
         {
             //return await PostCreateModelAsync("Associado", model);
 
@@ -148,7 +150,44 @@ namespace TccApp.Services
             httpClient.DefaultRequestHeaders.Clear();
             httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token}");
 
-            BackResponseDto<AssociadoModel> dataResponse;
+            //BackResponseDto<AssociadoModel> dataResponse;
+            AssociadoModel dataResponse;
+            try
+            {
+                var response = await httpClient.PostAsJsonAsync(url, model);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var responseStream = await response.Content.ReadAsStreamAsync())
+                    {
+                        // dataResponse = await JsonSerializer.DeserializeAsync<BackResponseDto<AssociadoModel>>(responseStream, serializerOptions);
+                        dataResponse = await JsonSerializer.DeserializeAsync<AssociadoModel>(responseStream, serializerOptions);
+                    }
+
+                    return dataResponse;
+                }
+
+                Console.WriteLine($"StatusCode: {response.StatusCode}, Mensagem : {response.ReasonPhrase}");
+                return null;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"StatusCode: {ex.StatusCode}, Mensagem:{ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<VeiculoModel> PostVeiculoAsync(VeiculoModel model)
+        {
+            //return await PostCreateModelAsync("Veiculo", model);
+
+            var url = $"{ConfigApp.ApiUrl}/Veiculo";
+
+            httpClient.DefaultRequestHeaders.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token}");
+
+            //BackResponseDto<VeiculoModel> dataResponse;
+            VeiculoModel dataResponse;
             try
             {
                 var response = await httpClient.PostAsJsonAsync(url, model);
@@ -158,12 +197,108 @@ namespace TccApp.Services
 
                     using (var responseStream = await response.Content.ReadAsStreamAsync())
                     {
-                        dataResponse = await JsonSerializer.DeserializeAsync<BackResponseDto<AssociadoModel>>(responseStream, serializerOptions);
+                        //dataResponse = await JsonSerializer.DeserializeAsync<BackResponseDto<VeiculoModel>>(responseStream, serializerOptions);
+                        dataResponse = await JsonSerializer.DeserializeAsync<VeiculoModel>(responseStream, serializerOptions);
                     }
 
                     return dataResponse;
                 }
 
+                Console.WriteLine($"StatusCode: {response.StatusCode}, Mensagem : {response.ReasonPhrase}");
+                return null;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"StatusCode: {ex.StatusCode}, Mensagem:{ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<VistoriaImagemModel> PostVistoriaImagemAsync(VistoriaImagemModel model)
+        {
+            //return await PostCreateModelAsync("VistoriaImagem", model);
+
+            var url = $"{ConfigApp.ApiUrl}/VistoriaImagem";
+
+            httpClient.DefaultRequestHeaders.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token}");
+
+            //BackResponseDto<VistoriaImagemModel> dataResponse;
+            VistoriaImagemModel dataResponse;
+            try
+            {
+                var response = await httpClient.PostAsJsonAsync(url, model);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    using (var responseStream = await response.Content.ReadAsStreamAsync())
+                    {
+                        dataResponse = await JsonSerializer.DeserializeAsync<VistoriaImagemModel>(responseStream, serializerOptions);
+                    }
+
+                    return dataResponse;
+                }
+
+                Console.WriteLine($"StatusCode: {response.StatusCode}, Mensagem : {response.ReasonPhrase}");
+                return null;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"StatusCode: {ex.StatusCode}, Mensagem:{ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<VistoriaImagemModel> UploadImagemByVistoriaImagemIdAsync(VistoriaImagemModel model)
+        {
+            var url = $"{ConfigApp.ApiUrl}/VistoriaImagem/upload-image/{model.Id}";
+
+            httpClient.DefaultRequestHeaders.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token}");
+
+            VistoriaImagemModel dataResponse;
+            try
+            {
+                // Crie um objeto MultipartFormDataContent para enviar a imagem como parte da solicitação
+                var content = new MultipartFormDataContent();
+
+                //Pega a imagem local e transforma em array de bytes
+                string localFilePath = Path.Combine(FileSystem.AppDataDirectory, "Imagens", model.ImagemUrl);
+                FileStream stream = File.OpenRead(localFilePath);
+
+                byte[] byteArr;
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    stream.CopyTo(memoryStream);
+                    byteArr = memoryStream.ToArray();
+                }
+
+                // Crie um ByteArrayContent para representar o arquivo/imagem
+                var imagemContent = new ByteArrayContent(byteArr);
+                imagemContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg"); // Ou outro tipo de mídia correspondente ao formato da imagem
+
+                // Adicione o conteúdo da imagem ao objeto MultipartFormDataContent
+                content.Add(imagemContent, "arquivo", model.ImagemUrl+ ".jpg"); // Especifique o nome do arquivo que será usado no servidor
+
+                // Faça a chamada HTTP POST para o endpoint "upload-image/{vistoriaImagemId}"
+                var response = await httpClient.PostAsync(url, content);
+
+                // Verifique a resposta do servidor e faça o tratamento necessário
+                if (response.IsSuccessStatusCode)
+                {
+
+                    using (var responseStream = await response.Content.ReadAsStreamAsync())
+                    {
+                        dataResponse = await JsonSerializer.DeserializeAsync<VistoriaImagemModel>(responseStream, serializerOptions);
+                    }
+
+                    return dataResponse;
+                }
+                else
+                {
+                }
                 Console.WriteLine($"StatusCode: {response.StatusCode}, Mensagem : {response.ReasonPhrase}");
                 return null;
             }

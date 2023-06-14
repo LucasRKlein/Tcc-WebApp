@@ -12,6 +12,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import { AssociadoComponent } from './components/associado/associado.component';
 import { AssociadoDetalheComponent } from './components/associado/associado-detalhe/associado-detalhe.component';
+import { VeiculoFormComponent } from './components/associado/associado-detalhe/veiculo-form/veiculo-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -29,6 +30,11 @@ const routes: Routes = [
       { path: 'associados', component: AssociadoComponent },
       { path: 'associados/detalhe/:id', component: AssociadoDetalheComponent },
       { path: 'associados/detalhe', component: AssociadoDetalheComponent },
+      //#endregion
+
+      //#region Veiculo Routes
+      { path: 'veiculo/:associadoId/:id', component: VeiculoFormComponent },
+      { path: 'veiculo/:associadoId', component: VeiculoFormComponent },
       //#endregion
 
       { path: 'eventos', redirectTo: 'eventos/lista' },

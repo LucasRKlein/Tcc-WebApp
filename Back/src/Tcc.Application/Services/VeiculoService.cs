@@ -2,8 +2,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Tcc.Application.Dtos;
 using Tcc.Application.Interfaces;
 using Tcc.Domain;
+using Tcc.Persistence;
 using Tcc.Persistence.Interface;
 
 namespace Tcc.Application.Services
@@ -76,11 +78,59 @@ namespace Tcc.Application.Services
             }
         }
 
-        public async Task<bool> DeleteVeiculo(Guid associadoId, Guid veiculoId)
+        public async Task<VeiculoDto> CreateVeiculo(VeiculoDto model)
         {
             try
             {
-                var veiculo = await _veiculoPersist.GetVeiculoByIdsAsync(associadoId, veiculoId);
+                var veiculo = _mapper.Map<Veiculo>(model);
+
+                _geralPersist.Add<Veiculo>(veiculo);
+
+                if (await _geralPersist.SaveChangesAsync())
+                {
+                    var veiculoRetorno = await _veiculoPersist.GetByIdAsync(veiculo.Id);
+
+                    return _mapper.Map<VeiculoDto>(veiculoRetorno);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<VeiculoDto> UpdateVeiculo(Guid veiculoId, VeiculoDto model)
+        {
+            try
+            {
+                var veiculo = await _veiculoPersist.GetByIdAsync(veiculoId);
+                if (veiculo == null) return null;
+                model.Id = veiculo.Id;
+
+                _mapper.Map(model, veiculo);
+
+                _geralPersist.Update<Veiculo>(veiculo);
+
+                if (await _geralPersist.SaveChangesAsync())
+                {
+                    var veiculoRetorno = await _veiculoPersist.GetByIdAsync(veiculo.Id);
+
+                    return _mapper.Map<VeiculoDto>(veiculoRetorno);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<bool> DeleteVeiculo(Guid veiculoId)
+        {
+            try
+            {
+                var veiculo = await _veiculoPersist.GetByIdAsync(veiculoId);
                 if (veiculo == null) throw new Exception("Veiculo para delete não encontrado.");
 
                 _geralPersist.Delete<Veiculo>(veiculo);
@@ -90,7 +140,7 @@ namespace Tcc.Application.Services
             {
                 throw new Exception(ex.Message);
             }
-        }
+        }        
 
         public async Task<VeiculoDto[]> GetVeiculosByAssociadoIdAsync(Guid associadoId)
         {
@@ -114,6 +164,23 @@ namespace Tcc.Application.Services
             try
             {
                 var veiculo = await _veiculoPersist.GetVeiculoByIdsAsync(associadoId, veiculoId);
+                if (veiculo == null) return null;
+
+                var resultado = _mapper.Map<VeiculoDto>(veiculo);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<VeiculoDto> GetByIdAsync(Guid veiculoId)
+        {
+            try
+            {
+                var veiculo = await _veiculoPersist.GetByIdAsync(veiculoId);
                 if (veiculo == null) return null;
 
                 var resultado = _mapper.Map<VeiculoDto>(veiculo);

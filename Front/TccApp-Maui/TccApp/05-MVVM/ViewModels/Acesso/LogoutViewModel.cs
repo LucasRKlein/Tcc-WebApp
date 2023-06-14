@@ -44,8 +44,8 @@ namespace TccApp.ViewModels
             {
                 IsBusy = true;
 
-                DeleteAssociados();
-                DeleteTabelas();
+                //DeleteAssociados();
+                //DeleteTabelas();
                 DeleteUsuario();
 
                 IsBusy = false;

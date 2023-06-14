@@ -73,7 +73,6 @@ namespace TccApp.ViewModels
         {
             associadoId = Guid.Parse(id);
 
-
             GetLista();
         }
 
@@ -133,7 +132,7 @@ namespace TccApp.ViewModels
         {
             // preencho o DTO para mandar para a tela de veiculo
             veiculoDto = new VeiculoDto();
-            veiculoDto.VeiculoId = Guid.Empty;
+            //veiculoDto.VeiculoId = Guid.Empty;
             veiculoDto.AssociadoId = associadoId;
 
             await Shell.Current.GoToAsync($"{nameof(VeiculoPage)}", true, new Dictionary<string, object>

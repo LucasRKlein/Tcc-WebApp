@@ -54,6 +54,10 @@ namespace TccApp.ViewModels
 
         [ObservableProperty]
         OrigemCadastroType origemCadastro;
+        
+        [ObservableProperty]
+        OrigemCadastroType statusRegistro;
+
 
         [RelayCommand]
         public async Task ImagemVeiculo()
@@ -94,7 +98,7 @@ namespace TccApp.ViewModels
         {
             veiculoDto = dto;
 
-            if (dto.VeiculoId.ToString() == string.Empty)
+            if (dto.VeiculoId.ToString() == string.Empty || dto.VeiculoId == Guid.Empty)
             {
                 CreateNewModel();
             }
@@ -111,6 +115,8 @@ namespace TccApp.ViewModels
             Model = new VeiculoModel();
             Model.StatusCadastro = StatusCadastroType.PreCadastro;
             Model.OrigemCadastro = OrigemCadastroType.App;
+            Model.StatusRegistro = StatusRegistroType.Pendente;
+
         }
 
         private void EditModel(Guid id)
@@ -156,6 +162,7 @@ namespace TccApp.ViewModels
             model.DataInclusao = new DateTime();
             model.StatusCadastro = StatusCadastroType.PreCadastro;
             model.OrigemCadastro = OrigemCadastroType.App;
+            model.StatusRegistro = StatusRegistroType.Pendente;
 
             service.Create(model);
 
@@ -187,7 +194,6 @@ namespace TccApp.ViewModels
         {
             //await Shell.Current.GoToAsync($"..?id={veiculoDto.AssociadoId}");
             await Shell.Current.GoToAsync($"{nameof(VeiculoIndexPage)}?id={veiculoDto.AssociadoId}");
-
         }
 
         private async Task AddImagemAsync()

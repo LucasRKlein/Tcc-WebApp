@@ -22,7 +22,7 @@ namespace Tcc.API.Controllers
         private readonly IUtil _util;
         private readonly IAccountService _accountService;
 
-        private readonly string _destino = "Images";
+        private readonly string _destino = "Associados";
 
         public AssociadoController(IAssociadoService associadoService, IUtil util, IAccountService accountService)
         {
@@ -67,6 +67,31 @@ namespace Tcc.API.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
                     $"Erro ao tentar recuperar associado. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpPost("upload-image/{associadoId}")]
+        public async Task<IActionResult> UploadImage(Guid associadoId)
+        {
+            try
+            {
+                var associado = await _associadoService.GetAssociadoByIdAsync(associadoId);
+                if (associado == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if(file.Length > 0)
+                {
+                    _util.DeleteImage(associado.ImagemURL, _destino);
+                    associado.ImagemURL = await _util.SaveImage(file, _destino);
+                }
+                var associadoRetorno = await _associadoService.UpdateAssociado(associadoId, associado);
+
+                return Ok(associadoRetorno);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar adicionar associados. Erro: {ex.Message}");
             }
         }
 

@@ -26,17 +26,17 @@ export class AssociadoDetalheComponent implements OnInit {
   associadoId: string = '';
   associado = {} as Associado;
   form: FormGroup;
+  veiculoAtualId: string = '';
   veiculoAtual = { id: '', marcaModelo: '', indice: 0 };
   estadoSalvar = 'post';
   imagemURL = 'assets/img/upload.png';
   file: File;
 
+
+  listaVeiculos: Veiculo[] = [];
+
   get modoEditar(): boolean {
     return this.estadoSalvar === 'put';
-  }
-
-  get veiculos(): FormArray {
-    return this.form.get('veiculos') as FormArray;
   }
 
   get f(): any {
@@ -53,16 +53,16 @@ export class AssociadoDetalheComponent implements OnInit {
   }
 
   sexoTypes = [
-    { text: 'Não Definido', value: SexoType.NaoDefinido},
-    { text: 'Masculino', value: SexoType.Masculino},
-    { text: 'Feminino', value: SexoType.Feminino}
+    { text: 'Não Definido', value: SexoType.NaoDefinido },
+    { text: 'Masculino', value: SexoType.Masculino },
+    { text: 'Feminino', value: SexoType.Feminino }
   ];
 
   statusCadastroTypes = [
     { text: 'Aprovado', value: StatusCadastroType.Aprovado, color: 'bg-green', icon: 'pending' },
     { text: 'Cancelado', value: StatusCadastroType.Cancelado, color: 'bg-red', icon: 'done' },
     { text: 'Pré Cadastro', value: StatusCadastroType.PreCadastro, color: 'bg-orange', icon: 'close' }
-  ]
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -86,9 +86,7 @@ export class AssociadoDetalheComponent implements OnInit {
   }
 
   public async carregarAssociado(): Promise<void> {
-    // this.associadoId =+ this.activatedRouter.snapshot.paramMap.get('id');
     this.associadoId = this.activatedRouter.snapshot.paramMap.get('id');
-    console.log(this.form)
     this.form = null
     if (this.associadoId !== null && this.associadoId !== '') {
       this.spinner.show();
@@ -147,7 +145,7 @@ export class AssociadoDetalheComponent implements OnInit {
       imagemUrl: [model.imagemUrl],
       cpf: [model.cpf],
       sexo: [model.sexo],
-      dataNascimento: [model.dataNascimento],
+      dataNascimento: [this.utilService.fromJsonDate(model.dataNascimento)],
       celular: [model.celular],
       email: [model.email, Validators.email],
       ruaAvenida: [model.ruaAvenida, Validators.required],
@@ -203,6 +201,25 @@ export class AssociadoDetalheComponent implements OnInit {
     this.spinner.hide();
   }
 
+  async autosave(): Promise<boolean> {
+    if (this.form.valid) {
+      this.associado = this.estadoSalvar === 'post' ? { ...this.form.value } : { id: this.associado.id, ...this.form.value };
+      this.associadoService[this.estadoSalvar](this.associado).subscribe((associadoRetorno: Associado) => {
+        this.toastr.success('Associado salvo com Sucesso!', 'Sucesso');
+        return true;
+      },
+        (error: any) => {
+          console.error(error);
+          this.spinner.hide();
+          this.toastr.error('Error ao salvar associado', 'Erro');
+        },
+        () => this.spinner.hide()
+      );
+    } else {
+      return false;
+    }
+  }
+
   onFileChange(ev: any): void {
     const reader = new FileReader();
 
@@ -228,76 +245,57 @@ export class AssociadoDetalheComponent implements OnInit {
     ).add(() => this.spinner.hide());
   }
 
-  public carregarVeiculos(): void {
-    this.veiculoService.getVeiculosByAssociadoId(this.associadoId).subscribe((veiculosRetorno: Veiculo[]) => {
-      veiculosRetorno.forEach((veiculo) => {
-        this.veiculos.push(this.criarVeiculo(veiculo));
-      });
-    },
-      (error: any) => {
-        this.toastr.error('Erro ao tentar carregar veiculos', 'Erro');
-        console.error(error);
-      }
-    ).add(() => this.spinner.hide());
-  }
+  public async carregarVeiculos(): Promise<void> {
+    let retorno = await this.veiculoService.getVeiculosByAssociadoId(this.associadoId).toPromise();
 
-  adicionarVeiculo(): void {
-    this.veiculos.push(this.criarVeiculo({ id: this.utilService.newGuid() } as Veiculo));
-  }
-
-  criarVeiculo(veiculo: Veiculo): FormGroup {
-    return this.fb.group({
-      id: [veiculo.id],
-      placa: [veiculo.placa, Validators.required],
-      marcaModelo: [veiculo.marcaModelo, Validators.required],
-      anoModelo: [veiculo.anoModelo, Validators.required],
-      valorFipe: [veiculo.valorFipe, Validators.required],
-    });
-  }
-
-  public salvarVeiculos(): void {
-    if (this.form.controls.veiculos.valid) {
-      this.spinner.show();
-      this.veiculoService.saveVeiculo(this.associadoId, this.form.value.veiculos).subscribe(() => {
-        this.toastr.success('Veiculos salvos com Sucesso!', 'Sucesso!');
-      },
-        (error: any) => {
-          this.toastr.error('Erro ao tentar salvar veiculos.', 'Erro');
-          console.error(error);
-        }
-      ).add(() => this.spinner.hide());
+    if (retorno.length > 0) {
+      this.listaVeiculos = [...retorno];
+      this.toastr.success('Veiculos carregados', 'Sucesso');
+    } else if (retorno.length = 0) {
+      this.toastr.info('Associado não possui Veiculos', 'Atenção');
     }
   }
 
-  public removerVeiculo(template: TemplateRef<any>, indice: number): void {
-    this.veiculoAtual.id = this.veiculos.get(indice + '.id').value;
-    this.veiculoAtual.marcaModelo = this.veiculos.get(indice + '.marcaModelo').value;
-    this.veiculoAtual.indice = indice;
+  public async adicionarVeiculo() {
+    await this.autosave();
+    this.router.navigate([`veiculo/${this.associadoId}`]);
+  }
 
+  public async editVeiculo(veiculoId: string) {
+    await this.autosave();
+    this.router.navigate([`veiculo/${this.associadoId}/${veiculoId}`]);
+  }
+  
+  openModal(event: any, template: TemplateRef<any>, veiculoId: string): void {
+    event.stopPropagation();
+    this.veiculoAtualId = veiculoId;
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
   }
 
-  confirmDeleteVeiculo(): void {
+  async confirmDeleteVeiculo() {
     this.modalRef.hide();
     this.spinner.show();
 
-    this.veiculoService
-      .deleteVeiculo(this.associadoId, this.veiculoAtual.id)
-      .subscribe(() => {
-        this.toastr.success('Veiculo deletado com sucesso', 'Sucesso');
-        this.veiculos.removeAt(this.veiculoAtual.indice);
-      },
-        (error: any) => {
-          this.toastr.error(
-            `Erro ao tentar deletar o Veiculo ${this.veiculoAtual.id}`,
-            'Erro'
-          );
-          console.error(error);
-        }
-      ).add(() => this.spinner.hide());
+    let retorno = await this.veiculoService.deleteVeiculo(this.veiculoAtualId).toPromise();
+    if(retorno !== null) {
+      this.toastr.success('Veiculo deletado com sucesso', 'Sucesso');
+      this.listaVeiculos.filter(x => x.id !== this.veiculoAtualId);
+      // this.listaVeiculos = await this.veiculoService.getVeiculosByAssociadoId(this.associadoId).toPromise();
+    }
+
+    this.spinner.hide();
+    this.veiculoAtualId = '';
   }
 
   declineDeleteVeiculo(): void {
     this.modalRef.hide();
+  }
+
+  getStatusCadastroTypeNome(tipo: StatusCadastroType): string {
+    return this.statusCadastroTypes.find(x => x.value === tipo)?.text;
+  }
+  
+  getStatusCadastroTypeColor(tipo: StatusCadastroType): string {
+    return this.statusCadastroTypes.find(x => x.value === tipo)?.color;
   }
 }

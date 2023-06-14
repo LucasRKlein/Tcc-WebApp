@@ -55,7 +55,7 @@
         <div *ngIf="f.phoneNumber.errors.required">Telefone é obrigatório</div>
       </div>
     </div>
-    <div class="form-group col-sm">
+    <!-- <div class="form-group col-sm">
       <label>Função</label>
       <select formControlName="funcao" class="form-control"
         [ngClass]="{ 'is-invalid': f.funcao.errors && f.funcao.touched }">
@@ -65,7 +65,7 @@
       <div *ngIf="f.funcao.errors && f.funcao.touched" class="invalid-feedback">
         <div *ngIf="f.funcao.errors.required">função é obrigatório é obrigatório</div>
       </div>
-    </div>
+    </div> -->
     <div class="form-group col-12">
       <label>Descrição</label>
       <input type="text" formControlName="descricao" class="form-control"

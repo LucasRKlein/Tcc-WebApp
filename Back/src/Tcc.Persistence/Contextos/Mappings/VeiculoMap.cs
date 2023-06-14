@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tcc.Domain;
 
-namespace Tcc.Persistence.Contextos.Mappings
+namespace Tcc.Persistence.Mappings
 {
     public class VeiculoMap : IEntityTypeConfiguration<Veiculo>
     {

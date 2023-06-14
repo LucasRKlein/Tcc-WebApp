@@ -40,7 +40,7 @@
         ContentTemplate="{DataTemplate views:SincronizarPage}"
         Route="sincronizar" />
 
-    <FlyoutItem Title="Tabelas" FlyoutIcon="tabelas.png">
+    <!--FlyoutItem Title="Tabelas" FlyoutIcon="tabelas.png">
         <Tab Title="Acessorios" Icon="acessorios.png">
             <ShellContent
                 Title="Acessorios"
@@ -53,7 +53,7 @@
                 ContentTemplate="{DataTemplate views:AssociadoIndexPage}"
                 Route="associados" />
         </Tab>
-    </FlyoutItem>
+    </FlyoutItem>-->
 
     <ShellContent x:Name="associado"
         Shell.NavBarIsVisible="true"

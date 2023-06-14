@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TccApp.Domain.Dtos;
 using TccApp.Domain.Interfaces;
+using TccApp.Enums;
 using TccApp.Models;
 
 namespace TccApp.ViewModels
@@ -67,6 +68,7 @@ namespace TccApp.ViewModels
             var model = new VistoriaImagemModel();
             model.VeiculoId = veiculoDto.VeiculoId;
             model.ImagemUrl = imagemUrl;
+            model.StatusRegistro = StatusRegistroType.Pendente;
 
             service.Create(model);
 

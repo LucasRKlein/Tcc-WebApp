@@ -7,9 +7,9 @@
     <Grid RowDefinitions="*,Auto"
           RowSpacing="0">
         <Image
-            Source="logo.png"
+            Source="tcc_logo2.jpg"
             SemanticProperties.Description="Logo do sistema"
-            HeightRequest="450"
+            HeightRequest="400"
             VerticalOptions="Center"
             HorizontalOptions="Center" />
         <Button Grid.Row="1"

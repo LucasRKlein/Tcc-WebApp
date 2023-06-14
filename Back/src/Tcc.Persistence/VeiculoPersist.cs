@@ -37,5 +37,13 @@ namespace Tcc.Persistence
 
             return await query.ToArrayAsync();
         }
+
+        public async Task<Veiculo> GetByIdAsync(Guid veiculoId)
+        {
+            IQueryable<Veiculo> query = _context.Veiculos;
+            query = query.AsNoTracking().Where(e => e.Id == veiculoId);
+
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

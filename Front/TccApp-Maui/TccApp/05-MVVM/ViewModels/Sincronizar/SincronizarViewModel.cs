@@ -1,4 +1,5 @@
-﻿using TccApp.Domain.Interfaces;
+﻿using System.Net.Http.Headers;
+using TccApp.Domain.Interfaces;
 using TccApp.Domain.Models;
 using TccApp.Enums;
 using TccApp.Services;
@@ -25,6 +26,8 @@ namespace TccApp.ViewModels
         private readonly IRestService restService;
         private readonly IUsuarioService usuarioService;
         private readonly IAssociadoService associadoService;
+        private readonly IVeiculoService veiculoService;
+        private readonly IVistoriaImagemService vistoriaImagemService;
 
         private readonly IConnectivity connectivity;
         private List<string> listaErros;
@@ -32,13 +35,17 @@ namespace TccApp.ViewModels
         public SincronizarViewModel(IConnectivity connectivity,
             IRestService restService,
             IUsuarioService usuarioService,
-            IAssociadoService associadoService)
+            IAssociadoService associadoService,
+            IVeiculoService veiculoService,
+            IVistoriaImagemService vistoriaImagemService)
         {
             this.connectivity = connectivity;
 
             this.restService = restService;
             this.usuarioService = usuarioService;
             this.associadoService = associadoService;
+            this.veiculoService = veiculoService;
+            this.vistoriaImagemService = vistoriaImagemService;
 
             listaErros = new List<string>();
         }
@@ -73,6 +80,8 @@ namespace TccApp.ViewModels
 
                 //Sincronizar - Upload
                 await AssociadoAsync();
+                await VeiculoAsync();
+                await VistoriaImagemAsync();
 
                 //Sincronizar - Download
                 //await AcessoriosAsync();
@@ -130,23 +139,77 @@ namespace TccApp.ViewModels
 
         private async Task AssociadoAsync()
         {
-            var lista = associadoService.GetAll(x => x.StatusCadastro != StatusCadastroType.Cancelado);
+            var lista = associadoService.GetAll(x => x.StatusRegistro == StatusRegistroType.Pendente);
             foreach (var item in lista)
             {
                 var dataResponse = await restService.PostAssociadoAsync(item);
 
-                if (dataResponse == null || !dataResponse.Success)
+                if (dataResponse == null)
                 {
-                    listaErros.Add($"<<Associado Erro>> Id:{item.Id}, Nome:{item.Nome}");
-                    if (dataResponse != null)
-                    {
-                        listaErros.Add($"<<Associado Erro>>[Detalhe] Retorno backend: {dataResponse.Errors}");
-                    }
+                    listaErros.Add($"<<Associado Erro>> Id:{item.Id}, Nome:{dataResponse.Nome}");
                 }
-                else
+
+                //if (dataResponse == null || !dataResponse.Success)
+                //{
+                //    listaErros.Add($"<<Associado Erro>> Id:{item.Id}, Nome:{item.Nome}");
+                //    if (dataResponse != null)
+                //    {
+                //        listaErros.Add($"<<Associado Erro>>[Detalhe] Retorno backend: {dataResponse.Errors}");
+                //    }
+                //}
+
+                item.StatusRegistro = StatusRegistroType.Enviado;
+                associadoService.Update(item);
+            }
+        }
+
+        private async Task VeiculoAsync()
+        {
+            var lista = veiculoService.GetAll(x => x.StatusRegistro == StatusRegistroType.Pendente);
+            foreach (var item in lista)
+            {
+                var dataResponse = await restService.PostVeiculoAsync(item);
+
+                if (dataResponse == null)
                 {
-                    //associadoService.DeleteAssociado(item);
+                    listaErros.Add($"<<Veiculo Erro>> Id:{item.Id}, Nome:{item.MarcaModelo}");
                 }
+
+                //if (dataResponse == null || !dataResponse.Success)
+                //{
+                //    listaErros.Add($"<<Veiculo Erro>> Id:{item.Id}, Marca/Modelo:{item.MarcaModelo}");
+                //    if (dataResponse != null)
+                //    {
+                //        listaErros.Add($"<<Veiculo Erro>>[Detalhe] Retorno backend: {dataResponse.Errors}");
+                //    }
+                //}
+
+                item.StatusRegistro = StatusRegistroType.Enviado;
+                veiculoService.Update(item);
+            }
+        }
+
+        private async Task VistoriaImagemAsync()
+        {
+            var lista = vistoriaImagemService.GetAll(x => x.StatusRegistro == StatusRegistroType.Pendente);
+            foreach (var item in lista)
+            {
+                var dataResponse = await restService.PostVistoriaImagemAsync(item);
+                var dataResponseImagem = await restService.UploadImagemByVistoriaImagemIdAsync(item);
+
+                if (dataResponse == null)
+                {
+                    listaErros.Add($"<<Vistoria Imagem Erro>> Id:{item.Id}, VeiculoId:{item.VeiculoId}");
+                }
+
+                if (dataResponseImagem == null)
+                {
+                    listaErros.Add($"<<Vistoria Imagem Erro>> Id:{item.Id}, VeiculoId:{item.VeiculoId}");
+                }
+
+                item.StatusRegistro = StatusRegistroType.Enviado;
+                vistoriaImagemService.Update(item);
+
             }
         }
 
@@ -172,6 +235,6 @@ namespace TccApp.ViewModels
                 Console.WriteLine(ex.Message);
                 return null;
             }
-        }
+        }        
     }
 }

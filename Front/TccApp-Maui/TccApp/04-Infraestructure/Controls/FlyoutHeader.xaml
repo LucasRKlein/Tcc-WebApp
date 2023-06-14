@@ -5,9 +5,9 @@
              HeightRequest="200">
     <Grid BackgroundColor="White">
         <Image Aspect="AspectFill" 
-               Source="logo2.png" 
+               Source="tcc_logo4.jpg" 
                Opacity="0.9" 
-               HeightRequest="140"
+               HeightRequest="180"
                VerticalOptions="CenterAndExpand"
                HorizontalOptions="CenterAndExpand"
               />

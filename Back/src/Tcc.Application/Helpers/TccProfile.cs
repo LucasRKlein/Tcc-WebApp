@@ -18,6 +18,7 @@ namespace Tcc.API.Helpers
 
             CreateMap<Associado, AssociadoDto>().ReverseMap();
             CreateMap<Veiculo, VeiculoDto>().ReverseMap();
+            CreateMap<VistoriaImagem, VistoriaImagemDto>().ReverseMap();
         }
     }
 }

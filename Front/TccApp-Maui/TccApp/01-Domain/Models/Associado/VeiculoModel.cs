@@ -31,5 +31,8 @@ namespace TccApp.Models
         /// App, Sistema
         /// </summary>
         public OrigemCadastroType OrigemCadastro { get; set; }
+
+        // para controle no APP
+        public StatusRegistroType StatusRegistro { get; set; }
     }
 }

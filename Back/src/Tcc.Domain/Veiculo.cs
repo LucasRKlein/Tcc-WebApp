@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Tcc.Domain.Base;
 using Tcc.Domain.Enum;
 
@@ -23,5 +24,7 @@ namespace Tcc.Domain
         /// App, Sistema
         /// </summary>
         public OrigemCadastroType OrigemCadastro { get; set; }
+
+        public IEnumerable<VistoriaImagem> ListaImagens { get; set; }
     }
 }
