@@ -1,0 +1,243 @@
+<app-titulo [titulo]="'Detalhes Associado'" [iconClass]="'fa fa-address-card'"></app-titulo>
+
+<div [ngClass]="{'col-md-12 pr-0': modoEditar, 'col-md-12': !modoEditar}">
+  <div class="card rounded shadow-sm">
+    <tabset>
+      <tab class="border border-top-0 p-3">
+        <ng-template tabHeading>
+          <i class="fa fa-address-card mr-2"></i><span>Associado</span>
+        </ng-template>
+        <form [formGroup]="form">
+
+          <div class="p-3">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="statusCadastro" class="form-label">Status Cadastro</label>
+                <select id="statusCadastro" formControlName="statusCadastro" [ngClass]="cssValidator(f.statusCadastro)" class="form-control"
+                  [ngClass]="{ 'is-invalid': f.statusCadastro.errors && f.statusCadastro.touched }">
+                  <option *ngFor="let item of statusCadastroTypes" [value]="item.value">{{item.text}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-5">
+                <label for="nome" class="form-label">Nome</label>
+                <input id="nome" formControlName="nome"  [ngClass]="cssValidator(f.nome)"type="text" class="form-control" #focus>
+                <div class="invalid-feedback">Informe um Nome válido.</div>
+                <div *ngIf="f.nome.errors?.required && f.nome.touched" class="invalid-feedback">
+                  Nome é obrigatório.
+                </div>
+              </div>
+
+              <div class="form-group col-md-2">
+                <label for="cpf" class="form-label">CPF</label>
+                <input id="cpf" formControlName="cpf" [ngClass]="cssValidator(f.cpf)" type="text" class="form-control">
+                <div class="invalid-feedback">Informe um Documento Válido.</div>
+                <div *ngIf="f.cpf.errors?.required && f.cpf.touched" class="invalid-feedback">
+                  Cpf é obrigatório.
+                </div>
+                <div *ngIf="f.cpf.errors?.cpf && f.cpf.touched" class="invalid-feedback">
+                  Deve ser um endereço de Cpf válido
+                </div>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="sexo" class="form-label">Sexo</label>
+                <select id="sexo" formControlName="sexo" [ngClass]="cssValidator(f.sexo)" class="form-control"
+                  [ngClass]="{ 'is-invalid': f.sexo.errors && f.sexo.touched }">
+                  <option *ngFor="let item of sexoTypes" [value]="item.value">{{item.text}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-2">
+                <label for="dataNascimento" class="form-label">Data Nascimento</label>
+                <input id="dataNascimento" formControlName="dataNascimento" [ngClass]="cssValidator(f.dataNascimento)" type="datetime" bsDatepicker [bsConfig]="bsConfig" class="form-control">
+                <div *ngIf="f.dataNascimento.errors?.required && f.dataNascimento.touched" class="invalid-feedback">
+                  Data e Hora é obrigatório.
+                </div>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="celular" class="form-label">Celular</label>
+                <input id="celular" formControlName="celular" type="text" [ngClass]="cssValidator(f.celular)" class="form-control" placeholder="(000) 90000-0000">
+                <div *ngIf="f.celular.errors?.required && f.celular.touched" class="invalid-feedback">
+                  Celular é obrigatório.
+                </div>
+              </div>
+
+              <div class="form-group col-md-3">
+                <label>E-mail</label>
+                <input type="text" class="form-control" [ngClass]="cssValidator(f.email)" formControlName="email"
+                  placeholder="e-mail" [(ngModel)]="associado.email">
+                <div *ngIf="f.email.errors?.required && f.email.touched" class="invalid-feedback">
+                  e-mail é obrigatório.
+                </div>
+                <div *ngIf="f.email.errors?.email && f.email.touched" class="invalid-feedback">
+                  Deve ser um endereço de e-mail válido
+                </div>
+              </div>
+
+              <div class="form-group col-md-3">
+                <label for="celular" class="form-label">E-mail</label>
+                <input id="celular" formControlName="celular" type="text" [ngClass]="cssValidator(f.celular)" class="form-control" placeholder="exemplo@email.com">
+                <div *ngIf="f.celular.errors?.required && f.celular.touched" class="invalid-feedback">
+                  Celular é obrigatório.
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="ruaAvenida" class="form-label">Rua Avenida</label>
+                <input id="ruaAvenida" formControlName="ruaAvenida" type="text" [ngClass]="cssValidator(f.ruaAvenida)" class="form-control" placeholder="Rua Avenida">
+                <div *ngIf="f.ruaAvenida.errors?.required && f.ruaAvenida.touched" class="invalid-feedback">
+                  Preencha o campo.
+                </div>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="numero" class="form-label">Número</label>
+                <input id="numero" formControlName="numero" type="text" [ngClass]="cssValidator(f.numero)" class="form-control" placeholder="N° ">
+                <div *ngIf="f.numero.errors?.required && f.numero.touched" class="invalid-feedback">
+                  numero é obrigatório.
+                </div>
+                <div *ngIf="f.numero.errors?.numero && f.numero.touched" class="invalid-feedback">
+                  Deve ser um endereço de numero válido
+                </div>
+              </div>
+
+              <div class="form-group col-md-2">
+                <label for="complemento" class="form-label">Complemento</label>
+                <input id="complemento" formControlName="complemento" type="text" [ngClass]="cssValidator(f.complemento)" class="form-control" placeholder="Ap 101">
+                <div *ngIf="f.complemento.errors?.required && f.complemento.touched" class="invalid-feedback">
+                  complemento é obrigatório.
+                </div>
+                <div *ngIf="f.complemento.errors?.complemento && f.complemento.touched" class="invalid-feedback">
+                  Deve ser um endereço de complemento válido
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-2">
+                <label for="bairro" class="form-label">Bairro</label>
+                <input id="bairro" formControlName="bairro" type="text" [ngClass]="cssValidator(f.bairro)" class="form-control" placeholder="Ap 101">
+                <div *ngIf="f.bairro.errors?.required && f.bairro.touched" class="invalid-feedback">
+                  bairro é obrigatório.
+                </div>
+                <div *ngIf="f.bairro.errors?.bairro && f.bairro.touched" class="invalid-feedback">
+                  Deve ser um endereço de bairro válido
+                </div>
+              </div>
+              <div class="form-group col-md-2">
+                <label for="estadoNome" class="form-label">Estado</label>
+                <input id="estadoNome" formControlName="estadoNome" type="text" [ngClass]="cssValidator(f.estadoNome)" class="form-control" placeholder="Ap 101">
+                <div *ngIf="f.estadoNome.errors?.required && f.estadoNome.touched" class="invalid-feedback">
+                  estadoNome é obrigatório.
+                </div>
+                <div *ngIf="f.estadoNome.errors?.estadoNome && f.estadoNome.touched" class="invalid-feedback">
+                  Deve ser estado válido
+                </div>
+              </div>
+
+
+              <div class="form-group col-md-2">
+                <label for="cidadeNome" class="form-label">Cidade</label>
+                <input id="cidadeNome" formControlName="cidadeNome" type="text" [ngClass]="cssValidator(f.cidadeNome)" class="form-control" placeholder="Ap 101">
+                <div *ngIf="f.cidadeNome.errors?.required && f.cidadeNome.touched" class="invalid-feedback">
+                  cidadeNome é obrigatório.
+                </div>
+                <div *ngIf="f.cidadeNome.errors?.cidadeNome && f.cidadeNome.touched" class="invalid-feedback">
+                  Deve ser uma cidade válida
+                </div>
+              </div>              
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex">
+              <button class="btn btn-outline-secondary mr-auto border" (click)="cancelarAlteracao()">
+                Cancelar Alteração
+              </button>
+              <!-- <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarAssociado()">
+                Salvar Associado
+              </button> -->
+              <button class="btn btn-success" (click)="salvarAssociado()">
+                Salvar Associado
+              </button>
+            </div>
+          </div>
+        </form>
+      </tab>
+
+      <tab class="border border-top-0 p-3">
+        <ng-template tabHeading>
+          <i class="fa fa-address-card mr-2"></i><span>Veiculos</span>
+        </ng-template>
+        <div class="p-3">
+          <div class="d-flex border-bottom">
+            <h2 class="mr-auto">Veiculos do Associado</h2>
+            <h2><i class="fa-solid fa-car"></i></h2>
+          </div>
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th>Status</th>
+                <th>Placa</th>
+                <th>Marca/Modelo</th>
+                <th>Ano Modelo</th>
+                <th>Valor Fipe</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody *ngIf="listaVeiculos && listaVeiculos.length">
+              <tr *ngFor="let veiculo of listaVeiculos" (click)="editVeiculo(veiculo.id)" style="cursor: pointer;">                
+                <td>{{getStatusCadastroTypeNome(veiculo.statusCadastro)}}</td>
+                <td>{{veiculo.placa}}</td>
+                <td>{{veiculo.marcaModelo}}</td>
+                <td>{{veiculo.anoModelo}}</td>
+                <td>R$ {{veiculo.valorFipe}}</td>
+                <td>
+                  <button type="button" class="btn btn-danger btn-lg" tooltip="Excluir"
+                    (click)="openModal($event, template, veiculo.id)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
+                <!-- <td>
+                  <button type="button" class="btn btn-danger btn-lg" tooltip="Excluir">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td> -->
+              </tr>
+            </tbody>
+            <tfoot *ngIf="!listaVeiculos.length">
+              <tr>
+                <td colspan="8" class="text-center">
+                  <h4>Nenhum Veiculo encontrado!</h4>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <button (click)="adicionarVeiculo()" class="d-flex btn btn-outline-primary">
+            <i class="fa fa-plus-circle my-1"></i>
+            <b class="ml-1">Veiculo</b>
+          </button>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex">
+            <button class="btn btn-outline-secondary mr-auto border" (click)="cancelarAlteracao()">
+              Cancelar Alteração
+            </button>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que quer deletar o veiculo {{this.veiculoAtual.marcaModelo}}?</p>
+    <button type="button" class="btn btn-default" (click)="confirmDeleteVeiculo()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="declineDeleteVeiculo()">Não</button>
+  </div>
+</ng-template>

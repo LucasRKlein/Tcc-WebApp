@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TccApp.ViewModels"
+             x:DataType="viewmodel:AssociadoViewModel"
+             x:Class="TccApp.Views.AssociadoPage"
+             Title="AssociadoPage">
+
+    <ScrollView>
+
+        <VerticalStackLayout Spacing="5" Margin="10,0">
+            <Grid ColumnDefinitions=".70*,.30*" ColumnSpacing="5">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Nome"/>
+                    <Entry Text="{Binding Nome}" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="5" Grid.Column="1">
+                    <Label Text="Sexo" />
+                    <Picker x:Name="SexoPicker"
+                                    ItemsSource="{Binding ListaSexo}"
+                                    ItemDisplayBinding="{Binding .}" 
+                                    SelectedItem="{Binding SexoSelecionado}"/>
+                </VerticalStackLayout>
+            </Grid>
+            <Grid ColumnDefinitions=".50*,.50*" 
+              ColumnSpacing="5">
+                <VerticalStackLayout Spacing="5" Grid.Column="0">
+                    <Label Text="CPF"/>
+                    <Entry Text="{Binding Cpf}" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="5" Grid.Column="1">
+                    <Label Text="Data Nascimento" />
+                    <DatePicker Date="{Binding DataNascimento}" Format="dd/MM/yyyy"/>
+                </VerticalStackLayout>
+            </Grid>
+            <Grid ColumnDefinitions=".40*,.60*" 
+              ColumnSpacing="5">
+                <VerticalStackLayout Spacing="5" Grid.Column="0">
+                    <Label Text="Celular" />
+                    <Entry Text="{Binding Celular}"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="5" Grid.Column="1">
+                    <Label Text="E-mail"/>
+                    <Entry Text="{Binding Email}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid ColumnDefinitions=".70*,.30*" 
+              ColumnSpacing="5">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Rua / Avenida" />
+                    <Entry Text="{Binding RuaAvenida}" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="5" Grid.Column="1">
+                    <Label Text="Número"/>
+                    <Entry Text="{Binding Numero}" />
+                </VerticalStackLayout>
+
+            </Grid>
+            <Grid ColumnDefinitions=".33*,.33*,.33*" 
+              ColumnSpacing="5">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Complemento"/>
+                    <Entry Text="{Binding Complemento}" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="5" Grid.Column="1">
+                    <Label Text="Bairro"/>
+                    <Entry Text="{Binding Bairro}" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="5" Grid.Column="2">
+                    <Label Text="Cep"/>
+                    <Entry Text="{Binding Cep}" />
+                </VerticalStackLayout>
+            </Grid>
+            <Grid ColumnDefinitions=".50*,.50*" 
+              ColumnSpacing="5">
+                <VerticalStackLayout Spacing="5" Grid.Column="0">
+                    <Label Text="Estado"/>
+                    <Entry Text="{Binding EstadoNome}" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="5" Grid.Column="1">
+                    <Label Text="Cidade"/>
+                    <Entry Text="{Binding CidadeNome}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid ColumnDefinitions=".50*" ColumnSpacing="5">
+                <Button x:Name="BtnVeiculos" 
+                                Text="Veiculos"
+                                Style="{StaticResource ButtonAcao}"
+                                Command="{Binding VeiculoCommand}"/>
+            </Grid>
+
+            <BoxView Color="Gray"
+                         HeightRequest="1"
+                         HorizontalOptions="Fill">
+            </BoxView>
+
+
+            <HorizontalStackLayout HorizontalOptions="End" Margin="10" Spacing="10">
+                <Button
+                    x:Name="Save"
+                    Command="{Binding SaveCommand}"
+                    Text="Salvar"
+                    Style="{StaticResource ButtonSave}"/>
+                <Button
+                    x:Name="Delete"
+                    IsVisible="{Binding EnabledDelete}"
+                    Command="{Binding DeleteCommand}"
+                    Text="Excluir" 
+                    Style="{StaticResource ButtonDelete}"/>
+                <Button
+                    x:Name="Cancel"
+                    Command="{Binding CancelCommand}"
+                    Text="Voltar"
+                    Style="{StaticResource ButtonCancel}"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

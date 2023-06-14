@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccApp.Views.VistoriaImagemPage"
+             xmlns:viewmodel="clr-namespace:TccApp.ViewModels"
+             x:DataType="viewmodel:VistoriaImagemViewModel"
+             Title="VistoriaImagemPage">
+
+    <VerticalStackLayout Margin="5">
+        <Frame HeightRequest="450" Style="{StaticResource CardView}">
+            <Image x:Name="imagemVeiculo" 
+               Aspect="AspectFit"  
+               HeightRequest="445" 
+               Margin="5"
+               Source="{Binding ImagemUrl}"/>
+        </Frame>
+        <Grid ColumnDefinitions=".50*,.50*" ColumnSpacing="5" Margin="10">
+            <Button Grid.Column="0"
+                    Text="Escolher Imagem"
+                    Style="{StaticResource ButtonAcao}"
+                    Command="{Binding SelectImgCommand}"/>
+            <Button Grid.Column="1"
+                    Text="Foto" 
+                    Style="{StaticResource ButtonAcao}"
+                    Command="{Binding CaptureImgCommand}" />
+        </Grid>
+        <BoxView Color="Gray"
+                         HeightRequest="2"
+                         HorizontalOptions="Fill" />
+        <HorizontalStackLayout HorizontalOptions="End" Margin="10" Spacing="10">
+            <Button
+                    x:Name="Save"
+                    Command="{Binding SaveCommand}"
+                    Text="Salvar"
+                    Style="{StaticResource ButtonSave}"/>
+            <Button
+                    x:Name="Cancel"
+                    Command="{Binding CancelCommand}"
+                    Text="Voltar"
+                    Style="{StaticResource ButtonCancel}"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+
+
+
+</ContentPage>

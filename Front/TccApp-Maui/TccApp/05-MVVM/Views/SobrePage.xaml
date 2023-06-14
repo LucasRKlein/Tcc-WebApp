@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="TccApp.Views.SobrePage"
+             Title="Sobre">
+    
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*">
+            <Image
+            Source="tcc_logo1.jpg"
+            SemanticProperties.Description="Logo do sistema"
+            HeightRequest="350"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+            <ScrollView Grid.Row="1">
+                <StackLayout Orientation="Vertical" 
+                             Padding="16,40,16,40"
+                             Spacing="10">
+                    <Label FontSize="22">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <FormattedString.Spans>
+                                    <Span Text="TccApp" 
+                                          FontAttributes="Bold" 
+                                          FontSize="22" 
+                                          TextColor="{StaticResource PrimaryColor}"/>
+                                    <Span Text=" " />
+                                    <Span Text="1.0" 
+                                          TextColor="{StaticResource SecondaryColor}" />
+                                </FormattedString.Spans>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <FormattedString.Spans>
+                                    <Span Text="TccApp é um aplicativo para execução de vistorias e cadastro de associados." 
+                                          FontAttributes="Bold"
+                                          TextColor="{StaticResource PrimaryColor}"/>
+                                    
+                                    <Span Text="O mesmo é parte integrante do sistema Tcc." 
+                                          FontAttributes="Bold"
+                                          TextColor="{StaticResource PrimaryColor}"/>
+                                </FormattedString.Spans>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Button Margin="0,20,0,0"
+                            Text="Visite o nosso site e saiba mais." 
+                            Command="{Binding TapCommand}"
+                            CommandParameter="https://kleincode.com"
+                            BackgroundColor="{StaticResource PrimaryColor}"
+                            TextColor="White" 
+                            FontAttributes="Bold"/>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,18 @@
+<div class="col-md-12">
+  <div [formGroup]="form" class="card-evento-view shadow-sm">
+    <div class="form-row">
+      <div class="form-group m-0">
+        <input type="file" #file (change)="onFileChange($event)" class="form-control is-invalid" placeholder="" style="display: none">
+      </div>
+    </div>
+    <div class="card profile-card-2">
+      <div class="card-img-block">
+        <img class="image" [src]="imagemUrl" class="img-fluid" (click)="file.click()" alt="Card image cap"
+        tooltip="Upload de Nova Imagem" [adaptivePosition]="false" placement="bottom" />
+      </div>
+      <div class="card-body pt-3">
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>

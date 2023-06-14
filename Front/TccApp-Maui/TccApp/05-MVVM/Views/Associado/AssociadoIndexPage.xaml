@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TccApp.Views.AssociadoIndexPage"
+             xmlns:viewmodel="clr-namespace:TccApp.ViewModels"
+             xmlns:model="clr-namespace:TccApp.Models"
+             x:DataType="viewmodel:AssociadoIndexViewModel"
+             xmlns:converter="clr-namespace:TccApp.Converters"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <converter:EnumBooleanConverter x:Key="enumBooleanConverter" />
+    </ContentPage.Resources>
+    
+    <Grid RowDefinitions="*,Auto" RowSpacing="0">
+        <RefreshView
+            Grid.ColumnSpan="2"
+            Command="{Binding GetListaRefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            <ContentView>
+                <CollectionView 
+                    EmptyView="Não há registros"
+                    ItemsSource="{Binding Lista}"
+                    SelectionMode="None">
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Label StyleClass="NoDataText" Text="Não há registros click em Novo Registro para adicionar..." />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:AssociadoModel">
+                            <Grid Padding="10">
+                                <Frame HeightRequest="150" Style="{StaticResource CardView}">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AssociadoIndexViewModel}}, Path=GoToItemCommand}"
+                                            CommandParameter="{Binding .}"/> 
+                                    </Frame.GestureRecognizers>
+                                    <Grid Padding="5" ColumnDefinitions=".50*,*">
+                                        <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                            <Label Text="Status" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Text="{Binding StatusRegistro}"
+                                                   Style="{StaticResource LargeLabel}"
+                                                   FontAttributes="Bold"
+                                                   IsVisible="{Binding Path=StatusRegistro, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Pendente}"
+                                                   BackgroundColor="Yellow"
+                                                   Padding="10,0,10,0"
+                                                   HorizontalOptions="Start"
+                                                   />
+                                            <Label Text="{Binding StatusRegistro}"
+                                                   Style="{StaticResource LargeLabel}"
+                                                   FontAttributes="Bold"
+                                                   IsVisible="{Binding Path=StatusRegistro, Converter={StaticResource enumBooleanConverter}, ConverterParameter=Enviado}"
+                                                   BackgroundColor="Lime"
+                                                   Padding="10,0,10,0"
+                                                   HorizontalOptions="Start"
+                                                   />
+                                            <Label Text="Data" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Text="{Binding DataInclusao, StringFormat='{0:dd/MM/yyyy}'}" 
+                                                   Style="{StaticResource LargeLabel}"/>
+                                            <Label Text="Hora" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Text="{Binding DataInclusao, StringFormat='{0:hh:mm}'}" 
+                                                   Style="{StaticResource LargeLabel}"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                            <Label Text="Nome" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Style="{StaticResource MediumLabel}" Text="{Binding Nome}" />
+                                            <Label Text="Celular" Style="{StaticResource CaptionSmallLabel}" FontAttributes="Bold"/>
+                                            <Label Style="{StaticResource MediumLabel}" Text="{Binding Celular}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ContentView>
+        </RefreshView>
+
+        <Button
+            Grid.Row="1"
+            Margin="20"
+            Command="{Binding CreateNewItemCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Style="{StaticResource ButtonOutline}"
+            Text="Novo Item" />
+
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource PrimaryColor}"
+            VerticalOptions="Center" />
+
+    </Grid>
+</ContentPage>

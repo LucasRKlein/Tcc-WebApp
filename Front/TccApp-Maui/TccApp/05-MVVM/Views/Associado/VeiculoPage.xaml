@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TccApp.ViewModels"
+             x:Class="TccApp.Views.VeiculoPage"
+             x:DataType="viewmodel:VeiculoViewModel"
+             Title="VeiculoPage">
+
+    <VerticalStackLayout Spacing="5" Margin="10,0">
+        <Grid ColumnDefinitions=".30*,.70*" 
+              ColumnSpacing="5">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Placa" />
+                <Entry Text="{Binding Placa}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5" Grid.Column="1">
+                <Label Text="Marca e Modelo"/>
+                <Entry Text="{Binding MarcaModelo}" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <Grid ColumnDefinitions=".50*,.50*" 
+              ColumnSpacing="5">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Ano Modelo"/>
+                <Entry Text="{Binding AnoModelo}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5" Grid.Column="1">
+                <Label Text="Valor Fipe"/>
+                <Entry Text="{Binding ValorFipe}" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <Grid ColumnDefinitions=".50*" ColumnSpacing="5">
+            <Button x:Name="BtnImagens" 
+                                Text="Imagens"
+                                Style="{StaticResource ButtonAcao}"
+                                Command="{Binding ImagemVeiculoCommand}"/>
+        </Grid>
+
+        <BoxView Color="Gray"
+                         HeightRequest="1"
+                         HorizontalOptions="Fill" Margin="10"/>
+
+        <HorizontalStackLayout HorizontalOptions="End" Margin="10" Spacing="10">
+            <Button
+                    x:Name="Save"
+                    Command="{Binding SaveCommand}"
+                    Text="Salvar"
+                    Style="{StaticResource ButtonSave}"/>
+            <Button
+                    x:Name="Cancel"
+                    Command="{Binding CancelCommand}"
+                    Text="Voltar"
+                    Style="{StaticResource ButtonCancel}"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+
+
+
+</ContentPage>
