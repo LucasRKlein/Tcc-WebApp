@@ -1,5 +1,6 @@
 ### TCC
 Projeto de Conclusão de Curso em que desenvolvi uma aplicação Web e Mobile, utilizando as tecnologia .NET, Angular e .NET MAUI
+
 A ideia de desenvolvimento foi me desafiar a fazer um sistema do zero sendo meus objetivos pessoais:
   1° - Aprender e utilizar uma tecnologia que eu ainda não conhecia e tinha interesse em estudar: .NET MAUI;
   2° - Aprofundar meu conhecimento nas linguagens que ja utilizo no dia a dia e que, por vezes, não me dou conta do uso por ja estarem transparentes dentro da framework e bibliotecas da empresa, como: EntityFramework, ASP.NET Core Identity
