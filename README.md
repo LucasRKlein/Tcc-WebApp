@@ -11,7 +11,7 @@ Ambiente Web (ANGULAR): ambiente com foco na equipe de escritorio, possui acesso
 Ambos os ambientes conversam com uma API feita em C# utilizando autenticação com token JWT
 
 Contato:\
-[https://www.linkedin.com/in/lucas-romualdo-klein/](https://www.linkedin.com/in/lucas-romualdo-klein/)\
+LinkedIn: [@LucasRKlein](https://www.linkedin.com/in/LucasRKlein/)\
 Email: lucasrklein@gmail.com;
 
 ## Basic Setup
